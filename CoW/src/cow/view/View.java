@@ -1,0 +1,30 @@
+package cow.view;
+
+public class View implements IView {
+	IGUI gui;
+
+	public View() {
+		createGUI();
+	}
+
+	@Override
+	public void createGUI() {
+		gui = new CoWGUI();
+	}
+
+	@Override
+	public IGUI getGUI() {
+		return gui;
+	}
+
+	@Override
+	public void setGUI(String guiType) {
+		if (guiType.equals("Morphisms")) {
+			// TODO
+			gui = new MorphismGUI();
+		} else if (guiType.equals("Patterns")) {
+			gui = new PatternGUI();
+		}
+
+	}
+}
