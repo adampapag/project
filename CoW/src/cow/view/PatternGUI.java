@@ -17,10 +17,12 @@ import cow.controller.RadioListener;
 public class PatternGUI implements IGUI {
 
 	private JFrame frame;
-	private RadioListener radioListener;
+	private ActionListener radioListener;
+	private ActionListener buttonListener;
 	private JRadioButton rdbtnOrdered;
 	private JRadioButton rdbtnUnordered;
-	private ActionListener buttonListener;
+	private JTextField patternField;
+	private JTextField textField;
 	private ArrayList<JButton> buttonList;
 
 	/**
@@ -66,12 +68,8 @@ public class PatternGUI implements IGUI {
 		frame.setVisible(true);
 	}
 
-	@Override
-	public void addActionListener(ActionListener l) {
-		buttonListener = l;
-		for (JButton b : buttonList) {
-			b.addActionListener(buttonListener);
-		}
+	public String getPattern() {
+		return patternField.getText();
 	}
 
 	public void setOrdered(boolean selected) {
@@ -87,6 +85,14 @@ public class PatternGUI implements IGUI {
 			rdbtnUnordered.setSelected(true);
 		} else {
 			rdbtnUnordered.setSelected(false);
+		}
+	}
+
+	@Override
+	public void addActionListener(ActionListener l) {
+		buttonListener = l;
+		for (JButton b : buttonList) {
+			b.addActionListener(buttonListener);
 		}
 	}
 
@@ -161,20 +167,21 @@ public class PatternGUI implements IGUI {
 		alphabetField.setBounds(182, 161, 41, 28);
 		frame.getContentPane().add(alphabetField);
 
-		JTextField patternField = new JTextField();
-		patternField.setBounds(112, 18, 252, 35);
-		frame.getContentPane().add(patternField);
-		patternField.setColumns(3);
-
-		JTextField textField = new JTextField();
-		textField.setBounds(359, 172, 278, 28);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
-
 		JTextField wordField = new JTextField();
 		wordField.setColumns(3);
 		wordField.setBounds(182, 204, 41, 28);
 		frame.getContentPane().add(wordField);
+
+		patternField = new JTextField();
+		patternField.setBounds(112, 18, 252, 35);
+		frame.getContentPane().add(patternField);
+		patternField.setColumns(3);
+
+		textField = new JTextField();
+		textField.setBounds(359, 172, 278, 28);
+		frame.getContentPane().add(textField);
+		textField.setColumns(10);
+
 	}
 
 	private void addResultsPane() {

@@ -14,7 +14,13 @@ public class Controller implements IController, ActionListener {
 	// IModel m;
 
 	public Controller() {
-		buttonListener = new ButtonListener();
+		createModel();
+		createView();
+		createButtonListener();
+	}
+
+	public void createButtonListener() {
+		buttonListener = new ButtonListener(v);
 	}
 
 	@Override
