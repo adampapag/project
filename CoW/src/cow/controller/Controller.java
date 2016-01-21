@@ -8,12 +8,13 @@ import cow.view.View;
 
 public class Controller implements IController, ActionListener {
 
-	IView v;
+	private IView v;
+	private ActionListener buttonListener;
 
 	// IModel m;
 
 	public Controller() {
-
+		buttonListener = new ButtonListener();
 	}
 
 	@Override
@@ -29,22 +30,17 @@ public class Controller implements IController, ActionListener {
 		addActionListener();
 	}
 
+	// listener for CoWGUI (main menu) buttons
 	public void addActionListener() {
 		v.getGUI().addActionListener(this);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		v.setGUI(e.getActionCommand()); // i.e. "Morphisms"
-		// String command = e.getActionCommand();
-		// if (command.equals("Morphisms")) {
-		// System.out.println("Morphisms button pressed.");
-		// v.setGUI(e.getActionCommand()); // i.e. "Morphisms"
-		// } else if (command.equals("Patterns")) {
-		// System.out.println("Patterns button pressed.");
-		// } else if (command.equals("Cruciality")) {
-		// System.out.println("Cruciality button pressed.");
-		// }
-
+		v.setGUI(e.getActionCommand());
+		v.getGUI().addActionListener(buttonListener);
+		// v.getGUI().addActionListener(buttonListener);
+		// String GUIType = v.getGUI();
+		// if (GUIType.equals("Pattern") {}
 	}
 }

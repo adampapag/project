@@ -1,6 +1,7 @@
 package cow.view;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -11,14 +12,23 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import cow.controller.RadioListener;
+
 public class PatternGUI implements IGUI {
 
 	private JFrame frame;
+	private RadioListener radioListener;
+	private JRadioButton rdbtnOrdered;
+	private JRadioButton rdbtnUnordered;
+	private ActionListener buttonListener;
+	private ArrayList<JButton> buttonList;
 
 	/**
 	 * Create the application.
 	 */
 	public PatternGUI() {
+		radioListener = new RadioListener(this);
+		buttonList = new ArrayList<JButton>();
 		initializeGUI();
 	}
 
@@ -58,9 +68,26 @@ public class PatternGUI implements IGUI {
 
 	@Override
 	public void addActionListener(ActionListener l) {
-		// for (JButton b : buttonList) {
-		// b.addActionListener(l);
-		// }
+		buttonListener = l;
+		for (JButton b : buttonList) {
+			b.addActionListener(buttonListener);
+		}
+	}
+
+	public void setOrdered(boolean selected) {
+		if (selected == true) {
+			rdbtnOrdered.setSelected(true);
+		} else {
+			rdbtnOrdered.setSelected(false);
+		}
+	}
+
+	public void setUnordered(boolean selected) {
+		if (selected == true) {
+			rdbtnUnordered.setSelected(true);
+		} else {
+			rdbtnUnordered.setSelected(false);
+		}
 	}
 
 	private void addMenu() {
@@ -68,24 +95,32 @@ public class PatternGUI implements IGUI {
 	}
 
 	private void addButtons() {
-		JRadioButton rdbtnOrdered = new JRadioButton("Ordered");
+		rdbtnOrdered = new JRadioButton("Ordered");
 		rdbtnOrdered.setBounds(55, 65, 141, 23);
+		rdbtnOrdered.setActionCommand("ordered");
+		rdbtnOrdered.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnOrdered);
 
-		JRadioButton rdbtnUnordered = new JRadioButton("Unordered");
+		rdbtnUnordered = new JRadioButton("Unordered");
 		rdbtnUnordered.setBounds(55, 100, 141, 23);
+		rdbtnUnordered.setSelected(true);
+		rdbtnUnordered.setActionCommand("unordered");
+		rdbtnUnordered.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnUnordered);
 
 		JButton btnChooseFile = new JButton("Choose File");
 		btnChooseFile.setBounds(548, 216, 117, 29);
+		buttonList.add(btnChooseFile);
 		frame.getContentPane().add(btnChooseFile);
 
 		JButton btnPrint = new JButton("Show");
 		btnPrint.setBounds(339, 257, 117, 29);
+		buttonList.add(btnPrint);
 		frame.getContentPane().add(btnPrint);
 
 		JButton btnExport = new JButton("Export");
 		btnExport.setBounds(504, 257, 117, 29);
+		buttonList.add(btnExport);
 		frame.getContentPane().add(btnExport);
 	}
 
