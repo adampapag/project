@@ -23,6 +23,8 @@ public class PatternGUI implements IGUI {
 	private JRadioButton rdbtnUnordered;
 	private JTextField patternField;
 	private JTextField textField;
+	private JTextField alphabetField;
+	private JTextField wordField;
 	private ArrayList<JButton> buttonList;
 
 	/**
@@ -72,7 +74,20 @@ public class PatternGUI implements IGUI {
 		return patternField.getText();
 	}
 
+	public String getText() {
+		return textField.getText();
+	}
+
+	public int getAlphabetSize() {
+		return Integer.parseInt(alphabetField.getText());
+	}
+
+	public int getWordLength() {
+		return Integer.parseInt(wordField.getText());
+	}
+
 	public void setOrdered(boolean selected) {
+
 		if (selected == true) {
 			rdbtnOrdered.setSelected(true);
 		} else {
@@ -162,12 +177,12 @@ public class PatternGUI implements IGUI {
 
 	private void addFields() {
 
-		JTextField alphabetField = new JTextField();
+		alphabetField = new JTextField();
 		alphabetField.setColumns(3);
 		alphabetField.setBounds(182, 161, 41, 28);
 		frame.getContentPane().add(alphabetField);
 
-		JTextField wordField = new JTextField();
+		wordField = new JTextField();
 		wordField.setColumns(3);
 		wordField.setBounds(182, 204, 41, 28);
 		frame.getContentPane().add(wordField);

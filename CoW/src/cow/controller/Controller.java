@@ -1,26 +1,32 @@
 package cow.controller;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import cow.view.IView;
 import cow.view.View;
 
-public class Controller implements IController, ActionListener {
+public class Controller implements IController {
 
 	private IView v;
 	private ActionListener buttonListener;
+	private ActionListener menuListener;
 
 	// IModel m;
 
 	public Controller() {
 		createModel();
 		createView();
-		createButtonListener();
+		addActionListener();
 	}
 
+	// listener for buttons in GUI (e.g. Pattern)
 	public void createButtonListener() {
 		buttonListener = new ButtonListener(v);
+	}
+	
+	// listener for CoWGUI (main menu) buttons
+	public void createMenuListener() {
+		menuListener = new MenuListener(v, buttonListener);
 	}
 
 	@Override
@@ -33,20 +39,14 @@ public class Controller implements IController, ActionListener {
 	@Override
 	public void createView() {
 		v = new View();
-		addActionListener();
-	}
 
-	// listener for CoWGUI (main menu) buttons
-	public void addActionListener() {
-		v.getGUI().addActionListener(this);
 	}
-
+	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		v.setGUI(e.getActionCommand());
-		v.getGUI().addActionListener(buttonListener);
-		// v.getGUI().addActionListener(buttonListener);
-		// String GUIType = v.getGUI();
-		// if (GUIType.equals("Pattern") {}
+	public void addActionListener() {
+		createButtonListener();
+		createMenuListener();
+		v.getGUI().addActionListener(menuListener);
 	}
+
 }
