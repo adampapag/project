@@ -19,11 +19,9 @@ public class RadioListener implements ActionListener {
 		switch (button) {
 		case "ordered":
 			gui.setOrdered(true);
-			gui.setUnordered(false);
 			break;
 		case "unordered":
 			gui.setOrdered(false);
-			gui.setUnordered(true);
 			break;
 		}
 	}

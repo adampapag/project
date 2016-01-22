@@ -17,15 +17,21 @@ public class ButtonListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String button = e.getActionCommand();
+		System.out.println("Button pressed: " + button);
 		switch (button) {
 		case "Show":
-			System.out.println("Show pressed in PatternGUI");
 			PatternGUI gui;
 			try {
 				assert v.getGUI() instanceof PatternGUI : "GUI should be of type PatternGUI; is of type "
 						+ v.getGUI().getClass().getName();
 				gui = (PatternGUI) v.getGUI();
 				// check if ordered//unordered
+				if (gui.isOrdered()) {
+					System.out.println("ordered!");
+				} else {
+					assert gui.isOrdered() == false : "";
+					System.out.println("unordered!");
+				}
 				// if (unordered) {
 				// gui.displayResults(m.resolvePatternEnquiry(gui.getPattern(),
 				// // gui.getText()));

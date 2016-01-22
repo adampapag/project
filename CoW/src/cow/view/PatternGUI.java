@@ -26,6 +26,7 @@ public class PatternGUI implements IGUI {
 	private JTextField alphabetField;
 	private JTextField wordField;
 	private ArrayList<JButton> buttonList;
+	private boolean ordered;
 
 	/**
 	 * Create the application.
@@ -90,17 +91,19 @@ public class PatternGUI implements IGUI {
 
 		if (selected == true) {
 			rdbtnOrdered.setSelected(true);
+			rdbtnUnordered.setSelected(false);
+			ordered = true;
 		} else {
+			assert selected == false : "selected = " + selected
+					+ " ; should be false ";
 			rdbtnOrdered.setSelected(false);
+			rdbtnUnordered.setSelected(true);
+			ordered = false;
 		}
 	}
 
-	public void setUnordered(boolean selected) {
-		if (selected == true) {
-			rdbtnUnordered.setSelected(true);
-		} else {
-			rdbtnUnordered.setSelected(false);
-		}
+	public boolean isOrdered() {
+		return ordered;
 	}
 
 	@Override
