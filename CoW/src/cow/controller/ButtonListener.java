@@ -3,14 +3,17 @@ package cow.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import cow.model.IModel;
 import cow.view.IView;
 import cow.view.PatternGUI;
 
 public class ButtonListener implements ActionListener {
 
+	private IModel m;
 	private IView v;
 
-	public ButtonListener(IView v) {
+	public ButtonListener(IModel m, IView v) {
+		this.m = m;
 		this.v = v;
 	}
 
@@ -31,6 +34,8 @@ public class ButtonListener implements ActionListener {
 				} else {
 					assert gui.isOrdered() == false : "";
 					System.out.println("unordered!");
+					gui.displayResults(m.unorderedPatternRequest(
+							gui.getPattern(), gui.getText()));
 				}
 				// if (unordered) {
 				// gui.displayResults(m.resolvePatternEnquiry(gui.getPattern(),

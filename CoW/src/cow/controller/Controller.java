@@ -2,16 +2,15 @@ package cow.controller;
 
 import java.awt.event.ActionListener;
 
+import cow.model.IModel;
+import cow.model.Model;
 import cow.view.IView;
 import cow.view.View;
 
 public class Controller implements IController {
 
+	private IModel m;
 	private IView v;
-	private ActionListener buttonListener;
-	private ActionListener menuListener;
-
-	// IModel m;
 
 	public Controller() {
 		createModel();
@@ -19,20 +18,16 @@ public class Controller implements IController {
 		addActionListener();
 	}
 
-	// listener for buttons in GUI (e.g. Pattern)
-	public void createButtonListener() {
-		buttonListener = new ButtonListener(v);
-	}
-	
-	// listener for CoWGUI (main menu) buttons
-	public void createMenuListener() {
-		menuListener = new MenuListener(v, buttonListener);
+	@Override
+	public void addActionListener() {
+		ActionListener menuListener = new MenuListener(m, v,
+				new ButtonListener(m, v));
+		v.getGUI().addActionListener(menuListener);
 	}
 
 	@Override
 	public void createModel() {
-		// TODO
-		// m = new Model();
+		m = new Model();
 
 	}
 
@@ -40,13 +35,6 @@ public class Controller implements IController {
 	public void createView() {
 		v = new View();
 
-	}
-	
-	@Override
-	public void addActionListener() {
-		createButtonListener();
-		createMenuListener();
-		v.getGUI().addActionListener(menuListener);
 	}
 
 }
