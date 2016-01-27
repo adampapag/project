@@ -1,7 +1,9 @@
 package cow.model;
 
+import java.util.ArrayList;
+
 public interface IModel {
 
-	void unorderedPatternRequest(String pattern, String text);
+	ArrayList<String> unorderedPatternRequest(String pattern, String text);
 
 }

@@ -2,6 +2,10 @@ package cow.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 
 import cow.model.IModel;
 import cow.view.IView;
@@ -11,6 +15,7 @@ public class ButtonListener implements ActionListener {
 
 	private IModel m;
 	private IView v;
+	private SwingWorker w;
 
 	public ButtonListener(IModel m, IView v) {
 		this.m = m;
@@ -23,29 +28,72 @@ public class ButtonListener implements ActionListener {
 		System.out.println("Button pressed: " + button);
 		switch (button) {
 		case "Show":
-			PatternGUI gui;
+			final PatternGUI gui;
 			try {
 				assert v.getGUI() instanceof PatternGUI : "GUI should be of type PatternGUI; is of type "
 						+ v.getGUI().getClass().getName();
 				gui = (PatternGUI) v.getGUI();
+				gui.getResultsArea().setText("");
 				// check if ordered//unordered
 				if (gui.isOrdered()) {
 					System.out.println("ordered!");
 				} else {
-					assert gui.isOrdered() == false : "";
+					assert !gui.isOrdered() : "";
 					System.out.println("unordered!");
-					gui.displayResults(m.unorderedPatternRequest(
-							gui.getPattern(), gui.getText()));
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							String text = gui.getText();
+							String pattern = gui.getPattern();
+							if (!text.equals("") && !pattern.equals("")) {
+								ArrayList<String> resultsList;
+								while (text.length() > 1) {
+									resultsList = m.unorderedPatternRequest(
+											pattern, text);
+									if (!resultsList.isEmpty()) {
+										for (String r : resultsList) {
+											gui.getResultsArea().append(
+													"pattern(s) found: " + r
+															+ "\n");
+										}
+									}
+									text = text.substring(1);
+								}
+								if (gui.getResultsArea().getText().isEmpty()) {
+									gui.getResultsArea().append(
+											"No patterns found" + "\n");
+								}
+								gui.getResultsArea().append(
+										"Pattern matching complete :)");
+							} else {
+								System.out.println("Empty field");
+								gui.getResultsArea().append(
+										"Empty field" + "\n");
+							}
+						}
+					});
+					// w = new SwingWorker() {
+					// @Override
+					// protected Integer doInBackground() {
+					// try {
+					// String text = gui.getText();
+					// String pattern = gui.getPattern();
+					// while (text.length() > 1) {
+					// gui.getResultsArea().append(
+					// m.unorderedPatternRequest(pattern,
+					// text));
+					// text = text.substring(1);
+					// Thread.sleep(5);
+					// }
+					// } catch (Exception ex) {
+					// System.out.println("button listener exception");
+					// }
+					//
+					// return 0;
+					// }
+					// };
+					// w.execute();
 				}
-				// if (unordered) {
-				// gui.displayResults(m.resolvePatternEnquiry(gui.getPattern(),
-				// // gui.getText()));
-				// } else {
-				// assert ordered
-				// gui.displayResults(m.resolvePatternEnquiry(gui.getAlphabetSize(),
-				// gui.getWordLength()));}
-				// gui.displayResults(m.resolvePatternEnquiry(gui.getPattern(),
-				// gui.getText()));
 			} catch (NumberFormatException nfe) {
 				System.out.println("Error: Text in number field!");
 				// inform user
@@ -54,5 +102,4 @@ public class ButtonListener implements ActionListener {
 		}
 
 	}
-
 }

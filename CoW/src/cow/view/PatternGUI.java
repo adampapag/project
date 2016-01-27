@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -25,6 +26,7 @@ public class PatternGUI implements IGUI {
 	private JTextField textField;
 	private JTextField alphabetField;
 	private JTextField wordField;
+	private JTextArea resultsArea;
 	private ArrayList<JButton> buttonList;
 	private boolean ordered;
 
@@ -203,8 +205,13 @@ public class PatternGUI implements IGUI {
 	}
 
 	private void addResultsPane() {
-		JScrollPane resultsPane = new JScrollPane();
+		resultsArea = new JTextArea();
+		JScrollPane resultsPane = new JScrollPane(resultsArea);
 		resultsPane.setBounds(6, 289, 688, 212);
 		frame.getContentPane().add(resultsPane);
+	}
+
+	public JTextArea getResultsArea() {
+		return resultsArea;
 	}
 }

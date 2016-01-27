@@ -1,8 +1,26 @@
 package cow.model;
 
+import java.util.ArrayList;
+
 public class UnorderedPatternRequestHandler {
 
 	public UnorderedPatternRequestHandler() {
+	}
+
+	public ArrayList<String> pattern(String pattern, String text) {
+		System.out.println("Text " + text);
+		ArrayList<String> resultsList = new ArrayList<String>();
+		for (int i = 1; i <= (text.length() / 2); i++) {
+			System.out.println("i: " + i);
+			String first = text.substring(0, i);
+			String second = text.substring(i, i + i);
+			// xx pattern
+			if (first.equals(second)) {
+				System.out.println("pattern found: " + first + second);
+				resultsList.add(first + second);
+			}
+		}
+		return resultsList;
 	}
 
 	public int countOccurrences(String pattern, String text) {

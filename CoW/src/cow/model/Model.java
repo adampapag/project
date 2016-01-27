@@ -1,10 +1,15 @@
 package cow.model;
 
+import java.util.ArrayList;
+
 public class Model implements IModel {
 
+	private UnorderedPatternRequestHandler handler = new UnorderedPatternRequestHandler();
+
 	@Override
-	public void unorderedPatternRequest(String pattern, String text) {
-		new UnorderedPatternRequestHandler().countOccurrences(pattern, text);
+	public ArrayList<String> unorderedPatternRequest(String pattern, String text) {
+		// handler.countOccurrences(pattern, text);
+		return handler.pattern(pattern, text);
 	}
 
 }
