@@ -25,6 +25,7 @@ public class ButtonListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String button = e.getActionCommand();
+		System.out.println("\n=============================");
 		System.out.println("Button pressed: " + button);
 		switch (button) {
 		case "Show":
@@ -36,69 +37,90 @@ public class ButtonListener implements ActionListener {
 				gui.getResultsArea().setText("");
 				// check if ordered//unordered
 				if (gui.isOrdered()) {
-					System.out.println("ordered!");
+					System.out.println("ordered");
 				} else {
 					assert !gui.isOrdered() : "";
-					System.out.println("unordered!");
-					SwingUtilities.invokeLater(new Runnable() {
-						@Override
-						public void run() {
-							String text = gui.getText();
-							String pattern = gui.getPattern();
-							if (!text.equals("") && !pattern.equals("")) {
-								ArrayList<String> resultsList;
-								while (text.length() > 1) {
-									resultsList = m.unorderedPatternRequest(
-											pattern, text);
-									if (!resultsList.isEmpty()) {
-										for (String r : resultsList) {
-											gui.getResultsArea().append(
-													"pattern(s) found: " + r
-															+ "\n");
-										}
-									}
-									text = text.substring(1);
-								}
-								if (gui.getResultsArea().getText().isEmpty()) {
-									gui.getResultsArea().append(
-											"No patterns found" + "\n");
-								}
-								gui.getResultsArea().append(
-										"Pattern matching complete :)");
-							} else {
-								System.out.println("Empty field");
-								gui.getResultsArea().append(
-										"Empty field" + "\n");
-							}
-						}
-					});
-					// w = new SwingWorker() {
+					System.out.println("unordered");
+					// SwingUtilities.invokeLater(new Runnable() {
 					// @Override
-					// protected Integer doInBackground() {
-					// try {
+					// public void run() {
 					// String text = gui.getText();
 					// String pattern = gui.getPattern();
+					// ArrayList<String> resultsList;
+					// try {
 					// while (text.length() > 1) {
+					// m.unorderedPatternRequest(pattern, text);
+					// resultsList = m.getResultsList();
+					// if (!resultsList.isEmpty()) {
+					// for (String r : resultsList) {
 					// gui.getResultsArea().append(
-					// m.unorderedPatternRequest(pattern,
-					// text));
-					// text = text.substring(1);
-					// Thread.sleep(5);
+					// "pattern(s) found: " + r
+					// + "\n");
 					// }
-					// } catch (Exception ex) {
-					// System.out.println("button listener exception");
 					// }
+					// text = m.trimText(text);
+					// }
+					// if (gui.getResultsArea().getText().isEmpty()) {
+					// gui.getResultsArea().append(
+					// "No patterns found" + "\n");
+					// }
+					// gui.getResultsArea().append(
+					// "Pattern matching complete :)");
 					//
-					// return 0;
+					// } catch (Exception e) {
+					// System.out.println("listener:"
+					// + e.getStackTrace());
+					//
 					// }
-					// };
-					// w.execute();
+					// }
+					// });
+					w = new SwingWorker() {
+						@Override
+						protected Integer doInBackground() {
+							String text = gui.getText();
+							String pattern = gui.getPattern();
+							if (m.isValid(pattern, text)) {
+								ArrayList<String> resultsList;
+								System.out.println("text: " + text);
+								try {
+									while (text.length() > 1) {
+										m.unorderedPatternRequest(pattern, text);
+										resultsList = m.getResultsList();
+										if (!resultsList.isEmpty()) {
+											for (String r : resultsList) {
+												gui.getResultsArea().append(
+														"pattern(s) found: "
+																+ r + "\n");
+											}
+										}
+										text = m.trimText(text);
+										Thread.sleep(5);
+									}
+									if (gui.getResultsArea().getText()
+											.isEmpty()) {
+										gui.getResultsArea().append(
+												"No patterns found" + "\n");
+									}
+									gui.getResultsArea().append(
+											"Pattern matching complete :)");
+
+								} catch (Exception ex) {
+									System.out
+											.println("button listener exception");
+								}
+							} else {
+								System.out.println("invalid fields");
+								gui.getResultsArea().append(
+										"Field invalid!" + "\n");
+							}
+							return 0;
+						}
+					};
+					w.execute();
 				}
 			} catch (NumberFormatException nfe) {
 				System.out.println("Error: Text in number field!");
-				// inform user
 			}
-			break;
 		}
 
 	}
