@@ -9,7 +9,8 @@ public class Model implements IModel {
 	@Override
 	public ArrayList<String> unorderedPatternRequest(String pattern, String text) {
 		// handler.countOccurrences(pattern, text);
-		return handler.pattern(pattern, text);
+		// return handler.pattern(pattern, text);
+		return handler.unaryPatternMatch(pattern, text);
 	}
 
 }

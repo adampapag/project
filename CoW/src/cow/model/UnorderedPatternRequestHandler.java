@@ -7,6 +7,57 @@ public class UnorderedPatternRequestHandler {
 	public UnorderedPatternRequestHandler() {
 	}
 
+	public ArrayList<String> unaryPatternMatch(String pattern, String text) {
+		ArrayList<String> resultsList = new ArrayList<String>();
+		String template = "";
+		String candidate = "";
+		String result = "";
+		boolean okay = true;
+		for (int symbolLength = 1; symbolLength < text.length(); symbolLength++) {
+			System.out.println("length: " + symbolLength);
+			if (text.length() % symbolLength == 0) {
+				System.out.println("can make pattern");
+				template = text.substring(0, symbolLength);
+				System.out.println("template: " + template);
+				if ((template.length() * pattern.length()) <= text.length()) {
+					okay = true;
+					for (int symbolCount = 1; symbolCount < pattern.length(); symbolCount++) {
+						candidate = text.substring(
+								(symbolCount * symbolLength),
+								(symbolCount * symbolLength) + symbolLength);
+						System.out.println("candidate: " + candidate);
+						if (!candidate.equals(template)) {
+							System.out.println("pattern broken :" + template
+									+ candidate);
+							okay = false;
+						}
+						// if (candidate.equals(template)) {
+						// System.out.println("pattern found: " + template
+						// + candidate);
+						// resultsList.add(template + candidate);
+						// } else {
+						// System.out.println("no pattern: " + template
+						// + candidate);
+						// }
+					}
+					if (okay) {
+						result = "";
+						for (int clauses = pattern.length(); clauses > 0; clauses--) {
+							result = result + candidate;
+						}
+						System.out.println("pattern found: " + result);
+						resultsList.add(result);
+					}
+				} else {
+					System.out.println("not enough characters in text");
+				}
+			} else {
+				System.out.println("can't make pattern");
+			}
+		}
+		return resultsList;
+	}
+
 	public ArrayList<String> pattern(String pattern, String text) {
 		System.out.println("Text " + text);
 		ArrayList<String> resultsList = new ArrayList<String>();
@@ -16,8 +67,11 @@ public class UnorderedPatternRequestHandler {
 			String second = text.substring(i, i + i);
 			// xx pattern
 			if (first.equals(second)) {
-				System.out.println("pattern found: " + first + second);
+				System.out.println("xx found: " + first + second);
 				resultsList.add(first + second);
+			} else {
+				// xy pattern
+				System.out.println("xy found: " + first + second);
 			}
 		}
 		return resultsList;
