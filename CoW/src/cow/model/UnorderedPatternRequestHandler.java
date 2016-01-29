@@ -7,6 +7,49 @@ public class UnorderedPatternRequestHandler {
 	public UnorderedPatternRequestHandler() {
 	}
 
+	public void binaryPatternMatch(String pattern, String text) {
+		String template = "";
+		String candidate = "";
+		String unaryPattern = "";
+		while (pattern.length() > 0) {
+			for (int i = 0; i < pattern.length(); i++) {
+				if (i == 0) {
+					template = pattern.substring(0, 1);
+					unaryPattern = template;
+				} else if (i == pattern.length()) {
+					System.out.println("pattern complete: " + unaryPattern);
+				} else {
+					candidate = pattern.substring(i, i + 1);
+					if (candidate.equals(template)) {
+						unaryPattern = unaryPattern + candidate;
+					}
+				}
+			}
+			System.out.println("pattern complete: " + unaryPattern);
+			pattern = pattern.substring(unaryPattern.length());
+		}
+		// ArrayList<ArrayList<String>> resultsList = new
+		// ArrayList<ArrayList<String>>();
+		// String template = "";
+		// String candidate = "";
+		// String congruentPattern = "";
+		// for (int patternLength = 0; patternLength < pattern.length();
+		// patternLength++) {
+		// if (patternLength == 0) {
+		// template = pattern.substring(0, 1);
+		// break;
+		// }
+		// candidate = pattern.substring(patternLength, (patternLength + 1));
+		// if (candidate.equals(template)) {
+		// congruentPattern = congruentPattern + candidate;
+		// } else {
+		// resultsList.add(unaryPatternMatch(congruentPattern, text));
+		// pattern = pattern.substring(congruentPattern.length());
+		// System.out.println(congruentPattern);
+		// }
+		// }
+	}
+
 	public ArrayList<String> unaryPatternMatch(String pattern, String text) {
 		System.out.println("\ntext length: " + text.length());
 		ArrayList<String> resultsList = new ArrayList<String>();
@@ -19,6 +62,11 @@ public class UnorderedPatternRequestHandler {
 			template = text.substring(0, symbolLength);
 			System.out.println("template: " + template);
 			if ((template.length() * pattern.length()) <= text.length()) {
+				if (pattern.length() == 1) {
+					System.out.println("arbitrary string");
+					resultsList.add(template);
+					break;
+				}
 				okay = true;
 				for (int symbolCount = 1; symbolCount < pattern.length(); symbolCount++) {
 					candidate = text.substring((symbolCount * symbolLength),

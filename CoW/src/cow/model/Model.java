@@ -18,6 +18,7 @@ public class Model implements IModel {
 	public void unorderedPatternRequest(String pattern, String text) {
 		resultsList.clear();
 		resultsList = handler.unaryPatternMatch(pattern, text);
+		handler.binaryPatternMatch(pattern, text);
 	}
 
 	public String trimText(String text) {

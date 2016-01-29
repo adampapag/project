@@ -15,7 +15,8 @@ public class Main {
 			public void run() {
 				// new PatternIdentifier(pattern, text);
 				FactorComplexityRequestHandler handler = new FactorComplexityRequestHandler();
-				String text = "1234";
+				String text = "12341234";
+				String text2 = text;
 				ArrayList<String> resultsList = new ArrayList<String>();
 				while (text.length() > 0) {
 					System.out.println("\n text: " + text);
@@ -28,9 +29,14 @@ public class Main {
 					text = text.substring(1);
 				}
 				System.out.println("\n results: ");
-				for (String s : resultsList) {
-					System.out.println(s + ", ");
+				System.out.print("(");
+				for (int i = 0; i < text2.length(); i++) {
+					for (String s : resultsList) {
+						if (s.length() == i)
+							System.out.print(s + ", ");
+					}
 				}
+				System.out.print("- )\n\n");
 			}
 		});
 	}
