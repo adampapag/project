@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Model implements IModel {
 
 	private UnorderedPatternRequestHandler handler = new UnorderedPatternRequestHandler();
-	private ArrayList<String> resultsList = new ArrayList<String>();
+	private ArrayList<Result> resultsList = new ArrayList<Result>();
 
 	// @Override
 	// public ArrayList<String> unorderedPatternRequest(String pattern, String
@@ -17,15 +17,15 @@ public class Model implements IModel {
 
 	public void unorderedPatternRequest(String pattern, String text) {
 		resultsList.clear();
-		resultsList = handler.unaryPatternMatch(pattern, text);
-		handler.binaryPatternMatch(pattern, text);
+		// resultsList = handler.unaryPatternMatch(pattern, text);
+		handler.binaryPatternMatch(handler.unaryPatternSplit(pattern), text);
 	}
 
 	public String trimText(String text) {
 		return text.substring(1);
 	}
 
-	public ArrayList<String> getResultsList() {
+	public ArrayList<Result> getResultsList() {
 		return resultsList;
 	}
 

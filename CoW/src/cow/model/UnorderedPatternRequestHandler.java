@@ -7,27 +7,124 @@ public class UnorderedPatternRequestHandler {
 	public UnorderedPatternRequestHandler() {
 	}
 
-	public void binaryPatternMatch(String pattern, String text) {
-		String template = "";
-		String candidate = "";
+	public ArrayList<String> unaryPatternSplit(String pattern) {
+		ArrayList<String> patternList = new ArrayList<String>();
+		String current = "";
+		String next = "";
 		String unaryPattern = "";
 		while (pattern.length() > 0) {
 			for (int i = 0; i < pattern.length(); i++) {
 				if (i == 0) {
-					template = pattern.substring(0, 1);
-					unaryPattern = template;
-				} else if (i == pattern.length()) {
-					System.out.println("pattern complete: " + unaryPattern);
+					current = pattern.substring(0, 1);
+					unaryPattern = current;
 				} else {
-					candidate = pattern.substring(i, i + 1);
-					if (candidate.equals(template)) {
-						unaryPattern = unaryPattern + candidate;
+					next = pattern.substring(i, i + 1);
+					if (next.equals(current)) {
+						unaryPattern = unaryPattern + next;
+					} else {
+						break;
 					}
 				}
 			}
-			System.out.println("pattern complete: " + unaryPattern);
+			System.out.println("unary pattern found: " + unaryPattern);
+			patternList.add(unaryPattern);
 			pattern = pattern.substring(unaryPattern.length());
 		}
+		return patternList;
+	}
+
+	public ArrayList<Result> binaryPatternMatch(ArrayList<String> patternList,
+			String text) {
+		if (resultsList.isEmpty()){
+			System.out.println("pattern broken: " + prefix + candidate);
+			okay = false;
+		} else {
+			for (Result r : resultList) {
+				
+			}
+		}
+		ArrayList<Result> resultsList = new ArrayList<Result>();
+		ArrayList<Result> prefixList = unaryPatternMatch(patternList.get(0),
+				text);
+		for (int prefixIndex = 0; prefixIndex < prefixList.size(); prefixIndex++) {
+			String restText = prefixList.get(prefixIndex).getRemainingString();
+			String candidate = prefixList.get(prefixIndex).getString();
+			System.out.println("prefix: " + candidate);
+			for (int patternIndex = 1; patternIndex < patternList.size(); patternIndex++) {
+				ArrayList<Result> candidateList = unaryPatternMatch(
+						patternList.get(patternIndex), restText);
+				for (int candidateIndex = 0; candidateIndex < candidateList
+						.size(); candidateIndex++) {
+
+				}
+				for (Result r : unaryPatternMatch(
+						patternList.get(patternIndex), restText)) {
+					candidate = candidate + r.getString();
+					System.out.println(candidate);
+				}
+			}
+		}
+
+		// System.out.println("\ntext length: " + text.length());
+		// ArrayList<Result> resultsList = new ArrayList<Result>();
+		// String template = "";
+		// String candidate = "";
+		// String result = "";
+		// boolean okay = true;
+		// for (int symbolLength = 1; symbolLength < text.length();
+		// symbolLength++) {
+		// System.out.println("length: " + symbolLength);
+		// template = text.substring(0, symbolLength);
+		// System.out.println("template: " + template);
+		// if ((template.length() * pattern.length()) <= text.length()) {
+		// if (pattern.length() == 1) {
+		// System.out.println("arbitrary string");
+		// resultsList.add(new Result(template, text
+		// .substring(template.length())));
+		// break;
+		// }
+		// okay = true;
+		// for (int symbolCount = 1; symbolCount < pattern.length();
+		// symbolCount++) {
+		// candidate = text.substring((symbolCount * symbolLength),
+		// (symbolCount * symbolLength) + symbolLength);
+		// System.out.println("candidate: " + candidate);
+		// if (!candidate.equals(template)) {
+		// System.out.println("pattern broken :" + template
+		// + candidate);
+		// okay = false;
+		// // break
+		// }
+		// }
+		// if (okay) {
+		// result = "";
+		// for (int clauses = pattern.length(); clauses > 0; clauses--) {
+		// result = result + candidate;
+		// }
+		// System.out.println("pattern found: " + result);
+		// resultsList.add(new Result(result, text.substring(result
+		// .length())));
+		// }
+		// } else {
+		// System.out.println("not enough characters in text");
+		// // break
+		// }
+		// }
+		return resultsList;
+		// ArrayList<ArrayList<String>> resultsListList = new
+		// ArrayList<ArrayList<String>>();
+		// ArrayList<String> resultsList = unaryPatternMatch(patternList.get(0),
+		// text);
+		// for (int i = 0; ) {
+		// resultsListList.add(unaryPatternMatch())
+		// }
+		// for (int i = 0; i < patternList.size() - 1; i++) {
+		// for (String s : unaryPatternMatch(patternList.get(i), text)) {
+		// resultsList.add(unaryPatternMatch(patternList.get(i + 1),
+		// text.substring(s.getEndIndex)));
+		// }
+		// unaryPatternMatch(patternList.get(i), text);
+		// }
 		// ArrayList<ArrayList<String>> resultsList = new
 		// ArrayList<ArrayList<String>>();
 		// String template = "";
@@ -50,9 +147,10 @@ public class UnorderedPatternRequestHandler {
 		// }
 	}
 
-	public ArrayList<String> unaryPatternMatch(String pattern, String text) {
+	public ArrayList<Result> unaryPatternMatch(String pattern, String text) {
 		System.out.println("\ntext length: " + text.length());
-		ArrayList<String> resultsList = new ArrayList<String>();
+		System.out.println("pattern: " + pattern);
+		ArrayList<Result> resultsList = new ArrayList<Result>();
 		String template = "";
 		String candidate = "";
 		String result = "";
@@ -64,7 +162,8 @@ public class UnorderedPatternRequestHandler {
 			if ((template.length() * pattern.length()) <= text.length()) {
 				if (pattern.length() == 1) {
 					System.out.println("arbitrary string");
-					resultsList.add(template);
+					resultsList.add(new Result(template, text
+							.substring(template.length())));
 					break;
 				}
 				okay = true;
@@ -78,14 +177,6 @@ public class UnorderedPatternRequestHandler {
 						okay = false;
 						// break
 					}
-					// if (candidate.equals(template)) {
-					// System.out.println("pattern found: " + template
-					// + candidate);
-					// resultsList.add(template + candidate);
-					// } else {
-					// System.out.println("no pattern: " + template
-					// + candidate);
-					// }
 				}
 				if (okay) {
 					result = "";
@@ -93,7 +184,8 @@ public class UnorderedPatternRequestHandler {
 						result = result + candidate;
 					}
 					System.out.println("pattern found: " + result);
-					resultsList.add(result);
+					resultsList.add(new Result(result, text.substring(result
+							.length())));
 				}
 			} else {
 				System.out.println("not enough characters in text");

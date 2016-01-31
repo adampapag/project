@@ -6,7 +6,7 @@ public interface IModel {
 
 	void unorderedPatternRequest(String pattern, String text);
 
-	ArrayList<String> getResultsList();
+	ArrayList<Result> getResultsList();
 
 	String trimText(String text);
 

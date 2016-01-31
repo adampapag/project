@@ -8,6 +8,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
 import cow.model.IModel;
+import cow.model.Result;
 import cow.view.IView;
 import cow.view.PatternGUI;
 
@@ -79,20 +80,28 @@ public class ButtonListener implements ActionListener {
 						protected Integer doInBackground() {
 							String text = gui.getText();
 							String pattern = gui.getPattern();
+							String deletedText = "";
 							if (m.isValid(pattern, text)) {
-								ArrayList<String> resultsList;
+								ArrayList<Result> resultsList;
 								System.out.println("text: " + text);
 								try {
 									while (text.length() > 1) {
 										m.unorderedPatternRequest(pattern, text);
 										resultsList = m.getResultsList();
 										if (!resultsList.isEmpty()) {
-											for (String r : resultsList) {
-												gui.getResultsArea().append(
-														"pattern(s) found: "
-																+ r + "\n");
+											for (Result r : resultsList) {
+												gui.getResultsArea()
+														.append("occurrence found: "
+																+ deletedText
+																+ "["
+																+ r.getString()
+																+ "]"
+																+ r.getRemainingString()
+																+ "\n");
 											}
 										}
+										deletedText = deletedText
+												+ text.substring(0, 1);
 										text = m.trimText(text);
 										Thread.sleep(5);
 									}
