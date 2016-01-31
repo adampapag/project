@@ -8,6 +8,7 @@ public class UnorderedPatternRequestHandler {
 	}
 
 	public ArrayList<String> unaryPatternSplit(String pattern) {
+		System.out.print("\nsplitting pattern: " + pattern);
 		ArrayList<String> patternList = new ArrayList<String>();
 		String current = "";
 		String next = "";
@@ -35,35 +36,83 @@ public class UnorderedPatternRequestHandler {
 
 	public ArrayList<Result> binaryPatternMatch(ArrayList<String> patternList,
 			String text) {
-		if (resultsList.isEmpty()){
-			System.out.println("pattern broken: " + prefix + candidate);
-			okay = false;
-		} else {
-			for (Result r : resultList) {
-				
-			}
+		ArrayList<Result> agenda = new ArrayList<Result>();
+		ArrayList<Result> newAgenda = new ArrayList<Result>();
+		for (Result r : unaryPatternMatch(patternList.get(0), text)) {
+			agenda.add(r);
 		}
-		ArrayList<Result> resultsList = new ArrayList<Result>();
-		ArrayList<Result> prefixList = unaryPatternMatch(patternList.get(0),
-				text);
-		for (int prefixIndex = 0; prefixIndex < prefixList.size(); prefixIndex++) {
-			String restText = prefixList.get(prefixIndex).getRemainingString();
-			String candidate = prefixList.get(prefixIndex).getString();
-			System.out.println("prefix: " + candidate);
-			for (int patternIndex = 1; patternIndex < patternList.size(); patternIndex++) {
-				ArrayList<Result> candidateList = unaryPatternMatch(
-						patternList.get(patternIndex), restText);
-				for (int candidateIndex = 0; candidateIndex < candidateList
-						.size(); candidateIndex++) {
-
-				}
+		System.out.print("\nagenda: " + "[ ");
+		for (int i = 0; i < agenda.size(); i++) {
+			Result r = agenda.get(i);
+			System.out.print(r.getPrefix() + "(" + r.getString() + ")"
+					+ r.getRemainingString() + ", ");
+		}
+		System.out.print("]");
+		for (int patternIndex = 1; patternIndex < patternList.size(); patternIndex++) {
+			while (!agenda.isEmpty()) {
+				Result candidate = agenda.remove(0);
 				for (Result r : unaryPatternMatch(
-						patternList.get(patternIndex), restText)) {
-					candidate = candidate + r.getString();
-					System.out.println(candidate);
+						patternList.get(patternIndex),
+						candidate.getRemainingString())) {
+					r.addPrefix(candidate.getPrefix() + candidate.getString());
+					System.out.println("adding: " + r.getPrefix() + "("
+							+ r.getString() + ")" + r.getRemainingString());
+					newAgenda.add(r);
 				}
 			}
+			for (int i = 0; i < newAgenda.size(); i++) {
+				agenda.add(newAgenda.get(i));
+			}
+			newAgenda.clear();
 		}
+		System.out.print("\nreturning agenda: [");
+		for (int i = 0; i < agenda.size(); i++) {
+			Result r = agenda.get(i);
+			System.out.print(r.getPrefix() + "(" + r.getString() + ")"
+					+ r.getRemainingString() + ", ");
+		}
+		System.out.print("]");
+		return agenda;
+		// if (resultsList.isEmpty()) {
+		// System.out.println("pattern broken: " + prefix + candidate);
+		// okay = false;
+		// } else {
+		// for (Result r : resultList) {
+		//
+		// }
+		// }
+		// ArrayList<Result> resultsList = new ArrayList<Result>();
+		// ArrayList<Result> prefixList = unaryPatternMatch(patternList.get(0),
+		// text);
+		// for (int prefixIndex = 0; prefixIndex < prefixList.size();
+		// prefixIndex++) {
+		// String restText = prefixList.get(prefixIndex).getRemainingString();
+		// String candidate = prefixList.get(prefixIndex).getString();
+		// System.out.println("prefix: " + candidate);
+		// for (int patternIndex = 1; patternIndex < patternList.size();
+		// patternIndex++) {
+		// ArrayList<Result> candidateList = unaryPatternMatch(
+		// patternList.get(patternIndex), restText);
+		// if (patternIndex == (patternList.size() - 1)) {
+		// resultsListList.add(candidateList);
+		// } else {
+		// for (Result r : candidateList) {
+		// agenda.add(unaryPatternMatch(
+		// patternList.get(patternIndex),
+		// r.getRemainingString()));
+		// }
+		// }
+		// for (int candidateIndex = 0; candidateIndex < candidateList
+		// .size(); candidateIndex++) {
+		//
+		// }
+		// for (Result r : unaryPatternMatch(
+		// patternList.get(patternIndex), restText)) {
+		// candidate = candidate + r.getString();
+		// System.out.println(candidate);
+		// }
+		// }
+		// }
 
 		// System.out.println("\ntext length: " + text.length());
 		// ArrayList<Result> resultsList = new ArrayList<Result>();
@@ -110,7 +159,7 @@ public class UnorderedPatternRequestHandler {
 		// // break
 		// }
 		// }
-		return resultsList;
+		// return resultsList;
 		// ArrayList<ArrayList<String>> resultsListList = new
 		// ArrayList<ArrayList<String>>();
 		// ArrayList<String> resultsList = unaryPatternMatch(patternList.get(0),
@@ -148,9 +197,13 @@ public class UnorderedPatternRequestHandler {
 	}
 
 	public ArrayList<Result> unaryPatternMatch(String pattern, String text) {
-		System.out.println("\ntext length: " + text.length());
+		System.out.println("\ntext: " + text);
 		System.out.println("pattern: " + pattern);
 		ArrayList<Result> resultsList = new ArrayList<Result>();
+		if (pattern.length() == 1 && text.length() == 1) {
+			resultsList.add(new Result(text, ""));
+			return resultsList;
+		}
 		String template = "";
 		String candidate = "";
 		String result = "";

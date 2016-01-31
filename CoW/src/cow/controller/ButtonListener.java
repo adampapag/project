@@ -94,6 +94,7 @@ public class ButtonListener implements ActionListener {
 														.append("occurrence found: "
 																+ deletedText
 																+ "["
+																+ r.getPrefix()
 																+ r.getString()
 																+ "]"
 																+ r.getRemainingString()
