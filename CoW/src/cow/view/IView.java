@@ -1,9 +1,9 @@
 package cow.view;
 
 public interface IView {
-	public void createGUI();
+	void createGUI();
 
-	public IGUI getGUI();
+	IGUI getGUI();
 
-	public void setGUI(String guiType);
+	void setGUI(String guiType);
 }

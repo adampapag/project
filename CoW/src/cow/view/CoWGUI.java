@@ -54,6 +54,11 @@ public class CoWGUI implements IGUI {
 		crucialityButton.setBounds(165, 187, 117, 29);
 		frame.getContentPane().add(crucialityButton);
 		buttonList.add(crucialityButton);
+
+		JButton factorComplexityButton = new JButton("Factor Complexity");
+		factorComplexityButton.setBounds(145, 220, 157, 29);
+		frame.getContentPane().add(factorComplexityButton);
+		buttonList.add(factorComplexityButton);
 	}
 
 }

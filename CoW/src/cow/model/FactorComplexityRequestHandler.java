@@ -1,16 +1,17 @@
-package cow.prototype;
+package cow.model;
 
 import java.util.ArrayList;
 
 import cow.model.Result;
 
-public class FactorComplexityRequestHandler {
+public class FactorComplexityRequestHandler implements RequestHandler {
 
 	public FactorComplexityRequestHandler() {
 
 	}
 
-	public ArrayList<Result> handle(String text) {
+	public ArrayList<Result> handle(String[] args) {
+		String text = args[0];
 		ArrayList<Result> resultsList = new ArrayList<Result>();
 		String candidate;
 		for (int symbolLength = 1; symbolLength <= text.length(); symbolLength++) {

@@ -9,6 +9,7 @@ import javax.swing.SwingWorker;
 
 import cow.model.IModel;
 import cow.model.Result;
+import cow.view.FactorComplexityGUI;
 import cow.view.IView;
 import cow.view.PatternGUI;
 
@@ -30,17 +31,17 @@ public class ButtonListener implements ActionListener {
 		System.out.println("Button pressed: " + button);
 		switch (button) {
 		case "Show":
-			final PatternGUI gui;
+			final PatternGUI pGui;
 			try {
 				assert v.getGUI() instanceof PatternGUI : "GUI should be of type PatternGUI; is of type "
 						+ v.getGUI().getClass().getName();
-				gui = (PatternGUI) v.getGUI();
-				gui.getResultsArea().setText("");
+				pGui = (PatternGUI) v.getGUI();
+				pGui.getResultsArea().setText("");
 				// check if ordered//unordered
-				if (gui.isOrdered()) {
+				if (pGui.isOrdered()) {
 					System.out.println("ordered");
 				} else {
-					assert !gui.isOrdered() : "";
+					assert !pGui.isOrdered() : "";
 					System.out.println("unordered");
 					// SwingUtilities.invokeLater(new Runnable() {
 					// @Override
@@ -78,8 +79,8 @@ public class ButtonListener implements ActionListener {
 					w = new SwingWorker() {
 						@Override
 						protected Integer doInBackground() {
-							String text = gui.getText();
-							String pattern = gui.getPattern();
+							String text = pGui.getText();
+							String pattern = pGui.getPattern();
 							String deletedText = "";
 							if (m.isValid(pattern, text)) {
 								ArrayList<Result> resultsList;
@@ -90,7 +91,7 @@ public class ButtonListener implements ActionListener {
 										resultsList = m.getResultsList();
 										if (!resultsList.isEmpty()) {
 											for (Result r : resultsList) {
-												gui.getResultsArea()
+												pGui.getResultsArea()
 														.append("occurrence found: "
 																+ deletedText
 																+ "["
@@ -106,12 +107,12 @@ public class ButtonListener implements ActionListener {
 										text = m.trimText(text);
 										Thread.sleep(5);
 									}
-									if (gui.getResultsArea().getText()
+									if (pGui.getResultsArea().getText()
 											.isEmpty()) {
-										gui.getResultsArea().append(
+										pGui.getResultsArea().append(
 												"No patterns found" + "\n");
 									}
-									gui.getResultsArea().append(
+									pGui.getResultsArea().append(
 											"Pattern matching complete :)");
 
 								} catch (Exception ex) {
@@ -120,7 +121,7 @@ public class ButtonListener implements ActionListener {
 								}
 							} else {
 								System.out.println("invalid fields");
-								gui.getResultsArea().append(
+								pGui.getResultsArea().append(
 										"Field invalid!" + "\n");
 							}
 							return 0;
@@ -131,7 +132,63 @@ public class ButtonListener implements ActionListener {
 			} catch (NumberFormatException nfe) {
 				System.out.println("Error: Text in number field!");
 			}
-		}
+		case "Show2":
+			final FactorComplexityGUI fGui;
+			try {
+				assert v.getGUI() instanceof FactorComplexityGUI : "GUI should be of type FactorComplexityGUI; is of type "
+						+ v.getGUI().getClass().getName();
+				fGui = (FactorComplexityGUI) v.getGUI();
+				fGui.getResultsArea().setText("");
+				w = new SwingWorker() {
+					@Override
+					protected Integer doInBackground() {
+						String text = fGui.getText();
+						String textCopy = text;
+						ArrayList<String> seenList = new ArrayList<String>();
+						ArrayList<Result> resultsList = new ArrayList<Result>();
+						while (text.length() > 0) {
+							System.out.println("\n text: " + text);
+							m.factorComplexityRequest(text);
+							ArrayList<Result> results = m.getResultsList();
+							for (Result r : results) {
+								String result = r.getString();
+								if (!(seenList.contains(result))) {
+									seenList.add(result);
+									resultsList.add(r);
+								}
+								// for (Result seen : resultsList) {
+								// System.out.println("seen: " +
+								// seen.getString());
+								// if (!(result.equals(seen.getString()))) {
+								// resultsList.add(r);
+								// }
+								// }
+							}
+							text = text.substring(1);
+						}
+						System.out.println("\n factors: ");
+						System.out.print("(");
+						fGui.getResultsArea().append("\n factors: ");
+						fGui.getResultsArea().append("(");
+						for (int i = 0; i < textCopy.length(); i++) {
+							for (Result r : resultsList) {
+								if (r.getString().length() == i) {
+									System.out.print(r.getString() + ", ");
+									fGui.getResultsArea().append(
+											r.getString() + ", ");
+								}
+							}
+						}
+						System.out.print("- )\n\n");
+						fGui.getResultsArea().append("- )\n\n");
+						return 0;
+					}
+				};
+				w.execute();
+			} catch (NumberFormatException nfe) {
+				System.out.println("Error: Text in number field!");
+			}
 
+		}
 	}
 }

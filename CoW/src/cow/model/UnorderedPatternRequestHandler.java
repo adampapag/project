@@ -2,40 +2,15 @@ package cow.model;
 
 import java.util.ArrayList;
 
-public class UnorderedPatternRequestHandler {
+public class UnorderedPatternRequestHandler implements RequestHandler {
 
 	public UnorderedPatternRequestHandler() {
 	}
 
-	public ArrayList<String> unaryPatternSplit(String pattern) {
-		System.out.print("\nsplitting pattern: " + pattern);
-		ArrayList<String> patternList = new ArrayList<String>();
-		String current = "";
-		String next = "";
-		String unaryPattern = "";
-		while (pattern.length() > 0) {
-			for (int i = 0; i < pattern.length(); i++) {
-				if (i == 0) {
-					current = pattern.substring(0, 1);
-					unaryPattern = current;
-				} else {
-					next = pattern.substring(i, i + 1);
-					if (next.equals(current)) {
-						unaryPattern = unaryPattern + next;
-					} else {
-						break;
-					}
-				}
-			}
-			System.out.println("unary pattern found: " + unaryPattern);
-			patternList.add(unaryPattern);
-			pattern = pattern.substring(unaryPattern.length());
-		}
-		return patternList;
-	}
-
-	public ArrayList<Result> binaryPatternMatch(ArrayList<String> patternList,
-			String text) {
+	public ArrayList<Result> handle(String[] args) {
+		String pattern = args[0];
+		String text = args[1];
+		ArrayList<String> patternList = unaryPatternSplit(pattern);
 		ArrayList<Result> agenda = new ArrayList<Result>();
 		ArrayList<Result> newAgenda = new ArrayList<Result>();
 		for (Result r : unaryPatternMatch(patternList.get(0), text)) {
@@ -248,56 +223,83 @@ public class UnorderedPatternRequestHandler {
 		return resultsList;
 	}
 
-	public ArrayList<String> pattern(String pattern, String text) {
-		System.out.println("Text " + text);
-		ArrayList<String> resultsList = new ArrayList<String>();
-		for (int i = 1; i <= (text.length() / 2); i++) {
-			System.out.println("i: " + i);
-			String first = text.substring(0, i);
-			String second = text.substring(i, i + i);
-			// xx pattern
-			if (first.equals(second)) {
-				System.out.println("xx found: " + first + second);
-				resultsList.add(first + second);
-			} else {
-				// xy pattern
-				System.out.println("xy found: " + first + second);
-			}
-		}
-		return resultsList;
-	}
-
-	public int countOccurrences(String pattern, String text) {
-		int occurrences = 0;
-		System.out.println("Pattern is: " + pattern);
-		System.out.println("Text is: " + text);
-		// split pattern into character array
-		// while text.length > 0
-		// for all chars in pattern array
-		char[] patArray = pattern.toCharArray();
-		if (patArray.length == 2) {
-			System.out.println("Pattern is of length 2");
-			if (patArray[0] == patArray[1]) {
-				System.out.println("Squares pattern identified");
-				// for each beginning-split of text {
-				while (text.length() > 1) {
-					System.out.println("Text " + text);
-					for (int i = 1; i <= (text.length() / 2); i++) {
-						System.out.println("i: " + i);
-						String first = text.substring(0, i);
-						String second = text.substring(i, i + i);
-						// xx pattern
-						if (first.equals(second)) {
-							System.out.println("pattern found: " + first
-									+ second);
-							occurrences++;
-						}
+	public ArrayList<String> unaryPatternSplit(String pattern) {
+		System.out.print("\nsplitting pattern: " + pattern);
+		ArrayList<String> patternList = new ArrayList<String>();
+		String current = "";
+		String next = "";
+		String unaryPattern = "";
+		while (pattern.length() > 0) {
+			for (int i = 0; i < pattern.length(); i++) {
+				if (i == 0) {
+					current = pattern.substring(0, 1);
+					unaryPattern = current;
+				} else {
+					next = pattern.substring(i, i + 1);
+					if (next.equals(current)) {
+						unaryPattern = unaryPattern + next;
+					} else {
+						break;
 					}
-					text = text.substring(1);
 				}
 			}
+			System.out.println("unary pattern found: " + unaryPattern);
+			patternList.add(unaryPattern);
+			pattern = pattern.substring(unaryPattern.length());
 		}
-		System.out.println("occurrences: " + occurrences);
-		return occurrences;
+		return patternList;
 	}
+
+	// public ArrayList<String> pattern(String pattern, String text) {
+	// System.out.println("Text " + text);
+	// ArrayList<String> resultsList = new ArrayList<String>();
+	// for (int i = 1; i <= (text.length() / 2); i++) {
+	// System.out.println("i: " + i);
+	// String first = text.substring(0, i);
+	// String second = text.substring(i, i + i);
+	// // xx pattern
+	// if (first.equals(second)) {
+	// System.out.println("xx found: " + first + second);
+	// resultsList.add(first + second);
+	// } else {
+	// // xy pattern
+	// System.out.println("xy found: " + first + second);
+	// }
+	// }
+	// return resultsList;
+	// }
+	//
+	// public int countOccurrences(String pattern, String text) {
+	// int occurrences = 0;
+	// System.out.println("Pattern is: " + pattern);
+	// System.out.println("Text is: " + text);
+	// // split pattern into character array
+	// // while text.length > 0
+	// // for all chars in pattern array
+	// char[] patArray = pattern.toCharArray();
+	// if (patArray.length == 2) {
+	// System.out.println("Pattern is of length 2");
+	// if (patArray[0] == patArray[1]) {
+	// System.out.println("Squares pattern identified");
+	// // for each beginning-split of text {
+	// while (text.length() > 1) {
+	// System.out.println("Text " + text);
+	// for (int i = 1; i <= (text.length() / 2); i++) {
+	// System.out.println("i: " + i);
+	// String first = text.substring(0, i);
+	// String second = text.substring(i, i + i);
+	// // xx pattern
+	// if (first.equals(second)) {
+	// System.out.println("pattern found: " + first
+	// + second);
+	// occurrences++;
+	// }
+	// }
+	// text = text.substring(1);
+	// }
+	// }
+	// }
+	// System.out.println("occurrences: " + occurrences);
+	// return occurrences;
+	// }
 }

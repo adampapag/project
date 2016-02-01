@@ -1,9 +1,9 @@
 package cow.controller;
 
 public interface IController {
-	public void createModel();
+	void createModel();
 
-	public void createView();
-	
-	public void addActionListener();
+	void createView();
+
+	void addActionListener();
 }

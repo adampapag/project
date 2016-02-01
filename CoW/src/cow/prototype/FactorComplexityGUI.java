@@ -1,4 +1,4 @@
-package cow.view;
+package cow.prototype;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -13,28 +13,20 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import cow.controller.RadioListener;
+import cow.view.IGUI;
 
-public class PatternGUI implements IGUI {
+public class FactorComplexityGUI implements IGUI {
 
 	private JFrame frame;
-	private ActionListener radioListener;
 	private ActionListener buttonListener;
-	private JRadioButton rdbtnOrdered;
-	private JRadioButton rdbtnUnordered;
-	private JTextField patternField;
 	private JTextField textField;
-	private JTextField alphabetField;
-	private JTextField wordField;
 	private JTextArea resultsArea;
 	private ArrayList<JButton> buttonList;
-	private boolean ordered;
 
 	/**
 	 * Create the application.
 	 */
-	public PatternGUI() {
-		radioListener = new RadioListener(this);
+	public FactorComplexityGUI() {
 		buttonList = new ArrayList<JButton>();
 		initializeGUI();
 	}
@@ -43,7 +35,7 @@ public class PatternGUI implements IGUI {
 	 * Initialize the contents of the frame.
 	 */
 	public void initializeGUI() {
-		frame = new JFrame("CoW\t-\tIdentifying Patterns");
+		frame = new JFrame("CoW\t-\tFactor Complexity");
 		frame.setBounds(100, 100, 700, 550);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
@@ -73,39 +65,8 @@ public class PatternGUI implements IGUI {
 		frame.setVisible(true);
 	}
 
-	public String getPattern() {
-		return patternField.getText();
-	}
-
 	public String getText() {
 		return textField.getText();
-	}
-
-	public int getAlphabetSize() {
-		return Integer.parseInt(alphabetField.getText());
-	}
-
-	public int getWordLength() {
-		return Integer.parseInt(wordField.getText());
-	}
-
-	public void setOrdered(boolean selected) {
-
-		if (selected == true) {
-			rdbtnOrdered.setSelected(true);
-			rdbtnUnordered.setSelected(false);
-			ordered = true;
-		} else {
-			assert selected == false : "selected = " + selected
-					+ " ; should be false ";
-			rdbtnOrdered.setSelected(false);
-			rdbtnUnordered.setSelected(true);
-			ordered = false;
-		}
-	}
-
-	public boolean isOrdered() {
-		return ordered;
 	}
 
 	@Override
@@ -121,18 +82,6 @@ public class PatternGUI implements IGUI {
 	}
 
 	private void addButtons() {
-		rdbtnOrdered = new JRadioButton("Ordered");
-		rdbtnOrdered.setBounds(229, 44, 141, 23);
-		rdbtnOrdered.setActionCommand("ordered");
-		rdbtnOrdered.addActionListener(radioListener);
-		frame.getContentPane().add(rdbtnOrdered);
-
-		rdbtnUnordered = new JRadioButton("Unordered");
-		rdbtnUnordered.setBounds(344, 44, 141, 23);
-		rdbtnUnordered.setSelected(true);
-		rdbtnUnordered.setActionCommand("unordered");
-		rdbtnUnordered.addActionListener(radioListener);
-		frame.getContentPane().add(rdbtnUnordered);
 
 		JRadioButton rdbtnAvoidance = new JRadioButton("Avoidance");
 		rdbtnAvoidance.setBounds(137, 9, 141, 23);
@@ -199,21 +148,6 @@ public class PatternGUI implements IGUI {
 	}
 
 	private void addFields() {
-
-		alphabetField = new JTextField();
-		alphabetField.setColumns(3);
-		alphabetField.setBounds(546, 156, 41, 28);
-		frame.getContentPane().add(alphabetField);
-
-		wordField = new JTextField();
-		wordField.setColumns(3);
-		wordField.setBounds(546, 199, 41, 28);
-		frame.getContentPane().add(wordField);
-
-		patternField = new JTextField();
-		patternField.setBounds(229, 79, 252, 35);
-		frame.getContentPane().add(patternField);
-		patternField.setColumns(3);
 
 		textField = new JTextField();
 		textField.setBounds(21, 169, 278, 28);

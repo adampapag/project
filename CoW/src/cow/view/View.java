@@ -24,6 +24,8 @@ public class View implements IView {
 			gui = new MorphismGUI();
 		} else if (guiType.equals("Patterns")) {
 			gui = new PatternGUI();
+		} else if (guiType.equals("Factor Complexity")) {
+			gui = new FactorComplexityGUI();
 		}
 
 	}

@@ -4,22 +4,25 @@ import java.util.ArrayList;
 
 public class Model implements IModel {
 
-	private UnorderedPatternRequestHandler handler = new UnorderedPatternRequestHandler();
+	private RequestHandler handler;
+	String[] args;
 	private ArrayList<Result> resultsList = new ArrayList<Result>();
-
-	// @Override
-	// public ArrayList<String> unorderedPatternRequest(String pattern, String
-	// text) {
-	// // handler.countOccurrences(pattern, text);
-	// // return handler.pattern(pattern, text);
-	// return handler.unaryPatternMatch(pattern, text);
-	// }
 
 	public void unorderedPatternRequest(String pattern, String text) {
 		resultsList.clear();
-		// resultsList = handler.unaryPatternMatch(pattern, text);
-		resultsList = handler.binaryPatternMatch(
-				handler.unaryPatternSplit(pattern), text);
+		args = new String[2];
+		args[0] = pattern;
+		args[1] = text;
+		handler = new UnorderedPatternRequestHandler();
+		resultsList = handler.handle(args);
+	}
+
+	public void factorComplexityRequest(String text) {
+		resultsList.clear();
+		args = new String[1];
+		args[0] = text;
+		handler = new FactorComplexityRequestHandler();
+		resultsList = handler.handle(args);
 	}
 
 	public String trimText(String text) {
