@@ -122,32 +122,32 @@ public class PatternGUI implements IGUI {
 
 	private void addButtons() {
 		rdbtnOrdered = new JRadioButton("Ordered");
-		rdbtnOrdered.setBounds(229, 44, 141, 23);
+		rdbtnOrdered.setBounds(229, 44, 85, 23);
 		rdbtnOrdered.setActionCommand("ordered");
 		rdbtnOrdered.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnOrdered);
 
 		rdbtnUnordered = new JRadioButton("Unordered");
-		rdbtnUnordered.setBounds(344, 44, 141, 23);
+		rdbtnUnordered.setBounds(344, 44, 98, 23);
 		rdbtnUnordered.setSelected(true);
 		rdbtnUnordered.setActionCommand("unordered");
 		rdbtnUnordered.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnUnordered);
 
 		JRadioButton rdbtnAvoidance = new JRadioButton("Avoidance");
-		rdbtnAvoidance.setBounds(137, 9, 141, 23);
+		rdbtnAvoidance.setBounds(137, 9, 98, 23);
 		rdbtnAvoidance.setActionCommand("avoidance");
 		// rdbtnAvoidance.addActionListener("////");
 		frame.getContentPane().add(rdbtnAvoidance);
 
 		JRadioButton rdbtnDistribution = new JRadioButton("Distribution");
-		rdbtnDistribution.setBounds(287, 9, 141, 23);
+		rdbtnDistribution.setBounds(287, 9, 110, 23);
 		rdbtnDistribution.setActionCommand("distribution");
 		// rdbtnDistribution.addActionListener(////);
 		frame.getContentPane().add(rdbtnDistribution);
 
 		JRadioButton rdbtnOnWords = new JRadioButton("On Words");
-		rdbtnOnWords.setBounds(437, 9, 141, 23);
+		rdbtnOnWords.setBounds(437, 9, 94, 23);
 		rdbtnOnWords.setActionCommand("on words");
 		// rdbtnOnWords.addActionListener(////);
 		frame.getContentPane().add(rdbtnOnWords);
