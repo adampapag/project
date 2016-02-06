@@ -18,8 +18,6 @@ import cow.controller.RadioListener;
 public class PatternGUI implements IGUI {
 
 	private JFrame frame;
-	private ActionListener radioListener;
-	private ActionListener buttonListener;
 	private JRadioButton rdbtnOrdered;
 	private JRadioButton rdbtnUnordered;
 	private JTextField patternField;
@@ -27,6 +25,7 @@ public class PatternGUI implements IGUI {
 	private JTextField alphabetField;
 	private JTextField wordField;
 	private JTextArea resultsArea;
+	private ActionListener radioListener;
 	private ArrayList<JButton> buttonList;
 	private boolean ordered;
 
@@ -110,9 +109,8 @@ public class PatternGUI implements IGUI {
 
 	@Override
 	public void addActionListener(ActionListener l) {
-		buttonListener = l;
 		for (JButton b : buttonList) {
-			b.addActionListener(buttonListener);
+			b.addActionListener(l);
 		}
 	}
 

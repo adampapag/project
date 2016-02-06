@@ -24,6 +24,14 @@ public class Model implements IModel {
 		handler = new FactorComplexityRequestHandler();
 		resultsList = handler.handle(args);
 	}
+	
+	public void morphismRequest(String text) {
+		resultsList.clear();
+//		args = new String[];
+//		args[args.length-1] = text;
+//		handler = new MorphismRequestHander();
+//		resultsList = handler.handle(args);
+	}
 
 	public String trimText(String text) {
 		return text.substring(1);

@@ -12,7 +12,7 @@ public class Main {
 		args2[3] = "1";
 //		args2[4] = "3";
 //		args2[5] = "33";
-		args2[49] = "121";
+		args2[args2.length-1] = "121";
 		System.out.println(new MorphismRequestHandler().handle(args2).get(0).getString());
 
 	}

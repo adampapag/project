@@ -9,19 +9,30 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import cow.controller.MorphismListener;
 
 public class MorphismGUI implements IGUI {
 
 	private JFrame frame;
+	private JTextField alphabetField;
+	private JTextField fromField;
+	private JTextField toField;
+	private JTextArea resultsArea;
+	private JTable morphismTable;
+	private JScrollPane morphismPane;
+	private MorphismListener morphismListener;
 	private ArrayList<JButton> buttonList = new ArrayList<JButton>();
 	String columnNames[] = { "letter", "morphism" };
-	Object[][] data = { { 1, 123 }, { 2, 131 } };
+	Object[][] data = {};
 
 	/**
 	 * Create the application.
 	 */
 	public MorphismGUI() {
+		morphismListener = new MorphismListener();
 		initializeGUI();
 	}
 
@@ -44,6 +55,8 @@ public class MorphismGUI implements IGUI {
 		addFields();
 
 		addMorphismTable();
+
+		addMorphismListener();
 
 		addResultsPane();
 
@@ -101,33 +114,60 @@ public class MorphismGUI implements IGUI {
 	}
 
 	private void addFields() {
-		JTextField alphabetField = new JTextField();
+		alphabetField = new JTextField();
 		alphabetField.setColumns(3);
 		alphabetField.setBounds(240, 43, 41, 28);
+		alphabetField.getDocument().addDocumentListener(morphismListener);
 		frame.getContentPane().add(alphabetField);
 
-		JTextField fromField = new JTextField();
+		fromField = new JTextField();
 		fromField.setBounds(168, 195, 41, 28);
 		frame.getContentPane().add(fromField);
 		fromField.setColumns(3);
 
-		JTextField toField = new JTextField();
+		toField = new JTextField();
 		toField.setColumns(3);
 		toField.setBounds(240, 195, 41, 28);
 		frame.getContentPane().add(toField);
 	}
 
 	private void addMorphismTable() {
-		JTable table = new JTable(data, columnNames);
-		JScrollPane morphismPane = new JScrollPane(table);
-		table.setFillsViewportHeight(true);
+		morphismTable = new JTable(data, columnNames);
+		morphismPane = new JScrollPane(morphismTable);
+		morphismTable.setFillsViewportHeight(true);
 		morphismPane.setBounds(369, 49, 306, 116);
 		frame.getContentPane().add(morphismPane);
 	}
 
+	private void addMorphismListener() {
+		morphismListener.setGUI(this);
+		morphismListener.setTextField(alphabetField);
+		alphabetField.getDocument().addDocumentListener(morphismListener);
+	}
+
+	public void setMorphismTable(String alphaSize) {
+		try {
+			int alphabetSize = Integer.parseInt(alphaSize);
+			System.out.println(alphabetSize);
+			Object emptyData[] = { "", "" };
+			data = new Object[alphabetSize][];
+			for (int i = 0; i < alphabetSize; i++) {
+				data[i] = emptyData;
+			}
+			frame.getContentPane().remove(morphismPane);
+			addMorphismTable();
+		} catch (NumberFormatException nfe) {
+		}
+	}
+
 	private void addResultsPane() {
-		JScrollPane resultsPane = new JScrollPane();
-		resultsPane.setBounds(6, 229, 688, 272);
+		resultsArea = new JTextArea();
+		JScrollPane resultsPane = new JScrollPane(resultsArea);
+		resultsPane.setBounds(6, 289, 688, 212);
 		frame.getContentPane().add(resultsPane);
+	}
+
+	public JTextArea getResultsArea() {
+		return resultsArea;
 	}
 }
