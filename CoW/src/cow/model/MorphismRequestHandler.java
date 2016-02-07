@@ -33,6 +33,7 @@ public class MorphismRequestHandler implements RequestHandler {
 
 		if (text.equals("")) {
 			text = letterList.get(0).getLetter();
+			return text;
 		}
 
 		while (text.length() > 0) {

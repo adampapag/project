@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
 
@@ -11,6 +12,7 @@ import cow.model.IModel;
 import cow.model.Result;
 import cow.view.FactorComplexityGUI;
 import cow.view.IView;
+import cow.view.MorphismGUI;
 import cow.view.PatternGUI;
 
 public class ButtonListener implements ActionListener {
@@ -188,7 +190,50 @@ public class ButtonListener implements ActionListener {
 			} catch (NumberFormatException nfe) {
 				System.out.println("Error: Text in number field!");
 			}
+		case "Show3":
+			final MorphismGUI mGui;
+			try {
+				assert v.getGUI() instanceof MorphismGUI : "GUI should be of type MorphismGUI; is of type "
+						+ v.getGUI().getClass().getName();
+				mGui = (MorphismGUI) v.getGUI();
+				mGui.getResultsArea().setText("");
+				w = new SwingWorker() {
+					@Override
+					protected Integer doInBackground() {
+						JTable morphismTable = mGui.getMorphismTable();
+						int startIteration = Integer.parseInt(mGui
+								.getFromIterationField().getText());
+						int endIteration = Integer.parseInt(mGui
+								.getToIterationField().getText());
+						String text = "";
 
+						String[] morphismData = new String[morphismTable
+								.getRowCount() * morphismTable.getColumnCount()];
+						int index = 0;
+						for (int row = 0; row < morphismTable.getRowCount(); row++) {
+							for (int column = 0; column < morphismTable
+									.getColumnCount(); column++) {
+								morphismData[index] = (String) morphismTable
+										.getValueAt(row, column);
+								index++;
+							}
+						}
+
+						for (int iteration = 1; iteration <= endIteration; iteration++) {
+							m.morphismRequest(text, morphismData);
+							text = m.getResultsList().get(0).getString();
+							if (iteration >= startIteration)
+								mGui.getResultsArea().append(
+										"Iteration " + iteration + ": " + text
+												+ "\n");
+						}
+						return 0;
+					}
+				};
+				w.execute();
+			} catch (Exception exc) {
+				exc.printStackTrace();
+			}
 		}
 	}
 }

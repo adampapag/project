@@ -8,6 +8,8 @@ public interface IModel {
 
 	void factorComplexityRequest(String text);
 
+	void morphismRequest(String text, String[] morphismData);
+
 	ArrayList<Result> getResultsList();
 
 	String trimText(String text);

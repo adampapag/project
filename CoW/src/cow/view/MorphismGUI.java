@@ -68,6 +68,45 @@ public class MorphismGUI implements IGUI {
 		frame.setVisible(true);
 	}
 
+	private void addMorphismTable() {
+		morphismTable = new JTable(data, columnNames);
+		morphismPane = new JScrollPane(morphismTable);
+		morphismTable.setFillsViewportHeight(true);
+		morphismPane.setBounds(369, 49, 306, 116);
+		frame.getContentPane().add(morphismPane);
+	}
+
+	private void addMorphismListener() {
+		morphismListener.setGUI(this);
+		morphismListener.setTextField(alphabetField);
+		alphabetField.getDocument().addDocumentListener(morphismListener);
+	}
+
+	public void setMorphismTable(String alphaSize) {
+		try {
+			int alphabetSize = Integer.parseInt(alphaSize);
+			System.out.println(alphabetSize);
+			data = new Object[alphabetSize][columnNames.length];
+			frame.getContentPane().remove(morphismPane);
+			addMorphismTable();
+		} catch (NumberFormatException nfe) {
+			// TODO
+			System.out.println("number format exception; morphismGUI");
+		}
+	}
+
+	public JTable getMorphismTable() {
+		return morphismTable;
+	}
+
+	public JTextField getFromIterationField() {
+		return fromField;
+	}
+
+	public JTextField getToIterationField() {
+		return toField;
+	}
+
 	@Override
 	public void addActionListener(ActionListener l) {
 		for (JButton b : buttonList) {
@@ -80,7 +119,7 @@ public class MorphismGUI implements IGUI {
 	}
 
 	private void addButtons() {
-		JButton btnPrint = new JButton("Show");
+		JButton btnPrint = new JButton("Show3");
 		btnPrint.setBounds(339, 196, 117, 29);
 		frame.getContentPane().add(btnPrint);
 		buttonList.add(btnPrint);
@@ -129,35 +168,6 @@ public class MorphismGUI implements IGUI {
 		toField.setColumns(3);
 		toField.setBounds(240, 195, 41, 28);
 		frame.getContentPane().add(toField);
-	}
-
-	private void addMorphismTable() {
-		morphismTable = new JTable(data, columnNames);
-		morphismPane = new JScrollPane(morphismTable);
-		morphismTable.setFillsViewportHeight(true);
-		morphismPane.setBounds(369, 49, 306, 116);
-		frame.getContentPane().add(morphismPane);
-	}
-
-	private void addMorphismListener() {
-		morphismListener.setGUI(this);
-		morphismListener.setTextField(alphabetField);
-		alphabetField.getDocument().addDocumentListener(morphismListener);
-	}
-
-	public void setMorphismTable(String alphaSize) {
-		try {
-			int alphabetSize = Integer.parseInt(alphaSize);
-			System.out.println(alphabetSize);
-			Object emptyData[] = { "", "" };
-			data = new Object[alphabetSize][];
-			for (int i = 0; i < alphabetSize; i++) {
-				data[i] = emptyData;
-			}
-			frame.getContentPane().remove(morphismPane);
-			addMorphismTable();
-		} catch (NumberFormatException nfe) {
-		}
 	}
 
 	private void addResultsPane() {
