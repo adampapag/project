@@ -119,12 +119,11 @@ public class ButtonListener implements ActionListener {
 									if (pGui.getResultsArea().getText()
 											.isEmpty()) {
 										resultLine = "No patterns found" + "\n";
-										m.appendResultLine(resultLine);
 										pGui.getResultsArea()
 												.append(resultLine);
 									}
-									resultLine = "Pattern matching complete :)";
-									m.appendResultLine(resultLine);
+									resultLine = "Pattern matching complete :)"
+											+ "\n";
 									pGui.getResultsArea().append(resultLine);
 
 								} catch (Exception ex) {
@@ -134,7 +133,6 @@ public class ButtonListener implements ActionListener {
 							} else {
 								System.out.println("invalid fields");
 								resultLine = "Field invalid!" + "\n";
-								m.appendResultLine(resultLine);
 								pGui.getResultsArea().append(resultLine);
 							}
 							return 0;
@@ -188,20 +186,22 @@ public class ButtonListener implements ActionListener {
 						m.appendResultLine(resultLine);
 						fGui.getResultsArea().append("\n factors: ");
 						resultLine = "(";
-						System.out.println(resultLine);
+						System.out.print(resultLine);
 						m.appendResultLine(resultLine);
 						fGui.getResultsArea().append("(");
 						for (int i = 0; i < textCopy.length(); i++) {
 							for (Result r : resultsList) {
-								if (r.getString().length() == i) {
-									resultLine = r.getString() + ", ";
+								if ((r.getString().length() - 1) == i) {
+									resultLine = r.getString();
+									if (!(i == textCopy.length() - 1))
+										resultLine = resultLine + ", ";
 									System.out.print(resultLine);
 									m.appendResultLine(resultLine);
 									fGui.getResultsArea().append(resultLine);
 								}
 							}
 						}
-						resultLine = "- )\n\n";
+						resultLine = ")\n\n";
 						System.out.print(resultLine);
 						m.appendResultLine(resultLine);
 						fGui.getResultsArea().append(resultLine);
@@ -245,8 +245,8 @@ public class ButtonListener implements ActionListener {
 							}
 						}
 
-						for (int iteration = 1; iteration <= endIteration; iteration++) {
-							m.morphismRequest(text, morphismData);
+						for (int iteration = 0; iteration <= endIteration; iteration++) {
+							m.morphismRequest(text, morphismData, iteration);
 							text = m.getResultsList().get(0).getString();
 							if (iteration >= startIteration) {
 								resultLine = "Iteration " + iteration + ": "

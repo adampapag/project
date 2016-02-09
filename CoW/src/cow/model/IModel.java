@@ -8,7 +8,7 @@ public interface IModel {
 
 	void factorComplexityRequest(String text);
 
-	void morphismRequest(String text, String[] morphismData);
+	void morphismRequest(String text, String[] morphismData, int iteration);
 
 	void exportRequest(String filepath);
 

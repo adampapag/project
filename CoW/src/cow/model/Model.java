@@ -26,13 +26,15 @@ public class Model implements IModel {
 		resultsList = handler.handle(args);
 	}
 
-	public void morphismRequest(String text, String[] morphismData) {
+	public void morphismRequest(String text, String[] morphismData,
+			int iteration) {
 		resultsList.clear();
-		args = new String[morphismData.length + 1];
+		args = new String[morphismData.length + 2];
 		for (int i = 0; i < morphismData.length; i++) {
 			args[i] = morphismData[i];
 		}
-		args[args.length - 1] = text;
+		args[args.length - 2] = text;
+		args[args.length - 1] = String.valueOf(iteration);
 		handler = new MorphismRequestHandler();
 		resultsList = handler.handle(args);
 	}
@@ -57,7 +59,7 @@ public class Model implements IModel {
 	public void appendResultLine(String text) {
 		result = result + text;
 	}
-	
+
 	public void clearResult() {
 		result = "";
 	}

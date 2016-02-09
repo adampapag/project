@@ -85,8 +85,12 @@ public class MorphismGUI implements IGUI {
 	public void setMorphismTable(String alphaSize) {
 		try {
 			int alphabetSize = Integer.parseInt(alphaSize);
-			System.out.println(alphabetSize);
 			data = new Object[alphabetSize][columnNames.length];
+			for (int row = 0; row < morphismTable.getRowCount(); row++) {
+				for (int column = 0; column < morphismTable.getColumnCount(); column++) {
+					data[row][column] = "";
+				}
+			}
 			frame.getContentPane().remove(morphismPane);
 			addMorphismTable();
 		} catch (NumberFormatException nfe) {
