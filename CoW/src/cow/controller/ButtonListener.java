@@ -11,6 +11,7 @@ import javax.swing.SwingWorker;
 import cow.model.IModel;
 import cow.model.Result;
 import cow.view.FactorComplexityGUI;
+import cow.view.IGUI;
 import cow.view.IView;
 import cow.view.MorphismGUI;
 import cow.view.PatternGUI;
@@ -33,15 +34,18 @@ public class ButtonListener implements ActionListener {
 		System.out.println("Button pressed: " + button);
 		switch (button) {
 		case "Show":
+			System.out.println("Show pressed in patterns");
 			final PatternGUI pGui;
 			try {
 				assert v.getGUI() instanceof PatternGUI : "GUI should be of type PatternGUI; is of type "
 						+ v.getGUI().getClass().getName();
 				pGui = (PatternGUI) v.getGUI();
 				pGui.getResultsArea().setText("");
+				m.clearResult();
 				// check if ordered//unordered
 				if (pGui.isOrdered()) {
 					System.out.println("ordered");
+					// ordered execution
 				} else {
 					assert !pGui.isOrdered() : "";
 					System.out.println("unordered");
@@ -84,6 +88,7 @@ public class ButtonListener implements ActionListener {
 							String text = pGui.getText();
 							String pattern = pGui.getPattern();
 							String deletedText = "";
+							String resultLine = "";
 							if (m.isValid(pattern, text)) {
 								ArrayList<Result> resultsList;
 								System.out.println("text: " + text);
@@ -93,15 +98,17 @@ public class ButtonListener implements ActionListener {
 										resultsList = m.getResultsList();
 										if (!resultsList.isEmpty()) {
 											for (Result r : resultsList) {
-												pGui.getResultsArea()
-														.append("occurrence found: "
-																+ deletedText
-																+ "["
-																+ r.getPrefix()
-																+ r.getString()
-																+ "]"
-																+ r.getRemainingString()
-																+ "\n");
+												resultLine = "occurrence found: "
+														+ deletedText
+														+ "["
+														+ r.getPrefix()
+														+ r.getString()
+														+ "]"
+														+ r.getRemainingString()
+														+ "\n";
+												m.appendResultLine(resultLine);
+												pGui.getResultsArea().append(
+														resultLine);
 											}
 										}
 										deletedText = deletedText
@@ -111,11 +118,14 @@ public class ButtonListener implements ActionListener {
 									}
 									if (pGui.getResultsArea().getText()
 											.isEmpty()) {
-										pGui.getResultsArea().append(
-												"No patterns found" + "\n");
+										resultLine = "No patterns found" + "\n";
+										m.appendResultLine(resultLine);
+										pGui.getResultsArea()
+												.append(resultLine);
 									}
-									pGui.getResultsArea().append(
-											"Pattern matching complete :)");
+									resultLine = "Pattern matching complete :)";
+									m.appendResultLine(resultLine);
+									pGui.getResultsArea().append(resultLine);
 
 								} catch (Exception ex) {
 									System.out
@@ -123,8 +133,9 @@ public class ButtonListener implements ActionListener {
 								}
 							} else {
 								System.out.println("invalid fields");
-								pGui.getResultsArea().append(
-										"Field invalid!" + "\n");
+								resultLine = "Field invalid!" + "\n";
+								m.appendResultLine(resultLine);
+								pGui.getResultsArea().append(resultLine);
 							}
 							return 0;
 						}
@@ -134,18 +145,22 @@ public class ButtonListener implements ActionListener {
 			} catch (NumberFormatException nfe) {
 				System.out.println("Error: Text in number field!");
 			}
+			break;
 		case "Show2":
+			System.out.println("Show pressed in factor complexity");
 			final FactorComplexityGUI fGui;
 			try {
 				assert v.getGUI() instanceof FactorComplexityGUI : "GUI should be of type FactorComplexityGUI; is of type "
 						+ v.getGUI().getClass().getName();
 				fGui = (FactorComplexityGUI) v.getGUI();
 				fGui.getResultsArea().setText("");
+				m.clearResult();
 				w = new SwingWorker() {
 					@Override
 					protected Integer doInBackground() {
 						String text = fGui.getText();
 						String textCopy = text;
+						String resultLine = "";
 						ArrayList<String> seenList = new ArrayList<String>();
 						ArrayList<Result> resultsList = new ArrayList<Result>();
 						while (text.length() > 0) {
@@ -168,21 +183,28 @@ public class ButtonListener implements ActionListener {
 							}
 							text = text.substring(1);
 						}
-						System.out.println("\n factors: ");
-						System.out.print("(");
+						resultLine = "\n factors: ";
+						System.out.println(resultLine);
+						m.appendResultLine(resultLine);
 						fGui.getResultsArea().append("\n factors: ");
+						resultLine = "(";
+						System.out.println(resultLine);
+						m.appendResultLine(resultLine);
 						fGui.getResultsArea().append("(");
 						for (int i = 0; i < textCopy.length(); i++) {
 							for (Result r : resultsList) {
 								if (r.getString().length() == i) {
-									System.out.print(r.getString() + ", ");
-									fGui.getResultsArea().append(
-											r.getString() + ", ");
+									resultLine = r.getString() + ", ";
+									System.out.print(resultLine);
+									m.appendResultLine(resultLine);
+									fGui.getResultsArea().append(resultLine);
 								}
 							}
 						}
-						System.out.print("- )\n\n");
-						fGui.getResultsArea().append("- )\n\n");
+						resultLine = "- )\n\n";
+						System.out.print(resultLine);
+						m.appendResultLine(resultLine);
+						fGui.getResultsArea().append(resultLine);
 						return 0;
 					}
 				};
@@ -190,13 +212,16 @@ public class ButtonListener implements ActionListener {
 			} catch (NumberFormatException nfe) {
 				System.out.println("Error: Text in number field!");
 			}
+			break;
 		case "Show3":
+			System.out.println("Show pressed in morphisms");
 			final MorphismGUI mGui;
 			try {
 				assert v.getGUI() instanceof MorphismGUI : "GUI should be of type MorphismGUI; is of type "
 						+ v.getGUI().getClass().getName();
 				mGui = (MorphismGUI) v.getGUI();
 				mGui.getResultsArea().setText("");
+				m.clearResult();
 				w = new SwingWorker() {
 					@Override
 					protected Integer doInBackground() {
@@ -206,6 +231,7 @@ public class ButtonListener implements ActionListener {
 						int endIteration = Integer.parseInt(mGui
 								.getToIterationField().getText());
 						String text = "";
+						String resultLine = "";
 
 						String[] morphismData = new String[morphismTable
 								.getRowCount() * morphismTable.getColumnCount()];
@@ -222,10 +248,12 @@ public class ButtonListener implements ActionListener {
 						for (int iteration = 1; iteration <= endIteration; iteration++) {
 							m.morphismRequest(text, morphismData);
 							text = m.getResultsList().get(0).getString();
-							if (iteration >= startIteration)
-								mGui.getResultsArea().append(
-										"Iteration " + iteration + ": " + text
-												+ "\n");
+							if (iteration >= startIteration) {
+								resultLine = "Iteration " + iteration + ": "
+										+ text + "\n";
+								m.appendResultLine(resultLine);
+								mGui.getResultsArea().append(resultLine);
+							}
 						}
 						return 0;
 					}
@@ -234,6 +262,15 @@ public class ButtonListener implements ActionListener {
 			} catch (Exception exc) {
 				exc.printStackTrace();
 			}
+			break;
+		case "Export":
+			System.out.println("Export pressed");
+			String filepath = "/Users/adam/Desktop/CoWoutput.txt";
+			m.exportRequest(filepath);
+			String statusLine = m.getResultsList().get(0).getString();
+			final IGUI gui = v.getGUI();
+			gui.getResultsArea().append(statusLine);
+			break;
 		}
 	}
 }

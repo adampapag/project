@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 
 public class CoWGUI implements IGUI {
 	private JFrame frame;
@@ -59,6 +60,12 @@ public class CoWGUI implements IGUI {
 		factorComplexityButton.setBounds(145, 220, 157, 29);
 		frame.getContentPane().add(factorComplexityButton);
 		buttonList.add(factorComplexityButton);
+	}
+
+	@Override
+	public JTextArea getResultsArea() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -172,8 +172,8 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 	}
 
 	public ArrayList<Result> unaryPatternMatch(String pattern, String text) {
-		System.out.println("\ntext: " + text);
-		System.out.println("pattern: " + pattern);
+		// System.out.println("\ntext: " + text);
+		// System.out.println("pattern: " + pattern);
 		ArrayList<Result> resultsList = new ArrayList<Result>();
 		if (pattern.length() == 1 && text.length() == 1) {
 			resultsList.add(new Result(text, ""));
@@ -184,12 +184,12 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 		String result = "";
 		boolean okay = true;
 		for (int symbolLength = 1; symbolLength < text.length(); symbolLength++) {
-			System.out.println("length: " + symbolLength);
+			// System.out.println("length: " + symbolLength);
 			template = text.substring(0, symbolLength);
-			System.out.println("template: " + template);
+			// System.out.println("template: " + template);
 			if ((template.length() * pattern.length()) <= text.length()) {
 				if (pattern.length() == 1) {
-					System.out.println("arbitrary string");
+					// System.out.println("arbitrary string");
 					resultsList.add(new Result(template, text
 							.substring(template.length())));
 					break;
@@ -198,10 +198,10 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 				for (int symbolCount = 1; symbolCount < pattern.length(); symbolCount++) {
 					candidate = text.substring((symbolCount * symbolLength),
 							(symbolCount * symbolLength) + symbolLength);
-					System.out.println("candidate: " + candidate);
+					// System.out.println("candidate: " + candidate);
 					if (!candidate.equals(template)) {
-						System.out.println("pattern broken :" + template
-								+ candidate);
+						// System.out.println("pattern broken :" + template
+						// + candidate);
 						okay = false;
 						// break
 					}
@@ -211,12 +211,12 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 					for (int clauses = pattern.length(); clauses > 0; clauses--) {
 						result = result + candidate;
 					}
-					System.out.println("pattern found: " + result);
+					// System.out.println("pattern found: " + result);
 					resultsList.add(new Result(result, text.substring(result
 							.length())));
 				}
 			} else {
-				System.out.println("not enough characters in text");
+				// System.out.println("not enough characters in text");
 				// break
 			}
 		}

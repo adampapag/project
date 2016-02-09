@@ -7,6 +7,7 @@ public class Model implements IModel {
 	private RequestHandler handler;
 	String[] args;
 	private ArrayList<Result> resultsList = new ArrayList<Result>();
+	private String result;
 
 	public void unorderedPatternRequest(String pattern, String text) {
 		resultsList.clear();
@@ -31,8 +32,17 @@ public class Model implements IModel {
 		for (int i = 0; i < morphismData.length; i++) {
 			args[i] = morphismData[i];
 		}
-		 args[args.length-1] = text;
+		args[args.length - 1] = text;
 		handler = new MorphismRequestHandler();
+		resultsList = handler.handle(args);
+	}
+
+	public void exportRequest(String filepath) {
+		resultsList.clear();
+		args = new String[2];
+		args[0] = filepath;
+		args[1] = result;
+		handler = new ExportRequestHandler();
 		resultsList = handler.handle(args);
 	}
 
@@ -42,6 +52,14 @@ public class Model implements IModel {
 
 	public ArrayList<Result> getResultsList() {
 		return resultsList;
+	}
+
+	public void appendResultLine(String text) {
+		result = result + text;
+	}
+	
+	public void clearResult() {
+		result = "";
 	}
 
 	public boolean isValid(String pattern, String text) {

@@ -10,10 +10,16 @@ public interface IModel {
 
 	void morphismRequest(String text, String[] morphismData);
 
+	void exportRequest(String filepath);
+
 	ArrayList<Result> getResultsList();
 
 	String trimText(String text);
 
 	boolean isValid(String pattern, String text);
+
+	void appendResultLine(String text);
+
+	void clearResult();
 
 }
