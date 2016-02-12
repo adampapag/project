@@ -181,15 +181,19 @@ public class ButtonListener implements ActionListener {
 							}
 							text = text.substring(1);
 						}
-						resultLine = "\n factors: ";
+						resultLine = "\n Factors: ";
 						System.out.println(resultLine);
 						m.appendResultLine(resultLine);
-						fGui.getResultsArea().append("\n factors: ");
+						fGui.getResultsArea().append(resultLine);
 						resultLine = "(";
 						System.out.print(resultLine);
 						m.appendResultLine(resultLine);
-						fGui.getResultsArea().append("(");
+						fGui.getResultsArea().append(resultLine);
 						for (int i = 0; i < textCopy.length(); i++) {
+							resultLine = "Length " + (i + 1) + " ; {";
+							System.out.print(resultLine);
+							m.appendResultLine(resultLine);
+							fGui.getResultsArea().append(resultLine);
 							for (Result r : resultsList) {
 								if ((r.getString().length() - 1) == i) {
 									resultLine = r.getString();
@@ -200,6 +204,10 @@ public class ButtonListener implements ActionListener {
 									fGui.getResultsArea().append(resultLine);
 								}
 							}
+							resultLine = "} ";
+							System.out.print(resultLine);
+							m.appendResultLine(resultLine);
+							fGui.getResultsArea().append(resultLine);
 						}
 						resultLine = ")\n\n";
 						System.out.print(resultLine);

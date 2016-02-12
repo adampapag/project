@@ -86,8 +86,8 @@ public class MorphismGUI implements IGUI {
 		try {
 			int alphabetSize = Integer.parseInt(alphaSize);
 			data = new Object[alphabetSize][columnNames.length];
-			for (int row = 0; row < morphismTable.getRowCount(); row++) {
-				for (int column = 0; column < morphismTable.getColumnCount(); column++) {
+			for (int row = 0; row < data.length; row++) {
+				for (int column = 0; column < columnNames.length; column++) {
 					data[row][column] = "";
 				}
 			}

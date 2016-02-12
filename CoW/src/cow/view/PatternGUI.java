@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import cow.controller.RadioListener;
+import cow.view.IGUI;
 
 public class PatternGUI implements IGUI {
 
@@ -23,7 +24,8 @@ public class PatternGUI implements IGUI {
 	private JTextField patternField;
 	private JTextField textField;
 	private JTextField alphabetField;
-	private JTextField wordField;
+	private JTextField fromField;
+	private JTextField toField;
 	private JTextArea resultsArea;
 	private ActionListener radioListener;
 	private ArrayList<JButton> buttonList;
@@ -33,7 +35,7 @@ public class PatternGUI implements IGUI {
 	 * Create the application.
 	 */
 	public PatternGUI() {
-		radioListener = new RadioListener(this);
+		 radioListener = new RadioListener(this);
 		buttonList = new ArrayList<JButton>();
 		initializeGUI();
 	}
@@ -85,7 +87,7 @@ public class PatternGUI implements IGUI {
 	}
 
 	public int getWordLength() {
-		return Integer.parseInt(wordField.getText());
+		return Integer.parseInt(fromField.getText());
 	}
 
 	public void setOrdered(boolean selected) {
@@ -120,13 +122,13 @@ public class PatternGUI implements IGUI {
 
 	private void addButtons() {
 		rdbtnOrdered = new JRadioButton("Ordered");
-		rdbtnOrdered.setBounds(229, 44, 85, 23);
+		rdbtnOrdered.setBounds(293, 44, 85, 23);
 		rdbtnOrdered.setActionCommand("ordered");
 		rdbtnOrdered.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnOrdered);
 
 		rdbtnUnordered = new JRadioButton("Unordered");
-		rdbtnUnordered.setBounds(344, 44, 98, 23);
+		rdbtnUnordered.setBounds(293, 9, 98, 23);
 		rdbtnUnordered.setSelected(true);
 		rdbtnUnordered.setActionCommand("unordered");
 		rdbtnUnordered.addActionListener(radioListener);
@@ -135,23 +137,31 @@ public class PatternGUI implements IGUI {
 		JRadioButton rdbtnAvoidance = new JRadioButton("Avoidance");
 		rdbtnAvoidance.setBounds(137, 9, 98, 23);
 		rdbtnAvoidance.setActionCommand("avoidance");
+		rdbtnAvoidance.setSelected(true);
 		// rdbtnAvoidance.addActionListener("////");
 		frame.getContentPane().add(rdbtnAvoidance);
 
 		JRadioButton rdbtnDistribution = new JRadioButton("Distribution");
-		rdbtnDistribution.setBounds(287, 9, 110, 23);
+		rdbtnDistribution.setBounds(137, 44, 110, 23);
 		rdbtnDistribution.setActionCommand("distribution");
 		// rdbtnDistribution.addActionListener(////);
 		frame.getContentPane().add(rdbtnDistribution);
 
 		JRadioButton rdbtnOnWords = new JRadioButton("On Words");
-		rdbtnOnWords.setBounds(437, 9, 94, 23);
+		rdbtnOnWords.setBounds(446, 9, 94, 23);
 		rdbtnOnWords.setActionCommand("on words");
+		rdbtnOnWords.setSelected(true);
 		// rdbtnOnWords.addActionListener(////);
 		frame.getContentPane().add(rdbtnOnWords);
 
+		JRadioButton rdbtnText = new JRadioButton("Text");
+		rdbtnText.setBounds(446, 44, 94, 23);
+		rdbtnText.setActionCommand("text");
+		// rdbtnOnWords.addActionListener(////);
+		frame.getContentPane().add(rdbtnText);
+
 		JButton btnChooseFile = new JButton("Choose File");
-		btnChooseFile.setBounds(210, 213, 117, 29);
+		btnChooseFile.setBounds(577, 213, 117, 29);
 		buttonList.add(btnChooseFile);
 		frame.getContentPane().add(btnChooseFile);
 
@@ -172,49 +182,62 @@ public class PatternGUI implements IGUI {
 		frame.getContentPane().add(lblPattern);
 
 		JLabel lblWords = new JLabel("Words");
-		lblWords.setBounds(423, 141, 61, 16);
+		lblWords.setBounds(46, 141, 61, 16);
 		frame.getContentPane().add(lblWords);
 
-		JLabel lblLengthOfWords = new JLabel("Length of words:");
-		lblLengthOfWords.setBounds(423, 205, 117, 16);
-		frame.getContentPane().add(lblLengthOfWords);
-
 		JLabel lblAlphabetSize = new JLabel("Size of alphabet:");
-		lblAlphabetSize.setBounds(423, 162, 122, 16);
+		lblAlphabetSize.setBounds(46, 162, 122, 16);
 		frame.getContentPane().add(lblAlphabetSize);
 
+		JLabel lblLengthOfWords = new JLabel("Length of words:");
+		lblLengthOfWords.setBounds(46, 205, 117, 16);
+		frame.getContentPane().add(lblLengthOfWords);
+
+		JLabel lblFrom = new JLabel("from");
+		lblFrom.setBounds(162, 205, 30, 16);
+		frame.getContentPane().add(lblFrom);
+
+		JLabel lblTo = new JLabel("to");
+		lblTo.setBounds(247, 205, 16, 16);
+		frame.getContentPane().add(lblTo);
+
 		JLabel lblText = new JLabel("Text");
-		lblText.setBounds(21, 141, 88, 16);
+		lblText.setBounds(388, 141, 88, 16);
 		frame.getContentPane().add(lblText);
 
 		JLabel lblFromFile = new JLabel("From file: ");
-		lblFromFile.setBounds(21, 218, 88, 16);
+		lblFromFile.setBounds(388, 218, 88, 16);
 		frame.getContentPane().add(lblFromFile);
 
 		JLabel lblFilepath = new JLabel("/filepath");
-		lblFilepath.setBounds(121, 218, 70, 16);
+		lblFilepath.setBounds(488, 218, 70, 16);
 		frame.getContentPane().add(lblFilepath);
 	}
 
 	private void addFields() {
-
-		alphabetField = new JTextField();
-		alphabetField.setColumns(3);
-		alphabetField.setBounds(546, 156, 41, 28);
-		frame.getContentPane().add(alphabetField);
-
-		wordField = new JTextField();
-		wordField.setColumns(3);
-		wordField.setBounds(546, 199, 41, 28);
-		frame.getContentPane().add(wordField);
 
 		patternField = new JTextField();
 		patternField.setBounds(229, 79, 252, 35);
 		frame.getContentPane().add(patternField);
 		patternField.setColumns(3);
 
+		alphabetField = new JTextField();
+		alphabetField.setColumns(3);
+		alphabetField.setBounds(169, 156, 41, 28);
+		frame.getContentPane().add(alphabetField);
+
+		fromField = new JTextField();
+		fromField.setColumns(3);
+		fromField.setBounds(203, 199, 41, 28);
+		frame.getContentPane().add(fromField);
+
+		toField = new JTextField();
+		toField.setColumns(3);
+		toField.setBounds(267, 199, 41, 28);
+		frame.getContentPane().add(toField);
+
 		textField = new JTextField();
-		textField.setBounds(21, 169, 278, 28);
+		textField.setBounds(388, 169, 278, 28);
 		frame.getContentPane().add(textField);
 		textField.setColumns(10);
 
