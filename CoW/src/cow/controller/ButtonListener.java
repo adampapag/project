@@ -234,8 +234,7 @@ public class ButtonListener implements ActionListener {
 					@Override
 					protected Integer doInBackground() {
 						JTable morphismTable = mGui.getMorphismTable();
-						int startIteration = Integer.parseInt(mGui
-								.getFromIterationField().getText());
+						int startIteration = 0;
 						int endIteration = Integer.parseInt(mGui
 								.getToIterationField().getText());
 						String text = "";
@@ -251,6 +250,11 @@ public class ButtonListener implements ActionListener {
 										.getValueAt(row, column);
 								index++;
 							}
+						}
+						
+						if (!mGui.getFromIterationField().getText().equals("")) {
+							startIteration = Integer.parseInt(mGui
+									.getFromIterationField().getText());
 						}
 
 						for (int iteration = 0; iteration <= endIteration; iteration++) {
