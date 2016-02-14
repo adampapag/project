@@ -85,6 +85,13 @@ public class Model implements IModel {
 			}
 		}
 
+		for (String l : letters) {
+			if (l.equals("")) {
+				System.out.println("Letter cannot be space.");
+				return false;
+			}
+		}
+
 		String symbol = "";
 		for (String m : morphisms) {
 			for (char c : m.toCharArray()) {
