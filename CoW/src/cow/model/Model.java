@@ -73,4 +73,30 @@ public class Model implements IModel {
 		return true;
 	}
 
+	public boolean isValid(String[] morphismData) {
+		ArrayList<String> letters = new ArrayList<String>();
+		ArrayList<String> morphisms = new ArrayList<String>();
+
+		for (int i = 0; i < morphismData.length; i++) {
+			if ((i % 2) == 0) {
+				letters.add(morphismData[i]);
+			} else {
+				morphisms.add(morphismData[i]);
+			}
+		}
+
+		String symbol = "";
+		for (String m : morphisms) {
+			for (char c : m.toCharArray()) {
+				symbol = String.valueOf(c);
+				if (!(letters.contains(symbol))) {
+					System.out.println("Symbol '" + c + "' in morphism '" + m
+							+ "' has no corresponding morphism.");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 }

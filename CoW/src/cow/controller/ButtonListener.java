@@ -135,7 +135,7 @@ public class ButtonListener implements ActionListener {
 								resultLine = "Field invalid!" + "\n";
 								pGui.getResultsArea().append(resultLine);
 							}
-							return 0;
+							return 1;
 						}
 					};
 					w.execute();
@@ -213,7 +213,7 @@ public class ButtonListener implements ActionListener {
 						System.out.print(resultLine);
 						m.appendResultLine(resultLine);
 						fGui.getResultsArea().append(resultLine);
-						return 0;
+						return 1;
 					}
 				};
 				w.execute();
@@ -251,7 +251,15 @@ public class ButtonListener implements ActionListener {
 								index++;
 							}
 						}
-						
+
+						if (m.isValid(morphismData) == false) {
+							resultLine = "Morphism invalid; symbol in morphism has no corresponding morphism";
+							System.out.println(resultLine);
+							m.appendResultLine(resultLine);
+							mGui.getResultsArea().append(resultLine);
+							return 0;
+						}
+
 						if (!mGui.getFromIterationField().getText().equals("")) {
 							startIteration = Integer.parseInt(mGui
 									.getFromIterationField().getText());
@@ -267,7 +275,7 @@ public class ButtonListener implements ActionListener {
 								mGui.getResultsArea().append(resultLine);
 							}
 						}
-						return 0;
+						return 1;
 					}
 				};
 				w.execute();

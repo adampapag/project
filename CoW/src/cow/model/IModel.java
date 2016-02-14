@@ -18,6 +18,8 @@ public interface IModel {
 
 	boolean isValid(String pattern, String text);
 
+	boolean isValid(String[] morphismData);
+
 	void appendResultLine(String text);
 
 	void clearResult();
