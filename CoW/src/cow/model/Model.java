@@ -85,10 +85,21 @@ public class Model implements IModel {
 			}
 		}
 
+		int occurrences = 0;
 		for (String l : letters) {
 			if (l.equals("")) {
 				System.out.println("Letter cannot be space.");
 				return false;
+			}
+			occurrences = 0;
+			for (String l2 : letters) {
+				if (l2.equals(l)) {
+					occurrences++;
+				}
+				if (occurrences > 1) {
+					System.out.println("Letter appears more than once.");
+					return false;
+				}
 			}
 		}
 

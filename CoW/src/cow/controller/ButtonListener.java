@@ -181,16 +181,8 @@ public class ButtonListener implements ActionListener {
 							}
 							text = text.substring(1);
 						}
-						resultLine = "\n Factors: ";
-						System.out.println(resultLine);
-						m.appendResultLine(resultLine);
-						fGui.getResultsArea().append(resultLine);
-						resultLine = "(";
-						System.out.print(resultLine);
-						m.appendResultLine(resultLine);
-						fGui.getResultsArea().append(resultLine);
 						for (int i = 0; i < textCopy.length(); i++) {
-							resultLine = "Length " + (i + 1) + " ; {";
+							resultLine = "Length " + (i + 1) + " : ";
 							System.out.print(resultLine);
 							m.appendResultLine(resultLine);
 							fGui.getResultsArea().append(resultLine);
@@ -204,15 +196,11 @@ public class ButtonListener implements ActionListener {
 									fGui.getResultsArea().append(resultLine);
 								}
 							}
-							resultLine = "} ";
+							resultLine = "\n";
 							System.out.print(resultLine);
 							m.appendResultLine(resultLine);
 							fGui.getResultsArea().append(resultLine);
 						}
-						resultLine = ")\n\n";
-						System.out.print(resultLine);
-						m.appendResultLine(resultLine);
-						fGui.getResultsArea().append(resultLine);
 						return 1;
 					}
 				};
@@ -253,7 +241,7 @@ public class ButtonListener implements ActionListener {
 						}
 
 						if (m.isValid(morphismData) == false) {
-							resultLine = "Morphism invalid; symbol in morphism has no corresponding morphism";
+							resultLine = "Morphism is invalid.";
 							System.out.println(resultLine);
 							m.appendResultLine(resultLine);
 							mGui.getResultsArea().append(resultLine);

@@ -25,7 +25,7 @@ public class MorphismGUI implements IGUI {
 	private JScrollPane morphismPane;
 	private MorphismListener morphismListener;
 	private ArrayList<JButton> buttonList = new ArrayList<JButton>();
-	String columnNames[] = { "letter", "morphism" };
+	String columnNames[] = { "letter", "word" };
 	Object[][] data = {};
 
 	/**
