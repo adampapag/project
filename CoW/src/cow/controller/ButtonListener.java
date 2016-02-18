@@ -10,6 +10,7 @@ import javax.swing.SwingWorker;
 
 import cow.model.IModel;
 import cow.model.Result;
+import cow.model.SymbolMapping;
 import cow.view.FactorComplexityGUI;
 import cow.view.IGUI;
 import cow.view.IView;
@@ -105,10 +106,26 @@ public class ButtonListener implements ActionListener {
 														+ r.getString()
 														+ "]"
 														+ r.getRemainingString()
-														+ "\n";
+														+ " ( Symbol Mapping = ";
 												m.appendResultLine(resultLine);
 												pGui.getResultsArea().append(
 														resultLine);
+												ArrayList<SymbolMapping> symbolMap = r
+														.getSymbolMap();
+												for (int i = 0; i < symbolMap
+														.size(); i++) {
+													resultLine = symbolMap.get(
+															i).getSymbol()
+															+ ": "
+															+ symbolMap
+																	.get(i)
+																	.getSymbolValue()
+															+ ", ";
+													pGui.getResultsArea()
+															.append(resultLine);
+												}
+												pGui.getResultsArea().append(
+														")\n");
 											}
 										}
 										deletedText = deletedText
