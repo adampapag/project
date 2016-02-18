@@ -129,6 +129,7 @@ public class ButtonListener implements ActionListener {
 								} catch (Exception ex) {
 									System.out
 											.println("button listener exception");
+									ex.printStackTrace();
 								}
 							} else {
 								System.out.println("invalid fields");
