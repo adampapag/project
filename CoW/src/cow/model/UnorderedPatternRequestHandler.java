@@ -11,7 +11,7 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 	public ArrayList<Result> handle(String[] args) {
 		String pattern = args[0];
 		String text = args[1];
-		ArrayList<String> patternList = unaryPatternSplit(pattern);
+		ArrayList<String> patternList = orderedPatternSplit(pattern);
 		ArrayList<Result> agenda = new ArrayList<Result>();
 		ArrayList<Result> newAgenda = new ArrayList<Result>();
 		String candidatePattern = patternList.get(0);
@@ -68,7 +68,7 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 
 	}
 
-	public ArrayList<Result> unaryPatternMatch(String pattern, String text,
+	private ArrayList<Result> unaryPatternMatch(String pattern, String text,
 			ArrayList<SymbolMapping> symbolMap) {
 		// System.out.println("\ntext: " + text);
 		// System.out.println("pattern: " + pattern);
@@ -90,6 +90,7 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 		String result = "";
 		boolean okay = true;
 		for (int symbolLength = 1; symbolLength <= text.length(); symbolLength++) {
+			okay = true;
 			// System.out.println("length: " + symbolLength);
 			template = text.substring(0, symbolLength);
 			// System.out.println("template: " + template);
@@ -119,12 +120,12 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 				for (int symbolCount = 1; symbolCount < pattern.length(); symbolCount++) {
 					candidate = text.substring((symbolCount * symbolLength),
 							(symbolCount * symbolLength) + symbolLength);
-					okay = true;
 					// System.out.println("candidate: " + candidate);
 					if (!candidate.equals(template)) {
-						// System.out.println("pattern broken :" + template
-						// + candidate);
+						System.out.println("pattern broken :" + template
+								+ candidate);
 						okay = false;
+						break;
 						// break
 					}
 				}
@@ -158,7 +159,7 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 		return resultsList;
 	}
 
-	public ArrayList<String> unaryPatternSplit(String pattern) {
+	private ArrayList<String> orderedPatternSplit(String pattern) {
 		System.out.print("\nsplitting pattern: " + pattern);
 		ArrayList<String> patternList = new ArrayList<String>();
 		String current = "";
