@@ -9,6 +9,15 @@ public class Model implements IModel {
 	private ArrayList<Result> resultsList = new ArrayList<Result>();
 	private String result;
 
+	public void orderedPatternRequest(String pattern, String text) {
+		resultsList.clear();
+		args = new String[2];
+		args[0] = pattern;
+		args[1] = text;
+		handler = new OrderedPatternRequestHandler();
+		resultsList = handler.handle(args);
+	}
+
 	public void unorderedPatternRequest(String pattern, String text) {
 		resultsList.clear();
 		args = new String[2];

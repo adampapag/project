@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public interface IModel {
 
+	void orderedPatternRequest(String pattern, String text);
+
 	void unorderedPatternRequest(String pattern, String text);
 
 	void factorComplexityRequest(String text);

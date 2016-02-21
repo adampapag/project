@@ -47,6 +47,82 @@ public class ButtonListener implements ActionListener {
 				if (pGui.isOrdered()) {
 					System.out.println("ordered");
 					// ordered execution
+					w = new SwingWorker() {
+						@Override
+						protected Integer doInBackground() {
+							String text = pGui.getText();
+							String pattern = pGui.getPattern();
+							String deletedText = "";
+							String resultLine = "";
+							if (m.isValid(pattern, text)) {
+								ArrayList<Result> resultsList;
+								System.out.println("text: " + text);
+								try {
+									while (text.length() > 1) {
+										m.orderedPatternRequest(pattern, text);
+										resultsList = m.getResultsList();
+										if (!resultsList.isEmpty()) {
+											for (Result r : resultsList) {
+												resultLine = "occurrence found: "
+														+ deletedText
+														+ "["
+														+ r.getPrefix()
+														+ r.getString()
+														+ "]"
+														+ r.getRemainingString()
+														+ " ( Symbol Mapping = ";
+												m.appendResultLine(resultLine);
+												pGui.getResultsArea().append(
+														resultLine);
+												// ArrayList<SymbolMapping>
+												// symbolMap = r
+												// .getSymbolMap();
+												// for (int i = 0; i < symbolMap
+												// .size(); i++) {
+												// resultLine = symbolMap.get(
+												// i).getSymbol()
+												// + ": "
+												// + symbolMap
+												// .get(i)
+												// .getSymbolValue()
+												// + ", ";
+												// pGui.getResultsArea()
+												// .append(resultLine);
+												// }
+												pGui.getResultsArea().append(
+														")\n");
+											}
+										}
+										deletedText = deletedText
+												+ text.substring(0, 1);
+										text = m.trimText(text);
+										Thread.sleep(5);
+									}
+									if (pGui.getResultsArea().getText()
+											.isEmpty()) {
+										resultLine = "No patterns found" + "\n";
+										pGui.getResultsArea()
+												.append(resultLine);
+									}
+									resultLine = "Pattern matching complete :)"
+											+ "\n";
+									pGui.getResultsArea().append(resultLine);
+
+								} catch (Exception ex) {
+									System.out
+											.println("button listener exception");
+									ex.printStackTrace();
+								}
+							} else {
+								System.out.println("invalid fields");
+								resultLine = "Field invalid!" + "\n";
+								pGui.getResultsArea().append(resultLine);
+								return 0;
+							}
+							return 1;
+						}
+					};
+					w.execute();
 				} else {
 					assert !pGui.isOrdered() : "";
 					System.out.println("unordered");
@@ -152,6 +228,7 @@ public class ButtonListener implements ActionListener {
 								System.out.println("invalid fields");
 								resultLine = "Field invalid!" + "\n";
 								pGui.getResultsArea().append(resultLine);
+								return 0;
 							}
 							return 1;
 						}
