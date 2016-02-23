@@ -1,4 +1,4 @@
-package cow.prototype;
+package cow.controller.prototype;
 import java.awt.Color;
 
 import javax.swing.JMenu;

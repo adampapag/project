@@ -1,4 +1,4 @@
-package cow.prototype;
+package cow.controller.prototype;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

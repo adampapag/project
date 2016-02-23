@@ -99,6 +99,9 @@ public class Model implements IModel {
 			if (l.equals("")) {
 				System.out.println("Letter cannot be space.");
 				return false;
+			} else if (l.length() > 1) {
+				System.out.println("Letter must be one character.");
+				return false;
 			}
 			occurrences = 0;
 			for (String l2 : letters) {

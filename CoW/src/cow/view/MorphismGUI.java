@@ -1,5 +1,6 @@
 package cow.view;
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -11,6 +12,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 
 import cow.controller.MorphismListener;
 
@@ -70,8 +72,11 @@ public class MorphismGUI implements IGUI {
 
 	private void addMorphismTable() {
 		morphismTable = new JTable(data, columnNames);
-		morphismPane = new JScrollPane(morphismTable);
+		morphismTable.setGridColor(Color.BLACK);
+		morphismTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		morphismTable.setCellSelectionEnabled(true);
 		morphismTable.setFillsViewportHeight(true);
+		morphismPane = new JScrollPane(morphismTable);
 		morphismPane.setBounds(369, 49, 306, 116);
 		frame.getContentPane().add(morphismPane);
 	}

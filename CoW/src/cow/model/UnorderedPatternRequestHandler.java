@@ -200,8 +200,8 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 	}
 
 	private ArrayList<Result> removeSymbolicContradictions(
-			ArrayList<Result> agenda) {
-		Iterator<Result> iterator = agenda.iterator();
+			ArrayList<Result> resultsList) {
+		Iterator<Result> iterator = resultsList.iterator();
 		Result r = null;
 		while (iterator.hasNext()) {
 			r = iterator.next();
@@ -243,7 +243,7 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 				}
 			}
 		}
-		return agenda;
+		return resultsList;
 	}
 
 	// public int countOccurrences(String pattern, String text) {

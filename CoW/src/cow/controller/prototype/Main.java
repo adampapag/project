@@ -1,8 +1,9 @@
-package cow.prototype;
+package cow.controller.prototype;
 
 import java.util.ArrayList;
 
 import cow.model.Result;
+import cow.model.prototype.OrderedPatternRequestHandler;
 
 public class Main {
 

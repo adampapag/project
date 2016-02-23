@@ -1,4 +1,4 @@
-package cow.prototype;
+package cow.controller.prototype;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,10 +18,10 @@ public class RadioListener implements ActionListener {
 		String button = e.getActionCommand();
 		switch (button) {
 		case "ordered":
-			gui.setOrdered(true);
+			gui.setOrdered();
 			break;
 		case "unordered":
-			gui.setOrdered(false);
+			gui.setUnordered();
 			break;
 		}
 	}

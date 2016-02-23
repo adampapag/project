@@ -1,4 +1,4 @@
-package cow.prototype;
+package cow.controller.prototype;
 
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;

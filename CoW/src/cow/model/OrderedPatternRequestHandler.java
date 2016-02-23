@@ -1,6 +1,7 @@
 package cow.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import cow.model.Result;
 
@@ -16,14 +17,17 @@ public class OrderedPatternRequestHandler implements RequestHandler {
 		ArrayList<String> highLowList = orderedPatternSplit(pattern);
 		ArrayList<Result> resultsList = new ArrayList<Result>();
 
-		resultsList = orderedPatternMatch(highLowList, text);
+		resultsList = orderedPatternMatch(highLowList, text, pattern);
+
+		resultsList = removeSymbolicContradictions(resultsList);
 
 		return resultsList;
 	}
 
 	private ArrayList<Result> orderedPatternMatch(
-			ArrayList<String> highLowList, String text) {
+			ArrayList<String> highLowList, String text, String pattern) {
 		ArrayList<Result> resultsList = new ArrayList<Result>();
+		ArrayList<SymbolMapping> symbolMap = new ArrayList<SymbolMapping>();
 		String result = "";
 		String currentIncrement = "";
 		String currentChar = "";
@@ -65,12 +69,24 @@ public class OrderedPatternRequestHandler implements RequestHandler {
 					result = result + nextChar;
 				}
 
+				symbolMap.add(new SymbolMapping(pattern.substring(0, 1),
+						currentChar));
+
+				pattern = pattern.substring(1);
+
 				System.out.println("result = " + result);
 
 			}
+			symbolMap.add(new SymbolMapping(
+					pattern.substring(pattern.length() - 1), nextChar));
 
-			resultsList.add(new Result(result,
-					text.substring((result.length()))));
+			Result r = new Result(result, text.substring((result.length())));
+
+			for (int i = symbolMap.size() - 1; i >= 0; i--) {
+				r.addSymbolMapping(symbolMap.get(i));
+			}
+			
+			resultsList.add(r);
 		}
 
 		return resultsList;
@@ -96,5 +112,52 @@ public class OrderedPatternRequestHandler implements RequestHandler {
 		}
 
 		return patternList;
+	}
+
+	private ArrayList<Result> removeSymbolicContradictions(
+			ArrayList<Result> agenda) {
+		Iterator<Result> iterator = agenda.iterator();
+		Result r = null;
+		while (iterator.hasNext()) {
+			r = iterator.next();
+			System.out.println(r.getString());
+			ArrayList<SymbolMapping> symbolMap = r.getSymbolMap();
+			boolean contradiction = false;
+			for (int i = 0; i < symbolMap.size(); i++) {
+				if (!contradiction) {
+					SymbolMapping currentSymbol = symbolMap.get(i);
+					String symbol = currentSymbol.getSymbol();
+					String symbolValue = currentSymbol.getSymbolValue();
+					System.out.println(symbol + ": " + symbolValue);
+					for (int j = 0; j < symbolMap.size(); j++) {
+						System.out.println("->" + symbolMap.get(j).getSymbol()
+								+ ": " + symbolMap.get(j).getSymbolValue());
+						String candidateSymbol = symbolMap.get(j).getSymbol();
+						String candidateSymbolValue = symbolMap.get(j)
+								.getSymbolValue();
+						if (candidateSymbol.equals(symbol)
+								&& (!candidateSymbolValue.equals(symbolValue))) {
+							System.out
+									.println("contradiction found! same symbol different value.");
+							iterator.remove();
+							contradiction = true;
+							break;
+						}
+						if (candidateSymbolValue.equals(symbolValue)
+								&& (!candidateSymbol.equals(symbol))) {
+							System.out
+									.println("contradiction found! same value different symbol.");
+							iterator.remove();
+							contradiction = true;
+							break;
+						}
+					}
+				} else {
+					contradiction = false;
+					break;
+				}
+			}
+		}
+		return agenda;
 	}
 }

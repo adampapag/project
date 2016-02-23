@@ -70,25 +70,24 @@ public class ButtonListener implements ActionListener {
 														+ r.getString()
 														+ "]"
 														+ r.getRemainingString()
-														+ " ( Symbol Mapping = ";
+														// + "\n";
+														+ " ( Symbol Mapping : ";
 												m.appendResultLine(resultLine);
 												pGui.getResultsArea().append(
 														resultLine);
-												// ArrayList<SymbolMapping>
-												// symbolMap = r
-												// .getSymbolMap();
-												// for (int i = 0; i < symbolMap
-												// .size(); i++) {
-												// resultLine = symbolMap.get(
-												// i).getSymbol()
-												// + ": "
-												// + symbolMap
-												// .get(i)
-												// .getSymbolValue()
-												// + ", ";
-												// pGui.getResultsArea()
-												// .append(resultLine);
-												// }
+												ArrayList<SymbolMapping> symbolMap = r
+														.getSymbolMap();
+												for (int i = symbolMap.size() - 1; i >= 0; i--) {
+													resultLine = symbolMap.get(
+															i).getSymbol()
+															+ " = "
+															+ symbolMap
+																	.get(i)
+																	.getSymbolValue()
+															+ ", ";
+													pGui.getResultsArea()
+															.append(resultLine);
+												}
 												pGui.getResultsArea().append(
 														")\n");
 											}
@@ -182,26 +181,28 @@ public class ButtonListener implements ActionListener {
 														+ r.getString()
 														+ "]"
 														+ r.getRemainingString()
-														+ " ( Symbol Mapping = ";
+														+ "\n";
+												// + " ( Symbol Mapping : ";
 												m.appendResultLine(resultLine);
 												pGui.getResultsArea().append(
 														resultLine);
-												ArrayList<SymbolMapping> symbolMap = r
-														.getSymbolMap();
-												for (int i = 0; i < symbolMap
-														.size(); i++) {
-													resultLine = symbolMap.get(
-															i).getSymbol()
-															+ ": "
-															+ symbolMap
-																	.get(i)
-																	.getSymbolValue()
-															+ ", ";
-													pGui.getResultsArea()
-															.append(resultLine);
-												}
-												pGui.getResultsArea().append(
-														")\n");
+												// ArrayList<SymbolMapping>
+												// symbolMap = r
+												// .getSymbolMap();
+												// for (int i = symbolMap.size()
+												// - 1; i >= 0; i--) {
+												// resultLine = symbolMap.get(
+												// i).getSymbol()
+												// + " = "
+												// + symbolMap
+												// .get(i)
+												// .getSymbolValue()
+												// + ", ";
+												// pGui.getResultsArea()
+												// .append(resultLine);
+												// }
+												// pGui.getResultsArea().append(
+												// ")\n");
 											}
 										}
 										deletedText = deletedText
@@ -211,7 +212,8 @@ public class ButtonListener implements ActionListener {
 									}
 									if (pGui.getResultsArea().getText()
 											.isEmpty()) {
-										resultLine = "No patterns found" + "\n";
+										resultLine = "No patterns found."
+												+ "\n";
 										pGui.getResultsArea()
 												.append(resultLine);
 									}

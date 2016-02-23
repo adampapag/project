@@ -21,6 +21,10 @@ public class PatternGUI implements IGUI {
 	private JFrame frame;
 	private JRadioButton rdbtnOrdered;
 	private JRadioButton rdbtnUnordered;
+	private JRadioButton rdbtnAvoidance;
+	private JRadioButton rdbtnDistribution;
+	private JRadioButton rdbtnOnWords;
+	private JRadioButton rdbtnText;
 	private JTextField patternField;
 	private JTextField textField;
 	private JTextField alphabetField;
@@ -35,7 +39,7 @@ public class PatternGUI implements IGUI {
 	 * Create the application.
 	 */
 	public PatternGUI() {
-		 radioListener = new RadioListener(this);
+		radioListener = new RadioListener(this);
 		buttonList = new ArrayList<JButton>();
 		initializeGUI();
 	}
@@ -90,19 +94,51 @@ public class PatternGUI implements IGUI {
 		return Integer.parseInt(fromField.getText());
 	}
 
-	public void setOrdered(boolean selected) {
+	// public void setOrdered(boolean selected) {
+	//
+	// if (selected == true) {
+	// rdbtnOrdered.setSelected(true);
+	// rdbtnUnordered.setSelected(false);
+	// ordered = true;
+	// } else {
+	// assert selected == false : "selected = " + selected
+	// + " ; should be false ";
+	// rdbtnOrdered.setSelected(false);
+	// rdbtnUnordered.setSelected(true);
+	// ordered = false;
+	// }
+	// }
 
-		if (selected == true) {
-			rdbtnOrdered.setSelected(true);
-			rdbtnUnordered.setSelected(false);
-			ordered = true;
-		} else {
-			assert selected == false : "selected = " + selected
-					+ " ; should be false ";
-			rdbtnOrdered.setSelected(false);
-			rdbtnUnordered.setSelected(true);
-			ordered = false;
-		}
+	public void setOrdered() {
+		rdbtnUnordered.setSelected(false);
+		rdbtnOrdered.setSelected(true);
+		ordered = true;
+	}
+
+	public void setUnordered() {
+		rdbtnOrdered.setSelected(false);
+		rdbtnUnordered.setSelected(true);
+		ordered = false;
+	}
+
+	public void setAvoidance() {
+		rdbtnDistribution.setSelected(false);
+		rdbtnAvoidance.setSelected(true);
+	}
+
+	public void setDistribution() {
+		rdbtnAvoidance.setSelected(false);
+		rdbtnDistribution.setSelected(true);
+	}
+
+	public void setOnWords() {
+		rdbtnText.setSelected(false);
+		rdbtnOnWords.setSelected(true);
+	}
+
+	public void setText() {
+		rdbtnOnWords.setSelected(false);
+		rdbtnText.setSelected(true);
 	}
 
 	public boolean isOrdered() {
@@ -134,30 +170,30 @@ public class PatternGUI implements IGUI {
 		rdbtnUnordered.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnUnordered);
 
-		JRadioButton rdbtnAvoidance = new JRadioButton("Avoidance");
+		rdbtnAvoidance = new JRadioButton("Avoidance");
 		rdbtnAvoidance.setBounds(137, 9, 98, 23);
 		rdbtnAvoidance.setActionCommand("avoidance");
 		rdbtnAvoidance.setSelected(true);
-		// rdbtnAvoidance.addActionListener("////");
+		rdbtnAvoidance.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnAvoidance);
 
-		JRadioButton rdbtnDistribution = new JRadioButton("Distribution");
+		rdbtnDistribution = new JRadioButton("Distribution");
 		rdbtnDistribution.setBounds(137, 44, 110, 23);
 		rdbtnDistribution.setActionCommand("distribution");
-		// rdbtnDistribution.addActionListener(////);
+		rdbtnDistribution.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnDistribution);
 
-		JRadioButton rdbtnOnWords = new JRadioButton("On Words");
+		rdbtnOnWords = new JRadioButton("On Words");
 		rdbtnOnWords.setBounds(446, 9, 94, 23);
 		rdbtnOnWords.setActionCommand("on words");
 		rdbtnOnWords.setSelected(true);
-		// rdbtnOnWords.addActionListener(////);
+		rdbtnOnWords.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnOnWords);
 
-		JRadioButton rdbtnText = new JRadioButton("Text");
+		rdbtnText = new JRadioButton("Text");
 		rdbtnText.setBounds(446, 44, 94, 23);
 		rdbtnText.setActionCommand("text");
-		// rdbtnOnWords.addActionListener(////);
+		rdbtnText.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnText);
 
 		JButton btnChooseFile = new JButton("Choose File");
@@ -181,7 +217,7 @@ public class PatternGUI implements IGUI {
 		lblPattern.setBounds(162, 88, 96, 16);
 		frame.getContentPane().add(lblPattern);
 
-		JLabel lblWords = new JLabel("Words");
+		JLabel lblWords = new JLabel("On Words");
 		lblWords.setBounds(46, 141, 61, 16);
 		frame.getContentPane().add(lblWords);
 
@@ -201,7 +237,7 @@ public class PatternGUI implements IGUI {
 		lblTo.setBounds(247, 205, 16, 16);
 		frame.getContentPane().add(lblTo);
 
-		JLabel lblText = new JLabel("Text");
+		JLabel lblText = new JLabel("Text/Word");
 		lblText.setBounds(388, 141, 88, 16);
 		frame.getContentPane().add(lblText);
 

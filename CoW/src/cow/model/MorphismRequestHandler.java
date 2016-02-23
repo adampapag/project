@@ -2,7 +2,7 @@ package cow.model;
 
 import java.util.ArrayList;
 
-import cow.prototype.Letter;
+import cow.model.prototype.Letter;
 
 public class MorphismRequestHandler implements RequestHandler {
 

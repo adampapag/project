@@ -1,4 +1,4 @@
-package cow.prototype;
+package cow.model.prototype;
 
 public class Letter {
 	private String letter;

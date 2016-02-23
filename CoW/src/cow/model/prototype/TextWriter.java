@@ -1,4 +1,4 @@
-package cow.prototype;
+package cow.model.prototype;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;

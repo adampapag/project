@@ -18,10 +18,22 @@ public class RadioListener implements ActionListener {
 		String button = e.getActionCommand();
 		switch (button) {
 		case "ordered":
-			gui.setOrdered(true);
+			gui.setOrdered();
 			break;
 		case "unordered":
-			gui.setOrdered(false);
+			gui.setUnordered();
+			break;
+		case "avoidance":
+			gui.setAvoidance();
+			break;
+		case "distribution":
+			gui.setDistribution();
+			break;
+		case "on words":
+			gui.setOnWords();
+			break;
+		case "text":
+			gui.setText();
 			break;
 		}
 	}

@@ -1,4 +1,4 @@
-package cow.prototype;
+package cow.view.prototype;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+
+import cow.controller.prototype.MenuBar;
 
 public class MorphismGUI {
 
