@@ -3,6 +3,7 @@ package cow.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
@@ -43,6 +44,73 @@ public class ButtonListener implements ActionListener {
 				pGui = (PatternGUI) v.getGUI();
 				pGui.getResultsArea().setText("");
 				m.clearResult();
+				final String pattern = pGui.getPattern();
+				if (pGui.OnWordsOrText().equals("on words")) {
+					// swing worker
+					int alphaSize = pGui.getAlphabetSize();
+					int lengthFrom = pGui.getFromLength();
+					int lengthTo = pGui.getToLength();
+					int currentLength = 1;
+					int avoidances = 0;
+					ArrayList<String> words = new ArrayList<String>();
+
+					// initiate array {0, ..., k}
+					for (int i = 0; i < alphaSize; i++) {
+						words.add(String.valueOf(i));
+					}
+
+					while (currentLength < lengthTo) {
+						for (int alphaIndex = 0; alphaIndex < Math.pow(
+								alphaSize, currentLength); alphaIndex++) {
+							String current = words.remove(0);
+							for (int suffix = 0; suffix < alphaSize; suffix++) {
+								words.add(current + suffix);
+							}
+						}
+						currentLength++;
+						if (currentLength >= lengthFrom) {
+							avoidances = words.size();
+							String resultLine = "Length " + currentLength
+									+ ": ";
+							System.out.print(resultLine);
+							m.appendResultLine(resultLine);
+							pGui.getResultsArea().append(resultLine);
+							for (int i = 0; i < words.size(); i++) {
+								int occurrences = 0;
+								System.out.println(occurrences);
+								String word = words.get(i);
+								if (pGui.isOrdered()) {
+									System.out.println("ordered");
+									while (word.length() > 1) {
+										System.out.println(word);
+										m.orderedPatternRequest(pattern, word);
+										if (!m.getResultsList().isEmpty()) {
+											occurrences++;
+											break;
+										}
+										word = word.substring(1);
+									}
+								} else {
+									assert !pGui.isOrdered();
+									System.out.println("ordered");
+									while (word.length() > 1) {
+										m.unorderedPatternRequest(pattern, word);
+										if (!m.getResultsList().isEmpty()) {
+											occurrences++;
+											break;
+										}
+										word.substring(1);
+									}
+								}
+								avoidances -= occurrences;
+							}
+							resultLine = avoidances + "\n";
+							System.out.print(resultLine);
+							m.appendResultLine(resultLine);
+							pGui.getResultsArea().append(resultLine);
+						}
+					}
+				}
 				// check if ordered//unordered
 				if (pGui.isOrdered()) {
 					System.out.println("ordered");
@@ -51,7 +119,6 @@ public class ButtonListener implements ActionListener {
 						@Override
 						protected Integer doInBackground() {
 							String text = pGui.getText();
-							String pattern = pGui.getPattern();
 							String deletedText = "";
 							String resultLine = "";
 							if (m.isValid(pattern, text)) {

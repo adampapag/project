@@ -59,7 +59,7 @@ public class OrderedPatternRequestHandler implements RequestHandler {
 				}
 
 				if (!okay) {
-					System.out.println("pattern broken");
+					// System.out.println("pattern broken");
 					return resultsList;
 				}
 
@@ -85,7 +85,7 @@ public class OrderedPatternRequestHandler implements RequestHandler {
 			for (int i = symbolMap.size() - 1; i >= 0; i--) {
 				r.addSymbolMapping(symbolMap.get(i));
 			}
-			
+
 			resultsList.add(r);
 		}
 

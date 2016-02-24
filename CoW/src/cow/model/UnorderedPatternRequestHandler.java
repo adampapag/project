@@ -18,28 +18,28 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 		for (Result r : unaryPatternMatch(candidatePattern, text, null)) {
 			agenda.add(r);
 		}
-		System.out.print("\nagenda: " + "[ ");
+		// System.out.print("\nagenda: " + "[ ");
 		for (int i = 0; i < agenda.size(); i++) {
 			Result r = agenda.get(i);
-			System.out.print(r.getPrefix() + "(" + r.getString() + ")"
-					+ r.getRemainingString() + ", ");
+			// System.out.print(r.getPrefix() + "(" + r.getString() + ")"
+			// + r.getRemainingString() + ", ");
 		}
-		System.out.print("]");
+		// System.out.print("]");
 		for (int patternIndex = 1; patternIndex < patternList.size(); patternIndex++) {
 			while (!agenda.isEmpty()) {
 				Result candidate = agenda.remove(0);
 				ArrayList<SymbolMapping> symbolMap = candidate.getSymbolMap();
 				for (int i = 0; i < symbolMap.size(); i++) {
-					System.out.println(symbolMap.get(i).getSymbol() + ": "
-							+ symbolMap.get(i).getSymbolValue());
+					// System.out.println(symbolMap.get(i).getSymbol() + ": "
+					// + symbolMap.get(i).getSymbolValue());
 				}
 				candidatePattern = patternList.get(patternIndex);
 				for (Result r : unaryPatternMatch(candidatePattern,
 						candidate.getRemainingString(),
 						candidate.getSymbolMap())) {
 					r.addPrefix(candidate.getPrefix() + candidate.getString());
-					System.out.println("adding: " + r.getPrefix() + "("
-							+ r.getString() + ")" + r.getRemainingString());
+					// System.out.println("adding: " + r.getPrefix() + "("
+					// + r.getString() + ")" + r.getRemainingString());
 					newAgenda.add(r);
 				}
 			}
@@ -48,22 +48,22 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 			}
 			newAgenda.clear();
 		}
-		System.out.print("\nchecking agenda: [");
+		// System.out.print("\nchecking agenda: [");
 		for (int i = 0; i < agenda.size(); i++) {
 			Result r = agenda.get(i);
-			System.out.print(r.getPrefix() + "[" + r.getString() + "]"
-					+ r.getRemainingString() + ", ");
+			// System.out.print(r.getPrefix() + "[" + r.getString() + "]"
+			// + r.getRemainingString() + ", ");
 		}
-		System.out.print("]");
+		// System.out.print("]");
 		// check agenda
 		agenda = removeSymbolicContradictions(agenda);
-		System.out.print("\nreturning agenda: [");
+		// System.out.print("\nreturning agenda: [");
 		for (int i = 0; i < agenda.size(); i++) {
 			Result r = agenda.get(i);
-			System.out.print(r.getPrefix() + r.getString()
-					+ r.getRemainingString() + ", ");
+			// System.out.print(r.getPrefix() + r.getString()
+			// + r.getRemainingString() + ", ");
 		}
-		System.out.print("]");
+		// System.out.print("]");
 		return agenda;
 
 	}
@@ -97,22 +97,22 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 			// candidateList = new ArrayList<String>();
 			if ((template.length() * pattern.length()) <= text.length()) {
 				if (pattern.length() == 1) {
-					System.out.println(pattern + " == 1, " + text);
+					// System.out.println(pattern + " == 1, " + text);
 					// System.out.println("arbitrary string");
 					Result x = new Result(template, text.substring(template
 							.length()));
 					x.addSymbolMapping(new SymbolMapping(pattern, template));
 					// ArrayList<SymbolMapping> symbolMap = x.getSymbolMap();
-					System.out.println("match: " + x.getPrefix() + "["
-							+ x.getString() + "]" + x.getRemainingString());
+					// System.out.println("match: " + x.getPrefix() + "["
+					// + x.getString() + "]" + x.getRemainingString());
 					if (!(symbolMap == null)) {
 						for (int i = 0; i < symbolMap.size(); i++) {
-							System.out.println(symbolMap.get(i).getSymbol()
-									+ ": " + symbolMap.get(i).getSymbolValue());
+							// System.out.println(symbolMap.get(i).getSymbol()
+							// + ": " + symbolMap.get(i).getSymbolValue());
 							x.addSymbolMapping(symbolMap.get(i));
 						}
 					}
-					System.out.println(pattern + ": " + template);
+					// System.out.println(pattern + ": " + template);
 					resultsList.add(x);
 					okay = false;
 				}
@@ -122,8 +122,8 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 							(symbolCount * symbolLength) + symbolLength);
 					// System.out.println("candidate: " + candidate);
 					if (!candidate.equals(template)) {
-						System.out.println("pattern broken :" + template
-								+ candidate);
+						// System.out.println("pattern broken :" + template
+						// + candidate);
 						okay = false;
 						break;
 						// break
@@ -142,13 +142,13 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 							symbolTuple[1]));
 					if (!(symbolMap == null)) {
 						for (int i = 0; i < symbolMap.size(); i++) {
-							System.out.println(symbolMap.get(i).getSymbol()
-									+ ": " + symbolMap.get(i).getSymbolValue());
+							// System.out.println(symbolMap.get(i).getSymbol()
+							// + ": " + symbolMap.get(i).getSymbolValue());
 							y.addSymbolMapping(symbolMap.get(i));
 						}
 					}
-					System.out.println(y.getPrefix() + "[" + y.getString()
-							+ "]" + y.getRemainingString());
+					// System.out.println(y.getPrefix() + "[" + y.getString()
+					// + "]" + y.getRemainingString());
 					resultsList.add(y);
 				}
 			} else {
@@ -205,7 +205,7 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 		Result r = null;
 		while (iterator.hasNext()) {
 			r = iterator.next();
-			System.out.println(r.getString());
+			// System.out.println(r.getString());
 			ArrayList<SymbolMapping> symbolMap = r.getSymbolMap();
 			boolean contradiction = false;
 			for (int i = 0; i < symbolMap.size(); i++) {
@@ -213,25 +213,26 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 					SymbolMapping currentSymbol = symbolMap.get(i);
 					String symbol = currentSymbol.getSymbol();
 					String symbolValue = currentSymbol.getSymbolValue();
-					System.out.println(symbol + ": " + symbolValue);
+					// System.out.println(symbol + ": " + symbolValue);
 					for (int j = 0; j < symbolMap.size(); j++) {
-						System.out.println("->" + symbolMap.get(j).getSymbol()
-								+ ": " + symbolMap.get(j).getSymbolValue());
+						// // System.out.println("->" +
+						// symbolMap.get(j).getSymbol()
+						// + ": " + symbolMap.get(j).getSymbolValue());
 						String candidateSymbol = symbolMap.get(j).getSymbol();
 						String candidateSymbolValue = symbolMap.get(j)
 								.getSymbolValue();
 						if (candidateSymbol.equals(symbol)
 								&& (!candidateSymbolValue.equals(symbolValue))) {
-							System.out
-									.println("contradiction found! same symbol different value.");
+							// System.out
+							// .println("contradiction found! same symbol different value.");
 							iterator.remove();
 							contradiction = true;
 							break;
 						}
 						if (candidateSymbolValue.equals(symbolValue)
 								&& (!candidateSymbol.equals(symbol))) {
-							System.out
-									.println("contradiction found! same value different symbol.");
+							// System.out
+							// .println("contradiction found! same value different symbol.");
 							iterator.remove();
 							contradiction = true;
 							break;
