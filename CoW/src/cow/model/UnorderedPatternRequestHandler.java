@@ -160,7 +160,6 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 	}
 
 	private ArrayList<String> orderedPatternSplit(String pattern) {
-		System.out.print("\nsplitting pattern: " + pattern);
 		ArrayList<String> patternList = new ArrayList<String>();
 		String current = "";
 		String next = "";
@@ -179,7 +178,6 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 					}
 				}
 			}
-			System.out.println("unary pattern found: " + unaryPattern);
 			patternList.add(unaryPattern);
 			pattern = pattern.substring(unaryPattern.length());
 		}

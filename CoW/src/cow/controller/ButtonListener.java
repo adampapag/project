@@ -52,6 +52,7 @@ public class ButtonListener implements ActionListener {
 					int lengthTo = pGui.getToLength();
 					int currentLength = 1;
 					int avoidances = 0;
+					String resultLine = "";
 					ArrayList<String> words = new ArrayList<String>();
 
 					// initiate array {0, ..., k}
@@ -60,29 +61,28 @@ public class ButtonListener implements ActionListener {
 					}
 
 					while (currentLength < lengthTo) {
+						String current = "";
+						String word = "";
 						for (int alphaIndex = 0; alphaIndex < Math.pow(
 								alphaSize, currentLength); alphaIndex++) {
-							String current = words.remove(0);
+							current = words.remove(0);
 							for (int suffix = 0; suffix < alphaSize; suffix++) {
 								words.add(current + suffix);
 							}
 						}
+						System.out.println(Arrays.toString(words.toArray()));
 						currentLength++;
 						if (currentLength >= lengthFrom) {
 							avoidances = words.size();
-							String resultLine = "Length " + currentLength
-									+ ": ";
+							resultLine = "Length " + currentLength + ": ";
 							System.out.print(resultLine);
 							m.appendResultLine(resultLine);
 							pGui.getResultsArea().append(resultLine);
 							for (int i = 0; i < words.size(); i++) {
 								int occurrences = 0;
-								System.out.println(occurrences);
-								String word = words.get(i);
+								word = words.get(i);
 								if (pGui.isOrdered()) {
-									System.out.println("ordered");
 									while (word.length() > 1) {
-										System.out.println(word);
 										m.orderedPatternRequest(pattern, word);
 										if (!m.getResultsList().isEmpty()) {
 											occurrences++;
@@ -92,221 +92,232 @@ public class ButtonListener implements ActionListener {
 									}
 								} else {
 									assert !pGui.isOrdered();
-									System.out.println("ordered");
 									while (word.length() > 1) {
 										m.unorderedPatternRequest(pattern, word);
 										if (!m.getResultsList().isEmpty()) {
 											occurrences++;
 											break;
 										}
-										word.substring(1);
+										word = word.substring(1);
 									}
 								}
 								avoidances -= occurrences;
 							}
 							resultLine = avoidances + "\n";
-							System.out.print(resultLine);
 							m.appendResultLine(resultLine);
 							pGui.getResultsArea().append(resultLine);
 						}
 					}
-				}
-				// check if ordered//unordered
-				if (pGui.isOrdered()) {
-					System.out.println("ordered");
-					// ordered execution
-					w = new SwingWorker() {
-						@Override
-						protected Integer doInBackground() {
-							String text = pGui.getText();
-							String deletedText = "";
-							String resultLine = "";
-							if (m.isValid(pattern, text)) {
-								ArrayList<Result> resultsList;
-								System.out.println("text: " + text);
-								try {
-									while (text.length() > 1) {
-										m.orderedPatternRequest(pattern, text);
-										resultsList = m.getResultsList();
-										if (!resultsList.isEmpty()) {
-											for (Result r : resultsList) {
-												resultLine = "occurrence found: "
-														+ deletedText
-														+ "["
-														+ r.getPrefix()
-														+ r.getString()
-														+ "]"
-														+ r.getRemainingString()
-														// + "\n";
-														+ " ( Symbol Mapping : ";
-												m.appendResultLine(resultLine);
-												pGui.getResultsArea().append(
-														resultLine);
-												ArrayList<SymbolMapping> symbolMap = r
-														.getSymbolMap();
-												for (int i = symbolMap.size() - 1; i >= 0; i--) {
-													resultLine = symbolMap.get(
-															i).getSymbol()
-															+ " = "
-															+ symbolMap
-																	.get(i)
-																	.getSymbolValue()
-															+ ", ";
+					resultLine = "Pattern matching complete :)" + "\n";
+					pGui.getResultsArea().append(resultLine);
+				} else {
+					// check if ordered//unordered
+					if (pGui.isOrdered()) {
+						System.out.println("ordered");
+						// ordered execution
+						w = new SwingWorker() {
+							@Override
+							protected Integer doInBackground() {
+								String text = pGui.getText();
+								String deletedText = "";
+								String resultLine = "";
+								if (m.isValid(pattern, text)) {
+									ArrayList<Result> resultsList;
+									System.out.println("text: " + text);
+									try {
+										while (text.length() > 1) {
+											m.orderedPatternRequest(pattern,
+													text);
+											resultsList = m.getResultsList();
+											if (!resultsList.isEmpty()) {
+												for (Result r : resultsList) {
+													resultLine = "occurrence found: "
+															+ deletedText
+															+ "["
+															+ r.getPrefix()
+															+ r.getString()
+															+ "]"
+															+ r.getRemainingString()
+															// + "\n";
+															+ " ( Symbol Mapping : ";
+													m.appendResultLine(resultLine);
 													pGui.getResultsArea()
 															.append(resultLine);
+													ArrayList<SymbolMapping> symbolMap = r
+															.getSymbolMap();
+													for (int i = symbolMap
+															.size() - 1; i >= 0; i--) {
+														resultLine = symbolMap
+																.get(i)
+																.getSymbol()
+																+ " = "
+																+ symbolMap
+																		.get(i)
+																		.getSymbolValue()
+																+ ", ";
+														pGui.getResultsArea()
+																.append(resultLine);
+													}
+													pGui.getResultsArea()
+															.append(")\n");
 												}
-												pGui.getResultsArea().append(
-														")\n");
 											}
+											deletedText = deletedText
+													+ text.substring(0, 1);
+											text = m.trimText(text);
+											Thread.sleep(5);
 										}
-										deletedText = deletedText
-												+ text.substring(0, 1);
-										text = m.trimText(text);
-										Thread.sleep(5);
-									}
-									if (pGui.getResultsArea().getText()
-											.isEmpty()) {
-										resultLine = "No patterns found" + "\n";
-										pGui.getResultsArea()
-												.append(resultLine);
-									}
-									resultLine = "Pattern matching complete :)"
-											+ "\n";
-									pGui.getResultsArea().append(resultLine);
-
-								} catch (Exception ex) {
-									System.out
-											.println("button listener exception");
-									ex.printStackTrace();
-								}
-							} else {
-								System.out.println("invalid fields");
-								resultLine = "Field invalid!" + "\n";
-								pGui.getResultsArea().append(resultLine);
-								return 0;
-							}
-							return 1;
-						}
-					};
-					w.execute();
-				} else {
-					assert !pGui.isOrdered() : "";
-					System.out.println("unordered");
-					// SwingUtilities.invokeLater(new Runnable() {
-					// @Override
-					// public void run() {
-					// String text = gui.getText();
-					// String pattern = gui.getPattern();
-					// ArrayList<String> resultsList;
-					// try {
-					// while (text.length() > 1) {
-					// m.unorderedPatternRequest(pattern, text);
-					// resultsList = m.getResultsList();
-					// if (!resultsList.isEmpty()) {
-					// for (String r : resultsList) {
-					// gui.getResultsArea().append(
-					// "pattern(s) found: " + r
-					// + "\n");
-					// }
-					// }
-					// text = m.trimText(text);
-					// }
-					// if (gui.getResultsArea().getText().isEmpty()) {
-					// gui.getResultsArea().append(
-					// "No patterns found" + "\n");
-					// }
-					// gui.getResultsArea().append(
-					// "Pattern matching complete :)");
-					//
-					// } catch (Exception e) {
-					// System.out.println("listener:"
-					// + e.getStackTrace());
-					//
-					// }
-					// }
-					// });
-					w = new SwingWorker() {
-						@Override
-						protected Integer doInBackground() {
-							String text = pGui.getText();
-							String pattern = pGui.getPattern();
-							String deletedText = "";
-							String resultLine = "";
-							if (m.isValid(pattern, text)) {
-								ArrayList<Result> resultsList;
-								System.out.println("text: " + text);
-								try {
-									while (text.length() > 1) {
-										m.unorderedPatternRequest(pattern, text);
-										resultsList = m.getResultsList();
-										if (!resultsList.isEmpty()) {
-											for (Result r : resultsList) {
-												resultLine = "occurrence found: "
-														+ deletedText
-														+ "["
-														+ r.getPrefix()
-														+ r.getString()
-														+ "]"
-														+ r.getRemainingString()
-														+ "\n";
-												// + " ( Symbol Mapping : ";
-												m.appendResultLine(resultLine);
-												pGui.getResultsArea().append(
-														resultLine);
-												// ArrayList<SymbolMapping>
-												// symbolMap = r
-												// .getSymbolMap();
-												// for (int i = symbolMap.size()
-												// - 1; i >= 0; i--) {
-												// resultLine = symbolMap.get(
-												// i).getSymbol()
-												// + " = "
-												// + symbolMap
-												// .get(i)
-												// .getSymbolValue()
-												// + ", ";
-												// pGui.getResultsArea()
-												// .append(resultLine);
-												// }
-												// pGui.getResultsArea().append(
-												// ")\n");
-											}
+										if (pGui.getResultsArea().getText()
+												.isEmpty()) {
+											resultLine = "No patterns found"
+													+ "\n";
+											pGui.getResultsArea().append(
+													resultLine);
 										}
-										deletedText = deletedText
-												+ text.substring(0, 1);
-										text = m.trimText(text);
-										Thread.sleep(5);
-									}
-									if (pGui.getResultsArea().getText()
-											.isEmpty()) {
-										resultLine = "No patterns found."
+										resultLine = "Pattern matching complete :)"
 												+ "\n";
 										pGui.getResultsArea()
 												.append(resultLine);
-									}
-									resultLine = "Pattern matching complete :)"
-											+ "\n";
-									pGui.getResultsArea().append(resultLine);
 
-								} catch (Exception ex) {
-									System.out
-											.println("button listener exception");
-									ex.printStackTrace();
+									} catch (Exception ex) {
+										System.out
+												.println("button listener exception");
+										ex.printStackTrace();
+									}
+								} else {
+									System.out.println("invalid fields");
+									resultLine = "Field invalid!" + "\n";
+									pGui.getResultsArea().append(resultLine);
+									return 0;
 								}
-							} else {
-								System.out.println("invalid fields");
-								resultLine = "Field invalid!" + "\n";
-								pGui.getResultsArea().append(resultLine);
-								return 0;
+								return 1;
 							}
-							return 1;
-						}
-					};
-					w.execute();
+						};
+						w.execute();
+					} else {
+						assert !pGui.isOrdered() : "";
+						System.out.println("unordered");
+						// SwingUtilities.invokeLater(new Runnable() {
+						// @Override
+						// public void run() {
+						// String text = gui.getText();
+						// String pattern = gui.getPattern();
+						// ArrayList<String> resultsList;
+						// try {
+						// while (text.length() > 1) {
+						// m.unorderedPatternRequest(pattern, text);
+						// resultsList = m.getResultsList();
+						// if (!resultsList.isEmpty()) {
+						// for (String r : resultsList) {
+						// gui.getResultsArea().append(
+						// "pattern(s) found: " + r
+						// + "\n");
+						// }
+						// }
+						// text = m.trimText(text);
+						// }
+						// if (gui.getResultsArea().getText().isEmpty()) {
+						// gui.getResultsArea().append(
+						// "No patterns found" + "\n");
+						// }
+						// gui.getResultsArea().append(
+						// "Pattern matching complete :)");
+						//
+						// } catch (Exception e) {
+						// System.out.println("listener:"
+						// + e.getStackTrace());
+						//
+						// }
+						// }
+						// });
+						w = new SwingWorker() {
+							@Override
+							protected Integer doInBackground() {
+								String text = pGui.getText();
+								String pattern = pGui.getPattern();
+								String deletedText = "";
+								String resultLine = "";
+								if (m.isValid(pattern, text)) {
+									ArrayList<Result> resultsList;
+									System.out.println("text: " + text);
+									try {
+										while (text.length() > 1) {
+											m.unorderedPatternRequest(pattern,
+													text);
+											resultsList = m.getResultsList();
+											if (!resultsList.isEmpty()) {
+												for (Result r : resultsList) {
+													resultLine = "occurrence found: "
+															+ deletedText
+															+ "["
+															+ r.getPrefix()
+															+ r.getString()
+															+ "]"
+															+ r.getRemainingString()
+															+ "\n";
+													// + " ( Symbol Mapping : ";
+													m.appendResultLine(resultLine);
+													pGui.getResultsArea()
+															.append(resultLine);
+													// ArrayList<SymbolMapping>
+													// symbolMap = r
+													// .getSymbolMap();
+													// for (int i =
+													// symbolMap.size()
+													// - 1; i >= 0; i--) {
+													// resultLine =
+													// symbolMap.get(
+													// i).getSymbol()
+													// + " = "
+													// + symbolMap
+													// .get(i)
+													// .getSymbolValue()
+													// + ", ";
+													// pGui.getResultsArea()
+													// .append(resultLine);
+													// }
+													// pGui.getResultsArea().append(
+													// ")\n");
+												}
+											}
+											deletedText = deletedText
+													+ text.substring(0, 1);
+											text = m.trimText(text);
+											Thread.sleep(5);
+										}
+										if (pGui.getResultsArea().getText()
+												.isEmpty()) {
+											resultLine = "No patterns found."
+													+ "\n";
+											pGui.getResultsArea().append(
+													resultLine);
+										}
+										resultLine = "Pattern matching complete :)"
+												+ "\n";
+										pGui.getResultsArea()
+												.append(resultLine);
+
+									} catch (Exception ex) {
+										System.out
+												.println("button listener exception");
+										ex.printStackTrace();
+									}
+								} else {
+									System.out.println("invalid fields");
+									resultLine = "Field invalid!" + "\n";
+									pGui.getResultsArea().append(resultLine);
+									return 0;
+								}
+								return 1;
+							}
+						};
+						w.execute();
+					}
 				}
 			} catch (NumberFormatException nfe) {
 				System.out.println("Error: Text in number field!");
 			}
+
 			break;
 		case "Show2":
 			System.out.println("Show pressed in factor complexity");
