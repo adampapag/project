@@ -19,11 +19,11 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 			agenda.add(r);
 		}
 		// System.out.print("\nagenda: " + "[ ");
-		for (int i = 0; i < agenda.size(); i++) {
-			Result r = agenda.get(i);
-			// System.out.print(r.getPrefix() + "(" + r.getString() + ")"
-			// + r.getRemainingString() + ", ");
-		}
+		// for (int i = 0; i < agenda.size(); i++) {
+		// Result r = agenda.get(i);
+		// System.out.print(r.getPrefix() + "(" + r.getString() + ")"
+		// + r.getRemainingString() + ", ");
+		// }
 		// System.out.print("]");
 		for (int patternIndex = 1; patternIndex < patternList.size(); patternIndex++) {
 			while (!agenda.isEmpty()) {
@@ -38,8 +38,8 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 						candidate.getRemainingString(),
 						candidate.getSymbolMap())) {
 					r.addPrefix(candidate.getPrefix() + candidate.getString());
-					// System.out.println("adding: " + r.getPrefix() + "("
-					// + r.getString() + ")" + r.getRemainingString());
+					System.out.println("adding: " + r.getPrefix() + "("
+							+ r.getString() + ")" + r.getRemainingString());
 					newAgenda.add(r);
 				}
 			}
@@ -57,13 +57,13 @@ public class UnorderedPatternRequestHandler implements RequestHandler {
 		// System.out.print("]");
 		// check agenda
 		agenda = removeSymbolicContradictions(agenda);
-		// System.out.print("\nreturning agenda: [");
+		 System.out.print("\nreturning agenda: [");
 		for (int i = 0; i < agenda.size(); i++) {
 			Result r = agenda.get(i);
-			// System.out.print(r.getPrefix() + r.getString()
-			// + r.getRemainingString() + ", ");
+			 System.out.print(r.getPrefix() + r.getString()
+			 + r.getRemainingString() + ", ");
 		}
-		// System.out.print("]");
+		 System.out.print("]");
 		return agenda;
 
 	}
