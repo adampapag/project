@@ -19,9 +19,10 @@ public class CoWGUI implements IGUI {
 	@Override
 	public void initializeGUI() {
 		frame = new JFrame("CoW");
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 450, 330);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
 
 		addButtons();
 
@@ -51,15 +52,15 @@ public class CoWGUI implements IGUI {
 		frame.getContentPane().add(patternsButton);
 		buttonList.add(patternsButton);
 
-		JButton crucialityButton = new JButton("Cruciality");
-		crucialityButton.setBounds(165, 187, 117, 29);
-		frame.getContentPane().add(crucialityButton);
-		buttonList.add(crucialityButton);
-
 		JButton factorComplexityButton = new JButton("Factor Complexity");
-		factorComplexityButton.setBounds(145, 220, 157, 29);
+		factorComplexityButton.setBounds(145, 191, 157, 29);
 		frame.getContentPane().add(factorComplexityButton);
 		buttonList.add(factorComplexityButton);
+
+		JButton crucialityButton = new JButton("Cruciality");
+		crucialityButton.setBounds(165, 252, 117, 29);
+		frame.getContentPane().add(crucialityButton);
+		buttonList.add(crucialityButton);
 	}
 
 	@Override

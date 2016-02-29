@@ -38,7 +38,7 @@ public class MorphismListener implements DocumentListener {
 	}
 
 	private void updateMorphismTable() {
-		gui.setMorphismTable(textField.getText());
+		gui.setTable(textField.getText());
 	}
 
 }

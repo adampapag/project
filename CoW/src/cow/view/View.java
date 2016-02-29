@@ -20,13 +20,13 @@ public class View implements IView {
 	@Override
 	public void setGUI(String guiType) {
 		if (guiType.equals("Morphisms")) {
-			// TODO
 			gui = new MorphismGUI();
 		} else if (guiType.equals("Patterns")) {
 			gui = new PatternGUI();
 		} else if (guiType.equals("Factor Complexity")) {
 			gui = new FactorComplexityGUI();
+		} else if (guiType.equals("Cruciality")) {
+			gui = new CrucialityGUI();
 		}
-
 	}
 }

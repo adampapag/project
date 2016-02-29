@@ -36,6 +36,7 @@ public class FactorComplexityGUI implements IGUI {
 		frame.setBounds(100, 100, 700, 550);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
 
 		addMenu();
 
@@ -86,14 +87,14 @@ public class FactorComplexityGUI implements IGUI {
 		frame.getContentPane().add(btnChooseFile);
 
 		JButton btnPrint = new JButton("Show2");
-		btnPrint.setBounds(203, 254, 117, 29);
+		btnPrint.setBounds(284, 250, 117, 29);
 		buttonList.add(btnPrint);
 		frame.getContentPane().add(btnPrint);
 
-		JButton btnExport = new JButton("Export");
-		btnExport.setBounds(368, 254, 117, 29);
-		buttonList.add(btnExport);
-		frame.getContentPane().add(btnExport);
+		JButton btnSave = new JButton("Save");
+		btnSave.setBounds(284, 477, 117, 29);
+		buttonList.add(btnSave);
+		frame.getContentPane().add(btnSave);
 	}
 
 	private void addLabels() {
@@ -122,7 +123,7 @@ public class FactorComplexityGUI implements IGUI {
 	private void addResultsPane() {
 		resultsArea = new JTextArea();
 		JScrollPane resultsPane = new JScrollPane(resultsArea);
-		resultsPane.setBounds(6, 289, 688, 212);
+		resultsPane.setBounds(6, 280, 688, 195);
 		frame.getContentPane().add(resultsPane);
 	}
 

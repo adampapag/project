@@ -106,16 +106,18 @@ public class Main {
 			paramIndex++;
 		}
 
+		System.out.println("Word = " + text);
 		for (String pattern : patternList) {
 			params[0] = pattern;
 			resultsList = new CrucialityRequestHandler().handle(params);
 			System.out.print("\nPattern = " + pattern + ", text = " + text
-					+ ", crucial words: ");
+					+ ", (bi)crucial words: ");
 			for (int i = 0; i < resultsList.size(); i++) {
-				System.out.print(resultsList.get(i).getPrefix() + "["
-						+ resultsList.get(i).getString() + "]"
+				System.out.print(resultsList.get(i).getPrefix()
+						+ resultsList.get(i).getString()
 						+ resultsList.get(i).getRemainingString() + ", ");
 			}
+			System.out.println("\n");
 		}
 
 	}

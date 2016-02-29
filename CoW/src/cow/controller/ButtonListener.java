@@ -75,7 +75,6 @@ public class ButtonListener implements ActionListener {
 						if (currentLength >= lengthFrom) {
 							avoidances = words.size();
 							resultLine = "Length " + currentLength + ": ";
-							System.out.print(resultLine);
 							m.appendResultLine(resultLine);
 							pGui.getResultsArea().append(resultLine);
 							for (int i = 0; i < words.size(); i++) {
@@ -446,7 +445,7 @@ public class ButtonListener implements ActionListener {
 				exc.printStackTrace();
 			}
 			break;
-		case "Export":
+		case "Save":
 			System.out.println("Export pressed");
 			String filepath = "/Users/adam/Desktop/CoWoutput.txt";
 			m.exportRequest(filepath);

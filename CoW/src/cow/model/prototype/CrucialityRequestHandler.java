@@ -55,9 +55,9 @@ public class CrucialityRequestHandler {
 			params[1] = textCopy;
 		}
 
+		System.out.println("word contains: ");
 		for (int i = 0; i < containsList.size(); i++) {
-			System.out.println("word contains: "
-					+ containsList.get(i).getPrefix() + "["
+			System.out.println(containsList.get(i).getPrefix() + "["
 					+ containsList.get(i).getString() + "]"
 					+ containsList.get(i).getRemainingString());
 		}
