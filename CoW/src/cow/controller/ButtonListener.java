@@ -538,11 +538,13 @@ public class ButtonListener implements ActionListener {
 						@Override
 						protected Integer doInBackground() {
 							String text = cGui.getText();
-							String deletedText = "";
 							String resultLine = "";
 							for (String p : patternList) {
 								if (m.isValid(p, text)) {
 									ArrayList<Result> resultsList;
+									resultLine = p + "\n";
+									m.appendResultLine(resultLine);
+									cGui.getResultsArea().append(resultLine);
 									try {
 										ArrayList<String> alphabet = m
 												.deduceAlphabet(text);
@@ -575,9 +577,9 @@ public class ButtonListener implements ActionListener {
 												cGui.getResultsArea().append(
 														")\n");
 											}
-//											m.appendResultLine(resultLine);
-//											cGui.getResultsArea().append(
-//													resultLine);
+											// m.appendResultLine(resultLine);
+											// cGui.getResultsArea().append(
+											// resultLine);
 										}
 
 										if (cGui.getResultsArea().getText()
@@ -586,10 +588,6 @@ public class ButtonListener implements ActionListener {
 											cGui.getResultsArea().append(
 													resultLine);
 										}
-										resultLine = "\nComplete :)" + "\n";
-										cGui.getResultsArea()
-												.append(resultLine);
-
 									} catch (Exception ex) {
 										System.out
 												.println("button listener exception");
@@ -602,6 +600,8 @@ public class ButtonListener implements ActionListener {
 									return 0;
 								}
 							}
+							resultLine = "\nComplete :)" + "\n";
+							cGui.getResultsArea().append(resultLine);
 							return 1;
 						}
 					};
