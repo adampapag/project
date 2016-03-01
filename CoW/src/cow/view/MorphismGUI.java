@@ -85,12 +85,12 @@ public class MorphismGUI implements IGUI {
 	private void addMorphismListener() {
 		morphismListener.setGUI(this);
 		morphismListener.setTextField(alphabetField);
-		alphabetField.getDocument().addDocumentListener(morphismListener);
+		// alphabetField.getDocument().addDocumentListener(morphismListener);
 	}
 
-	public void setTable(String alphaSize) {
+	public void setTable(String size) {
 		try {
-			int alphabetSize = Integer.parseInt(alphaSize);
+			int alphabetSize = Integer.parseInt(size);
 			data = new Object[alphabetSize][columnNames.length];
 			for (int row = 0; row < data.length; row++) {
 				for (int column = 0; column < columnNames.length; column++) {

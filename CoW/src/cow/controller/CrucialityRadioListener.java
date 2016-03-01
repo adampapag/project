@@ -3,13 +3,13 @@ package cow.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import cow.view.PatternGUI;
+import cow.view.CrucialityGUI;
 
-public class RadioListener implements ActionListener {
+public class CrucialityRadioListener implements ActionListener {
 
-	private PatternGUI gui;
+	private CrucialityGUI gui;
 
-	public RadioListener(PatternGUI gui) {
+	public CrucialityRadioListener(CrucialityGUI gui) {
 		this.gui = gui;
 	}
 
@@ -22,12 +22,6 @@ public class RadioListener implements ActionListener {
 			break;
 		case "unordered":
 			gui.setUnordered();
-			break;
-		case "avoidance":
-			gui.setAvoidance();
-			break;
-		case "distribution":
-			gui.setDistribution();
 			break;
 		case "on words":
 			gui.setOnWords();

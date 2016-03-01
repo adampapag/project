@@ -1,5 +1,6 @@
 package cow.view;
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
@@ -14,7 +15,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import cow.controller.CrucialityRadioListener;
 import cow.controller.MorphismListener;
+import cow.controller.PatternListener;
 import cow.controller.prototype.MenuBar;
 import cow.view.IGUI;
 
@@ -23,6 +26,9 @@ public class CrucialityGUI implements IGUI {
 	private JFrame frame;
 	private JRadioButton rdbtnOrdered;
 	private JRadioButton rdbtnUnordered;
+	private JRadioButton rdbtnOnWords;
+	private JRadioButton rdbtnText;
+	private JTextField patternField;
 	private JTextField textField;
 	private JTextField alphabetField;
 	private JTextField fromField;
@@ -30,8 +36,12 @@ public class CrucialityGUI implements IGUI {
 	private JTextArea resultsArea;
 	private JTable patternTable;
 	private JScrollPane patternPane;
-	private MorphismListener morphismListener;
+	private PatternListener patternListener;
+	private ActionListener radioListener;
 	private ArrayList<JButton> buttonList = new ArrayList<JButton>();
+	private boolean ordered;
+	private boolean onWords;
+	private boolean text;
 	String columnNames[] = { "restricted patterns" };
 	Object[][] data = {};
 
@@ -39,7 +49,8 @@ public class CrucialityGUI implements IGUI {
 	 * Create the application.
 	 */
 	public CrucialityGUI() {
-		morphismListener = new MorphismListener();
+		radioListener = new CrucialityRadioListener(this);
+		patternListener = new PatternListener();
 		initializeGUI();
 	}
 
@@ -64,7 +75,7 @@ public class CrucialityGUI implements IGUI {
 
 		addPatternTable();
 
-		addMorphismListener();
+		addPatternListener();
 
 		addResultsPane();
 
@@ -91,20 +102,20 @@ public class CrucialityGUI implements IGUI {
 	private void addPatternTable() {
 		patternTable = new JTable(data, columnNames);
 		patternPane = new JScrollPane(patternTable);
+		patternTable.setGridColor(Color.BLACK);
 		patternTable.setFillsViewportHeight(true);
 		patternPane.setBounds(279, 27, 122, 97);
 		frame.getContentPane().add(patternPane);
 	}
 
-	private void addMorphismListener() {
-		// morphismListener.setGUI(this);
-		morphismListener.setTextField(alphabetField);
-		alphabetField.getDocument().addDocumentListener(morphismListener);
+	private void addPatternListener() {
+		patternListener.setGUI(this);
+		patternListener.setTextField(patternField);
 	}
 
-	public void setTable(String alphaSize) {
+	public void setTable(String size) {
 		try {
-			int alphabetSize = Integer.parseInt(alphaSize);
+			int alphabetSize = Integer.parseInt(size);
 			data = new Object[alphabetSize][columnNames.length];
 			for (int row = 0; row < data.length; row++) {
 				for (int column = 0; column < columnNames.length; column++) {
@@ -119,8 +130,59 @@ public class CrucialityGUI implements IGUI {
 		}
 	}
 
+	public void setOnWords() {
+		rdbtnText.setSelected(false);
+		rdbtnOnWords.setSelected(true);
+		text = false;
+		onWords = true;
+	}
+
+	public void setText() {
+		rdbtnOnWords.setSelected(false);
+		rdbtnText.setSelected(true);
+		onWords = false;
+		text = true;
+	}
+
+	public String OnWordsOrText() {
+		if (onWords && (!text)) {
+			return "on words";
+		} else {
+			assert text && (!onWords);
+			return "text";
+		}
+	}
+
+	public boolean isOrdered() {
+		return ordered;
+	}
+
+	public void setOrdered() {
+		rdbtnUnordered.setSelected(false);
+		rdbtnOrdered.setSelected(true);
+		ordered = true;
+	}
+
+	public void setUnordered() {
+		rdbtnOrdered.setSelected(false);
+		rdbtnUnordered.setSelected(true);
+		ordered = false;
+	}
+
 	public JTable getPatternTable() {
 		return patternTable;
+	}
+
+	public int getAlphabetSize() {
+		return Integer.parseInt(alphabetField.getText());
+	}
+
+	public int getFromLength() {
+		return Integer.parseInt(fromField.getText());
+	}
+
+	public int getToLength() {
+		return Integer.parseInt(toField.getText());
 	}
 
 	@Override
@@ -138,15 +200,33 @@ public class CrucialityGUI implements IGUI {
 		rdbtnOrdered = new JRadioButton("Ordered");
 		rdbtnOrdered.setBounds(413, 6, 85, 23);
 		rdbtnOrdered.setActionCommand("ordered");
-		// rdbtnOrdered.addActionListener(radioListener);
+		rdbtnOrdered.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnOrdered);
 
 		rdbtnUnordered = new JRadioButton("Unordered");
 		rdbtnUnordered.setBounds(165, 6, 98, 23);
 		rdbtnUnordered.setSelected(true);
 		rdbtnUnordered.setActionCommand("unordered");
-		// rdbtnUnordered.addActionListener(radioListener);
+		rdbtnUnordered.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnUnordered);
+
+		rdbtnOnWords = new JRadioButton("On Words");
+		rdbtnOnWords.setBounds(165, 79, 94, 23);
+		rdbtnOnWords.setActionCommand("on words");
+		rdbtnOnWords.setSelected(true);
+		rdbtnOnWords.addActionListener(radioListener);
+		frame.getContentPane().add(rdbtnOnWords);
+
+		rdbtnText = new JRadioButton("Text");
+		rdbtnText.setBounds(413, 79, 94, 23);
+		rdbtnText.setActionCommand("text");
+		rdbtnText.addActionListener(radioListener);
+		frame.getContentPane().add(rdbtnText);
+
+		JButton btnChooseFile = new JButton("Choose File");
+		btnChooseFile.setBounds(577, 213, 117, 29);
+		buttonList.add(btnChooseFile);
+		frame.getContentPane().add(btnChooseFile);
 
 		JButton btnPrint = new JButton("Show4");
 		btnPrint.setBounds(284, 250, 117, 29);
@@ -160,11 +240,15 @@ public class CrucialityGUI implements IGUI {
 	}
 
 	private void addLabels() {
-		JLabel lblWords = new JLabel("On Words");
-		lblWords.setBounds(46, 141, 61, 16);
+		JLabel lblNumberOfLetters = new JLabel("Number of letters in alphabet");
+		lblNumberOfLetters.setBounds(45, 49, 199, 16);
+		frame.getContentPane().add(lblNumberOfLetters);
+
+		JLabel lblWords = new JLabel("On Words over {0, 1, ..., k}");
+		lblWords.setBounds(46, 141, 170, 16);
 		frame.getContentPane().add(lblWords);
 
-		JLabel lblAlphabetSize = new JLabel("Size of alphabet:");
+		JLabel lblAlphabetSize = new JLabel("k = ");
 		lblAlphabetSize.setBounds(46, 162, 122, 16);
 		frame.getContentPane().add(lblAlphabetSize);
 
@@ -183,13 +267,26 @@ public class CrucialityGUI implements IGUI {
 		JLabel lblText = new JLabel("Text/Word");
 		lblText.setBounds(388, 141, 88, 16);
 		frame.getContentPane().add(lblText);
+
+		JLabel lblFromFile = new JLabel("From file: ");
+		lblFromFile.setBounds(388, 218, 88, 16);
+		frame.getContentPane().add(lblFromFile);
+
+		JLabel lblFilepath = new JLabel("/filepath");
+		lblFilepath.setBounds(488, 218, 70, 16);
+		frame.getContentPane().add(lblFilepath);
 	}
 
 	private void addFields() {
+		patternField = new JTextField();
+		patternField.setColumns(3);
+		patternField.setBounds(240, 43, 41, 28);
+		patternField.getDocument().addDocumentListener(patternListener);
+		frame.getContentPane().add(patternField);
+
 		alphabetField = new JTextField();
 		alphabetField.setColumns(3);
 		alphabetField.setBounds(180, 156, 41, 28);
-		alphabetField.getDocument().addDocumentListener(morphismListener);
 		frame.getContentPane().add(alphabetField);
 
 		fromField = new JTextField();

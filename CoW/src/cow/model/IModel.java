@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 public interface IModel {
 
+	void patternRequest(String pattern, String text, boolean ordered);
+
 	void orderedPatternRequest(String pattern, String text);
 
 	void unorderedPatternRequest(String pattern, String text);
@@ -11,6 +13,9 @@ public interface IModel {
 	void factorComplexityRequest(String text);
 
 	void morphismRequest(String text, String[] morphismData, int iteration);
+
+	void crucialityRequest(String pattern, String text, boolean ordered,
+			String[] alphabet);
 
 	void exportRequest(String filepath);
 

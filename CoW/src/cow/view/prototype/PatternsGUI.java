@@ -13,7 +13,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import cow.controller.RadioListener;
 import cow.controller.prototype.MenuBar;
 import cow.view.IGUI;
 

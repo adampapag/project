@@ -27,6 +27,20 @@ public class Model implements IModel {
 		resultsList = handler.handle(args);
 	}
 
+	public void patternRequest(String pattern, String text, boolean ordered) {
+		resultsList.clear();
+		args = new String[2];
+		args[0] = pattern;
+		args[1] = text;
+		if (ordered) {
+			handler = new OrderedPatternRequestHandler();
+		} else {
+			assert !ordered;
+			handler = new UnorderedPatternRequestHandler();
+		}
+		resultsList = handler.handle(args);
+	}
+
 	public void factorComplexityRequest(String text) {
 		resultsList.clear();
 		args = new String[1];
@@ -46,6 +60,11 @@ public class Model implements IModel {
 		args[args.length - 1] = String.valueOf(iteration);
 		handler = new MorphismRequestHandler();
 		resultsList = handler.handle(args);
+	}
+
+	public void crucialityRequest(String pattern, String text, boolean ordered,
+			String[] alphabet) {
+
 	}
 
 	public void exportRequest(String filepath) {

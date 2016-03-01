@@ -13,7 +13,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import cow.controller.RadioListener;
+import cow.controller.PatternRadioListener;
 import cow.view.IGUI;
 import cow.view.MenuBar;
 
@@ -42,7 +42,7 @@ public class PatternGUI implements IGUI {
 	 * Create the application.
 	 */
 	public PatternGUI() {
-		 radioListener = new RadioListener(this);
+		radioListener = new PatternRadioListener(this);
 		buttonList = new ArrayList<JButton>();
 		initializeGUI();
 	}
@@ -204,14 +204,14 @@ public class PatternGUI implements IGUI {
 		frame.getContentPane().add(rdbtnDistribution);
 
 		rdbtnOnWords = new JRadioButton("On Words");
-		rdbtnOnWords.setBounds(211, 79, 94, 23);
+		rdbtnOnWords.setBounds(210, 79, 94, 23);
 		rdbtnOnWords.setActionCommand("on words");
 		rdbtnOnWords.setSelected(true);
 		rdbtnOnWords.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnOnWords);
 
 		rdbtnText = new JRadioButton("Text");
-		rdbtnText.setBounds(394, 79, 94, 23);
+		rdbtnText.setBounds(393, 79, 94, 23);
 		rdbtnText.setActionCommand("text");
 		rdbtnText.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnText);
@@ -237,11 +237,11 @@ public class PatternGUI implements IGUI {
 		lblPattern.setBounds(162, 47, 96, 16);
 		frame.getContentPane().add(lblPattern);
 
-		JLabel lblWords = new JLabel("On Words");
-		lblWords.setBounds(46, 112, 61, 16);
+		JLabel lblWords = new JLabel("On Words over {0, 1, ..., k}");
+		lblWords.setBounds(46, 112, 170, 16);
 		frame.getContentPane().add(lblWords);
 
-		JLabel lblAlphabetSize = new JLabel("Size of alphabet:");
+		JLabel lblAlphabetSize = new JLabel("k = ");
 		lblAlphabetSize.setBounds(46, 162, 122, 16);
 		frame.getContentPane().add(lblAlphabetSize);
 

@@ -74,7 +74,7 @@ public class Main {
 		// }
 
 		ArrayList<Result> resultsList;
-		String text = "211";
+		String text = "121";
 		boolean ordered = false;
 
 		String[] patternList = new String[2];
