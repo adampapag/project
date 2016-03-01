@@ -63,17 +63,34 @@ public class Model implements IModel {
 	}
 
 	public void crucialityRequest(String pattern, String text, boolean ordered,
-			String[] alphabet) {
-
+			ArrayList<String> alphabet) {
+		resultsList.clear();
+		args = new String[alphabet.size() + 3];
+		args[0] = pattern;
+		args[1] = text;
+		args[2] = String.valueOf(ordered);
+		for (int i = 3; i < args.length; i++) {
+			args[i] = alphabet.get(i - 3);
+		}
+		handler = new CrucialityRequestHandler();
+		for (int i = 0; i < args.length; i++) {
+			System.out.println(args[i] + ", ");
+		}
+		resultsList = handler.handle(args);
 	}
 
-	public void exportRequest(String filepath) {
+	public void saveRequest(String filepath) {
 		resultsList.clear();
 		args = new String[2];
 		args[0] = filepath;
 		args[1] = result;
 		handler = new ExportRequestHandler();
 		resultsList = handler.handle(args);
+	}
+
+	public void exportRequest(String filepath) {
+		// TODO Auto-generated method stub
+
 	}
 
 	public String trimText(String text) {
@@ -146,6 +163,19 @@ public class Model implements IModel {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public ArrayList<String> deduceAlphabet(String text) {
+		char[] textArray = text.toCharArray();
+		ArrayList<String> alphabet = new ArrayList<String>();
+		for (char c : textArray) {
+			String letter = String.valueOf(c);
+			if (!alphabet.contains(letter)) {
+				alphabet.add(letter);
+			}
+		}
+		return alphabet;
 	}
 
 }

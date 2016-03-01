@@ -14,8 +14,8 @@ public interface IModel {
 
 	void morphismRequest(String text, String[] morphismData, int iteration);
 
-	void crucialityRequest(String pattern, String text, boolean ordered,
-			String[] alphabet);
+	void crucialityRequest(String p, String deletedText, boolean ordered,
+			ArrayList<String> alphabet);
 
 	void exportRequest(String filepath);
 
@@ -30,5 +30,9 @@ public interface IModel {
 	void appendResultLine(String text);
 
 	void clearResult();
+
+	ArrayList<String> deduceAlphabet(String text);
+
+	void saveRequest(String filepath);
 
 }

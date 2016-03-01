@@ -120,7 +120,7 @@ public class OrderedPatternRequestHandler implements RequestHandler {
 		Result r = null;
 		while (iterator.hasNext()) {
 			r = iterator.next();
-			System.out.println(r.getString());
+			// System.out.println(r.getString());
 			ArrayList<SymbolMapping> symbolMap = r.getSymbolMap();
 			boolean contradiction = false;
 			for (int i = 0; i < symbolMap.size(); i++) {
@@ -128,10 +128,11 @@ public class OrderedPatternRequestHandler implements RequestHandler {
 					SymbolMapping currentSymbol = symbolMap.get(i);
 					String symbol = currentSymbol.getSymbol();
 					String symbolValue = currentSymbol.getSymbolValue();
-					System.out.println(symbol + ": " + symbolValue);
+					// System.out.println(symbol + ": " + symbolValue);
 					for (int j = 0; j < symbolMap.size(); j++) {
-						System.out.println("->" + symbolMap.get(j).getSymbol()
-								+ ": " + symbolMap.get(j).getSymbolValue());
+						// System.out.println("->" +
+						// symbolMap.get(j).getSymbol()
+						// + ": " + symbolMap.get(j).getSymbolValue());
 						String candidateSymbol = symbolMap.get(j).getSymbol();
 						String candidateSymbolValue = symbolMap.get(j)
 								.getSymbolValue();

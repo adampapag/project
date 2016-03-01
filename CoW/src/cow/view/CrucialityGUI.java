@@ -16,10 +16,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import cow.controller.CrucialityRadioListener;
-import cow.controller.MorphismListener;
 import cow.controller.PatternListener;
 import cow.controller.prototype.MenuBar;
-import cow.view.IGUI;
 
 public class CrucialityGUI implements IGUI {
 
@@ -240,7 +238,7 @@ public class CrucialityGUI implements IGUI {
 	}
 
 	private void addLabels() {
-		JLabel lblNumberOfLetters = new JLabel("Number of letters in alphabet");
+		JLabel lblNumberOfLetters = new JLabel("Number of patterns");
 		lblNumberOfLetters.setBounds(45, 49, 199, 16);
 		frame.getContentPane().add(lblNumberOfLetters);
 

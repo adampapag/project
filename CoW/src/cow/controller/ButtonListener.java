@@ -464,7 +464,7 @@ public class ButtonListener implements ActionListener {
 						index++;
 					}
 				}
-				final String pattern = "";
+				// final String pattern = "";
 				if (cGui.OnWordsOrText().equals("on words")) {
 					// swing worker
 					int alphaSize = cGui.getAlphabetSize();
@@ -541,39 +541,52 @@ public class ButtonListener implements ActionListener {
 							String deletedText = "";
 							String resultLine = "";
 							for (String p : patternList) {
-								if (m.isValid(pattern, text)) {
-									System.out.print("\nPattern = " + pattern
-											+ ", text = " + text);
+								if (m.isValid(p, text)) {
 									ArrayList<Result> resultsList;
-									System.out.println("text: " + text);
 									try {
-										String[] alphabet = m
+										ArrayList<String> alphabet = m
 												.deduceAlphabet(text);
-										m.crucialityRequest(pattern,
-												deletedText, cGui.isOrdered(),
-												alphabet);
+										m.crucialityRequest(p, text,
+												cGui.isOrdered(), alphabet);
 										resultsList = m.getResultsList();
 										if (!resultsList.isEmpty()) {
 											for (Result r : resultsList) {
 												resultLine = r.getPrefix()
 														+ r.getString()
 														+ r.getRemainingString()
-														+ ", ";
+														// + ", ";
+														+ " ( Symbol Mapping : ";
 												m.appendResultLine(resultLine);
 												cGui.getResultsArea().append(
 														resultLine);
+												ArrayList<SymbolMapping> symbolMap = r
+														.getSymbolMap();
+												for (int i = symbolMap.size() - 1; i >= 0; i--) {
+													resultLine = symbolMap.get(
+															i).getSymbol()
+															+ " -> "
+															+ symbolMap
+																	.get(i)
+																	.getSymbolValue()
+															+ ", ";
+													cGui.getResultsArea()
+															.append(resultLine);
+												}
+												cGui.getResultsArea().append(
+														")\n");
 											}
+//											m.appendResultLine(resultLine);
+//											cGui.getResultsArea().append(
+//													resultLine);
 										}
-										System.out.println("\n");
+
 										if (cGui.getResultsArea().getText()
 												.isEmpty()) {
-											resultLine = "No patterns found"
-													+ "\n";
+											resultLine = "Not crucial" + "\n";
 											cGui.getResultsArea().append(
 													resultLine);
 										}
-										resultLine = "Pattern matching complete :)"
-												+ "\n";
+										resultLine = "\nComplete :)" + "\n";
 										cGui.getResultsArea()
 												.append(resultLine);
 
@@ -600,9 +613,9 @@ public class ButtonListener implements ActionListener {
 			}
 			break;
 		case "Save":
-			System.out.println("Export pressed");
+			System.out.println("Save pressed");
 			String filepath = "/Users/adam/Desktop/CoWoutput.txt";
-			m.exportRequest(filepath);
+			m.saveRequest(filepath);
 			String statusLine = m.getResultsList().get(0).getString();
 			final IGUI gui = v.getGUI();
 			gui.getResultsArea().append(statusLine);
