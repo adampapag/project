@@ -318,7 +318,7 @@ public class CrucialityGUI implements IGUI {
 	private void addFields() {
 		patternField = new JTextField();
 		patternField.setColumns(3);
-		patternField.setBounds(376, 101, 41, 28);
+		patternField.setBounds(376, 99, 41, 28);
 		patternField.getDocument().addDocumentListener(patternListener);
 		frame.getContentPane().add(patternField);
 

@@ -335,7 +335,6 @@ public class ButtonListener implements ActionListener {
 						ArrayList<String> seenList = new ArrayList<String>();
 						ArrayList<Result> resultsList = new ArrayList<Result>();
 						while (text.length() > 0) {
-							System.out.println("\n text: " + text);
 							m.factorComplexityRequest(text);
 							ArrayList<Result> results = m.getResultsList();
 							for (Result r : results) {
@@ -356,7 +355,6 @@ public class ButtonListener implements ActionListener {
 						}
 						for (int i = 0; i < textCopy.length(); i++) {
 							resultLine = "Length " + (i + 1) + " : ";
-							System.out.print(resultLine);
 							m.appendResultLine(resultLine);
 							fGui.getResultsArea().append(resultLine);
 							for (Result r : resultsList) {
@@ -364,13 +362,11 @@ public class ButtonListener implements ActionListener {
 									resultLine = r.getString();
 									if (!(i == textCopy.length() - 1))
 										resultLine = resultLine + ", ";
-									System.out.print(resultLine);
 									m.appendResultLine(resultLine);
 									fGui.getResultsArea().append(resultLine);
 								}
 							}
 							resultLine = "\n";
-							System.out.print(resultLine);
 							m.appendResultLine(resultLine);
 							fGui.getResultsArea().append(resultLine);
 						}
