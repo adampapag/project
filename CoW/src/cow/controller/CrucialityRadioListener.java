@@ -29,7 +29,13 @@ public class CrucialityRadioListener implements ActionListener {
 		case "text":
 			gui.setText();
 			break;
+		case "print words":
+			gui.setPrintWords();
+			break;
+		case "number words":
+			gui.setNumberWords();
+			break;
 		}
-	}
 
+	}
 }

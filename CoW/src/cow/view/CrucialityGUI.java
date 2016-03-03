@@ -26,6 +26,8 @@ public class CrucialityGUI implements IGUI {
 	private JRadioButton rdbtnUnordered;
 	private JRadioButton rdbtnOnWords;
 	private JRadioButton rdbtnText;
+	private JRadioButton rdbtnNumberWords;
+	private JRadioButton rdbtnPrintWords;
 	private JTextField patternField;
 	private JTextField textField;
 	private JTextField alphabetField;
@@ -38,8 +40,10 @@ public class CrucialityGUI implements IGUI {
 	private ActionListener radioListener;
 	private ArrayList<JButton> buttonList = new ArrayList<JButton>();
 	private boolean ordered;
-	private boolean onWords;
+	private boolean onWords = true;
 	private boolean text;
+	private boolean printWords = true;
+	private boolean numberWords;
 	String columnNames[] = { "restricted patterns" };
 	Object[][] data = {};
 
@@ -102,7 +106,7 @@ public class CrucialityGUI implements IGUI {
 		patternPane = new JScrollPane(patternTable);
 		patternTable.setGridColor(Color.BLACK);
 		patternTable.setFillsViewportHeight(true);
-		patternPane.setBounds(279, 27, 122, 97);
+		patternPane.setBounds(279, 9, 122, 90);
 		frame.getContentPane().add(patternPane);
 	}
 
@@ -125,6 +129,29 @@ public class CrucialityGUI implements IGUI {
 		} catch (NumberFormatException nfe) {
 			// TODO
 			System.out.println("number format exception; crucialityGUI");
+		}
+	}
+
+	public void setPrintWords() {
+		rdbtnNumberWords.setSelected(false);
+		rdbtnPrintWords.setSelected(true);
+		numberWords = false;
+		printWords = true;
+	}
+
+	public void setNumberWords() {
+		rdbtnPrintWords.setSelected(false);
+		rdbtnNumberWords.setSelected(true);
+		printWords = false;
+		numberWords = true;
+	}
+
+	public String printWordsOrNumberWords() {
+		if (printWords && (!numberWords)) {
+			return "print words";
+		} else {
+			assert numberWords && (!printWords);
+			return "number words";
 		}
 	}
 
@@ -221,6 +248,19 @@ public class CrucialityGUI implements IGUI {
 		rdbtnText.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnText);
 
+		rdbtnPrintWords = new JRadioButton("Print Words");
+		rdbtnPrintWords.setBounds(34, 214, 105, 23);
+		rdbtnPrintWords.setActionCommand("print words");
+		rdbtnPrintWords.setSelected(true);
+		rdbtnPrintWords.addActionListener(radioListener);
+		frame.getContentPane().add(rdbtnPrintWords);
+
+		rdbtnNumberWords = new JRadioButton("Find Number Words");
+		rdbtnNumberWords.setBounds(151, 214, 160, 23);
+		rdbtnNumberWords.setActionCommand("number words");
+		rdbtnNumberWords.addActionListener(radioListener);
+		frame.getContentPane().add(rdbtnNumberWords);
+
 		JButton btnChooseFile = new JButton("Choose File");
 		btnChooseFile.setBounds(577, 213, 117, 29);
 		buttonList.add(btnChooseFile);
@@ -239,7 +279,7 @@ public class CrucialityGUI implements IGUI {
 
 	private void addLabels() {
 		JLabel lblNumberOfLetters = new JLabel("Number of patterns");
-		lblNumberOfLetters.setBounds(45, 49, 199, 16);
+		lblNumberOfLetters.setBounds(245, 107, 134, 16);
 		frame.getContentPane().add(lblNumberOfLetters);
 
 		JLabel lblWords = new JLabel("On Words over {0, 1, ..., k}");
@@ -247,19 +287,19 @@ public class CrucialityGUI implements IGUI {
 		frame.getContentPane().add(lblWords);
 
 		JLabel lblAlphabetSize = new JLabel("k = ");
-		lblAlphabetSize.setBounds(46, 162, 122, 16);
+		lblAlphabetSize.setBounds(45, 164, 57, 16);
 		frame.getContentPane().add(lblAlphabetSize);
 
 		JLabel lblLengthOfWords = new JLabel("Length of words:");
-		lblLengthOfWords.setBounds(46, 205, 117, 16);
+		lblLengthOfWords.setBounds(45, 191, 117, 16);
 		frame.getContentPane().add(lblLengthOfWords);
 
 		JLabel lblFrom = new JLabel("from");
-		lblFrom.setBounds(162, 205, 30, 16);
+		lblFrom.setBounds(161, 191, 30, 16);
 		frame.getContentPane().add(lblFrom);
 
 		JLabel lblTo = new JLabel("to");
-		lblTo.setBounds(247, 205, 16, 16);
+		lblTo.setBounds(246, 191, 16, 16);
 		frame.getContentPane().add(lblTo);
 
 		JLabel lblText = new JLabel("Text/Word");
@@ -278,23 +318,23 @@ public class CrucialityGUI implements IGUI {
 	private void addFields() {
 		patternField = new JTextField();
 		patternField.setColumns(3);
-		patternField.setBounds(240, 43, 41, 28);
+		patternField.setBounds(376, 101, 41, 28);
 		patternField.getDocument().addDocumentListener(patternListener);
 		frame.getContentPane().add(patternField);
 
 		alphabetField = new JTextField();
 		alphabetField.setColumns(3);
-		alphabetField.setBounds(180, 156, 41, 28);
+		alphabetField.setBounds(120, 158, 41, 28);
 		frame.getContentPane().add(alphabetField);
 
 		fromField = new JTextField();
 		fromField.setColumns(3);
-		fromField.setBounds(203, 199, 41, 28);
+		fromField.setBounds(202, 185, 41, 28);
 		frame.getContentPane().add(fromField);
 
 		toField = new JTextField();
 		toField.setColumns(3);
-		toField.setBounds(267, 199, 41, 28);
+		toField.setBounds(266, 185, 41, 28);
 		frame.getContentPane().add(toField);
 
 		textField = new JTextField();

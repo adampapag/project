@@ -72,17 +72,24 @@ public class CrucialityRequestHandler implements RequestHandler {
 		// + containsList.get(i).getString() + "]"
 		// + containsList.get(i).getRemainingString());
 		// }
-
+		boolean rightExtension = false;
+		boolean leftExtension = false;
 		for (String letter : alphabet) {
 			params[1] = text + letter;
 			for (Result r : cruciality(params, containsList, ordered, "suffix")) {
+				rightExtension = true;
 				resultList.add(r);
 			}
 			params[1] = letter + text;
 			for (Result r : (cruciality(params, containsList, ordered, "prefix"))) {
+				leftExtension = true;
 				resultList.add(r);
 			}
-
+		}
+		if (rightExtension && leftExtension) {
+			resultList.add(new Result(text + " is bi-crucial", ""));
+		} else if (rightExtension || leftExtension) {
+			resultList.add(new Result(text + " is crucial", ""));
 		}
 		return resultList;
 	}

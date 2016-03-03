@@ -473,63 +473,105 @@ public class ButtonListener implements ActionListener {
 					int currentLength = 1;
 					int avoidances = 0;
 					String resultLine = "";
-					ArrayList<String> words = new ArrayList<String>();
 
-					// initiate array {0, ..., k}
-					for (int i = 0; i < alphaSize; i++) {
-						words.add(String.valueOf(i));
-					}
-
-					while (currentLength < lengthTo) {
-						String current = "";
-						String word = "";
-						for (int alphaIndex = 0; alphaIndex < Math.pow(
-								alphaSize, currentLength); alphaIndex++) {
-							current = words.remove(0);
-							for (int suffix = 0; suffix < alphaSize; suffix++) {
-								words.add(current + suffix);
-							}
+					for (String p : patternList) {
+						ArrayList<String> words = new ArrayList<String>();
+						ArrayList<String> alphabet = new ArrayList<String>();
+						// initiate array {0, ..., k}
+						for (int i = 0; i < alphaSize; i++) {
+							words.add(String.valueOf(i));
+							alphabet.add(String.valueOf(i));
 						}
-						System.out.println(Arrays.toString(words.toArray()));
-						currentLength++;
-						if (currentLength >= lengthFrom) {
-							avoidances = words.size();
-							resultLine = "Length " + currentLength + ": ";
-							m.appendResultLine(resultLine);
-							cGui.getResultsArea().append(resultLine);
-							for (int i = 0; i < words.size(); i++) {
-								int occurrences = 0;
-								word = words.get(i);
-								if (cGui.isOrdered()) {
-									while (word.length() > 1) {
-										// m.orderedPatternRequest(pattern,
-										// word);
-										if (!m.getResultsList().isEmpty()) {
-											occurrences++;
-											break;
-										}
-										word = word.substring(1);
-									}
-								} else {
-									assert !cGui.isOrdered();
-									while (word.length() > 1) {
-										// m.unorderedPatternRequest(pattern,
-										// word);
-										if (!m.getResultsList().isEmpty()) {
-											occurrences++;
-											break;
-										}
-										word = word.substring(1);
-									}
+						resultLine = "Pattern =  " + p + "\n";
+						m.appendResultLine(resultLine);
+						cGui.getResultsArea().append(resultLine);
+						while (currentLength < lengthTo) {
+
+							String current = "";
+							String word = "";
+							for (int alphaIndex = 0; alphaIndex < Math.pow(
+									alphaSize, currentLength); alphaIndex++) {
+								current = words.remove(0);
+								for (int suffix = 0; suffix < alphaSize; suffix++) {
+									words.add(current + suffix);
 								}
-								avoidances -= occurrences;
 							}
-							resultLine = avoidances + "\n";
-							m.appendResultLine(resultLine);
-							cGui.getResultsArea().append(resultLine);
+							System.out
+									.println(Arrays.toString(words.toArray()));
+							currentLength++;
+							if (currentLength >= lengthFrom) {
+								avoidances = words.size();
+								resultLine = "Length " + currentLength + ": \n";
+								m.appendResultLine(resultLine);
+								cGui.getResultsArea().append(resultLine);
+								for (int i = 0; i < words.size(); i++) {
+									int occurrences = 0;
+									word = words.get(i);
+									if (m.isValid(p, word)) {
+										ArrayList<Result> resultsList;
+										m.crucialityRequest(p, word,
+												cGui.isOrdered(), alphabet);
+										resultsList = m.getResultsList();
+										if (!resultsList.isEmpty()) {
+											for (Result r : resultsList) {
+												if (r.getPrefix()
+														.startsWith(
+																"word already contains pattern")) {
+													occurrences++;
+												}
+												if (cGui.printWordsOrNumberWords()
+														.equals("print words")) {
+													resultLine = r.getPrefix()
+															+ r.getString()
+															+ r.getRemainingString();
+													m.appendResultLine(resultLine);
+													cGui.getResultsArea()
+															.append(resultLine);
+													ArrayList<SymbolMapping> symbolMap = r
+															.getSymbolMap();
+													if (!symbolMap.isEmpty()) {
+														// + ", ";
+														resultLine = " ( Symbol Mapping : ";
+														m.appendResultLine(resultLine);
+														cGui.getResultsArea()
+																.append(resultLine);
+														for (int j = symbolMap
+																.size() - 1; j >= 0; j--) {
+															resultLine = symbolMap
+																	.get(j)
+																	.getSymbol()
+																	+ " -> "
+																	+ symbolMap
+																			.get(j)
+																			.getSymbolValue()
+																	+ ", ";
+															cGui.getResultsArea()
+																	.append(resultLine);
+														}
+														cGui.getResultsArea()
+																.append(")");
+													}
+													cGui.getResultsArea()
+															.append("\n");
+												}
+											}
+										}
+									}
+									avoidances -= occurrences;
+								}
+								if (cGui.printWordsOrNumberWords().equals(
+										"number words")) {
+									resultLine = avoidances + " avoid" + "\n";
+									m.appendResultLine(resultLine);
+									cGui.getResultsArea().append(resultLine);
+								}
+							}
 						}
+						// m.appendResultLine(resultLine);
+						currentLength = 1;
+						cGui.getResultsArea().append("\n");
 					}
-					resultLine = "Pattern matching complete :)" + "\n";
+					resultLine = "Complete :)" + "\n";
 					cGui.getResultsArea().append(resultLine);
 				} else {
 					assert cGui.OnWordsOrText().equals("text");
@@ -542,7 +584,7 @@ public class ButtonListener implements ActionListener {
 							for (String p : patternList) {
 								if (m.isValid(p, text)) {
 									ArrayList<Result> resultsList;
-									resultLine = p + "\n";
+									resultLine = "pattern = " + p + "\n";
 									m.appendResultLine(resultLine);
 									cGui.getResultsArea().append(resultLine);
 									try {
@@ -555,31 +597,39 @@ public class ButtonListener implements ActionListener {
 											for (Result r : resultsList) {
 												resultLine = r.getPrefix()
 														+ r.getString()
-														+ r.getRemainingString()
-														// + ", ";
-														+ " ( Symbol Mapping : ";
+														+ r.getRemainingString();
 												m.appendResultLine(resultLine);
 												cGui.getResultsArea().append(
 														resultLine);
 												ArrayList<SymbolMapping> symbolMap = r
 														.getSymbolMap();
-												for (int i = symbolMap.size() - 1; i >= 0; i--) {
-													resultLine = symbolMap.get(
-															i).getSymbol()
-															+ " -> "
-															+ symbolMap
-																	.get(i)
-																	.getSymbolValue()
-															+ ", ";
+												if (!symbolMap.isEmpty()) {
+													// + ", ";
+													resultLine = " ( Symbol Mapping : ";
+													m.appendResultLine(resultLine);
 													cGui.getResultsArea()
 															.append(resultLine);
+													for (int i = symbolMap
+															.size() - 1; i >= 0; i--) {
+														resultLine = symbolMap
+																.get(i)
+																.getSymbol()
+																+ " -> "
+																+ symbolMap
+																		.get(i)
+																		.getSymbolValue()
+																+ ", ";
+														cGui.getResultsArea()
+																.append(resultLine);
+													}
+													cGui.getResultsArea()
+															.append(")");
 												}
 												cGui.getResultsArea().append(
-														")\n");
+														"\n");
 											}
 											// m.appendResultLine(resultLine);
-											// cGui.getResultsArea().append(
-											// resultLine);
+											cGui.getResultsArea().append("\n");
 										}
 
 										if (cGui.getResultsArea().getText()
@@ -600,7 +650,7 @@ public class ButtonListener implements ActionListener {
 									return 0;
 								}
 							}
-							resultLine = "\nComplete :)" + "\n";
+							resultLine = "Complete :)" + "\n";
 							cGui.getResultsArea().append(resultLine);
 							return 1;
 						}
