@@ -62,21 +62,41 @@ public class Model implements IModel {
 		resultsList = handler.handle(args);
 	}
 
-	public void crucialityRequest(String pattern, String text, boolean ordered,
-			ArrayList<String> alphabet) {
+	public void crucialityRequest(ArrayList<String> patternList, String text,
+			boolean ordered, ArrayList<String> alphabet) {
 		resultsList.clear();
-		args = new String[alphabet.size() + 3];
-		args[0] = pattern;
-		args[1] = text;
-		args[2] = String.valueOf(ordered);
-		for (int i = 3; i < args.length; i++) {
-			args[i] = alphabet.get(i - 3);
+		// args = new String[alphabet.size() + 3];
+		args = new String[patternList.size() + alphabet.size() + 2];
+		int index = 0;
+		args[0] = text;
+		for (int i = 1; i <= alphabet.size(); i++) {
+			args[i] = alphabet.get(i - 1);
+			index = i;
+		}
+		index++;
+
+		args[index] = String.valueOf(ordered);
+
+		index++;
+		for (int i = index; i < args.length; i++) {
+			args[i] = patternList.get(i - index);
 		}
 		handler = new CrucialityRequestHandler();
-		for (int i = 0; i < args.length; i++) {
-			System.out.println(args[i] + ", ");
-		}
+		// for (int i = 0; i < args.length; i++) {
+		// System.out.println(args[i] + ", ");
+		// }
 		resultsList = handler.handle(args);
+		// args[0] = pattern;
+		// args[1] = text;
+		// args[2] = String.valueOf(ordered);
+		// for (int i = 3; i < args.length; i++) {
+		// args[i] = alphabet.get(i - 3);
+		// }
+		// handler = new CrucialityRequestHandler();
+		// for (int i = 0; i < args.length; i++) {
+		// System.out.println(args[i] + ", ");
+		// }
+		// resultsList = handler.handle(args);
 	}
 
 	public void saveRequest(String filepath) {
@@ -109,10 +129,15 @@ public class Model implements IModel {
 		result = "";
 	}
 
-	public boolean isValid(String pattern, String text) {
-		if (text.length() == 0) {
+	public boolean isValidPattern(String pattern) {
+		if (pattern.length() < 2) {
 			return false;
-		} else if (pattern.length() < 2) {
+		}
+		return true;
+	}
+
+	public boolean isValidText(String text) {
+		if (text.length() == 0) {
 			return false;
 		}
 		return true;

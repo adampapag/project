@@ -29,6 +29,8 @@ public class PatternRadioListener implements ActionListener {
 		case "distribution":
 			gui.setDistribution();
 			break;
+		case "print words":
+			gui.setPrintWords();
 		case "on words":
 			gui.setOnWords();
 			break;

@@ -67,7 +67,7 @@ public class CrucialityGUI implements IGUI {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 
-		addMenu();
+		// addMenu();
 
 		addButtons();
 
@@ -106,7 +106,7 @@ public class CrucialityGUI implements IGUI {
 		patternPane = new JScrollPane(patternTable);
 		patternTable.setGridColor(Color.BLACK);
 		patternTable.setFillsViewportHeight(true);
-		patternPane.setBounds(279, 9, 122, 90);
+		patternPane.setBounds(279, 31, 122, 90);
 		frame.getContentPane().add(patternPane);
 	}
 
@@ -223,27 +223,27 @@ public class CrucialityGUI implements IGUI {
 
 	private void addButtons() {
 		rdbtnOrdered = new JRadioButton("Ordered");
-		rdbtnOrdered.setBounds(413, 6, 85, 23);
+		rdbtnOrdered.setBounds(413, 28, 85, 23);
 		rdbtnOrdered.setActionCommand("ordered");
 		rdbtnOrdered.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnOrdered);
 
 		rdbtnUnordered = new JRadioButton("Unordered");
-		rdbtnUnordered.setBounds(165, 6, 98, 23);
+		rdbtnUnordered.setBounds(165, 28, 98, 23);
 		rdbtnUnordered.setSelected(true);
 		rdbtnUnordered.setActionCommand("unordered");
 		rdbtnUnordered.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnUnordered);
 
 		rdbtnOnWords = new JRadioButton("On Words");
-		rdbtnOnWords.setBounds(165, 79, 94, 23);
+		rdbtnOnWords.setBounds(165, 98, 94, 23);
 		rdbtnOnWords.setActionCommand("on words");
 		rdbtnOnWords.setSelected(true);
 		rdbtnOnWords.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnOnWords);
 
 		rdbtnText = new JRadioButton("Text");
-		rdbtnText.setBounds(413, 79, 94, 23);
+		rdbtnText.setBounds(413, 98, 94, 23);
 		rdbtnText.setActionCommand("text");
 		rdbtnText.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnText);
@@ -278,8 +278,8 @@ public class CrucialityGUI implements IGUI {
 	}
 
 	private void addLabels() {
-		JLabel lblNumberOfLetters = new JLabel("Number of patterns");
-		lblNumberOfLetters.setBounds(245, 107, 134, 16);
+		JLabel lblNumberOfLetters = new JLabel("Number of patterns:");
+		lblNumberOfLetters.setBounds(260, 8, 134, 16);
 		frame.getContentPane().add(lblNumberOfLetters);
 
 		JLabel lblWords = new JLabel("On Words over {0, 1, ..., k}");
@@ -318,7 +318,7 @@ public class CrucialityGUI implements IGUI {
 	private void addFields() {
 		patternField = new JTextField();
 		patternField.setColumns(3);
-		patternField.setBounds(376, 99, 41, 28);
+		patternField.setBounds(391, 0, 41, 28);
 		patternField.getDocument().addDocumentListener(patternListener);
 		frame.getContentPane().add(patternField);
 

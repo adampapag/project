@@ -14,8 +14,8 @@ public interface IModel {
 
 	void morphismRequest(String text, String[] morphismData, int iteration);
 
-	void crucialityRequest(String p, String deletedText, boolean ordered,
-			ArrayList<String> alphabet);
+	void crucialityRequest(ArrayList<String> patternList, String text,
+			boolean ordered, ArrayList<String> alphabet);
 
 	void exportRequest(String filepath);
 
@@ -23,7 +23,9 @@ public interface IModel {
 
 	String trimText(String text);
 
-	boolean isValid(String pattern, String text);
+	boolean isValidPattern(String pattern);
+
+	boolean isValidText(String text);
 
 	boolean isValid(String[] morphismData);
 

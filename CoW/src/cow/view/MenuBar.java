@@ -1,4 +1,5 @@
 package cow.view;
+
 import java.awt.Color;
 
 import javax.swing.JMenu;
@@ -15,13 +16,18 @@ public class MenuBar extends JMenuBar {
 	}
 
 	private void buildMenu() {
-		JMenu menu = new JMenu("File");
+		JMenu menu = new JMenu("Library");
 		menu.setMnemonic('f');
 		add(menu);
 
-		JMenuItem open = new JMenuItem("Open", 'o');
+		JMenuItem open = new JMenuItem("Open Morphism", 'o');
 		open.setToolTipText("");
 		// open.addActionListener(l);
 		menu.add(open);
+
+		JMenuItem save = new JMenuItem("Save Morphism", 's');
+		save.setToolTipText("");
+		// save.addActionListener(l);
+		menu.add(save);
 	}
 }

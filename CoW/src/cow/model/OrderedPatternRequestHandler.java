@@ -74,7 +74,7 @@ public class OrderedPatternRequestHandler implements RequestHandler {
 
 				pattern = pattern.substring(1);
 
-				System.out.println("result = " + result);
+				// System.out.println("result = " + result);
 
 			}
 			symbolMap.add(new SymbolMapping(

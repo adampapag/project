@@ -10,61 +10,99 @@ import cow.model.OrderedPatternRequestHandler;
 public class CrucialityRequestHandler implements RequestHandler {
 
 	public ArrayList<Result> handle(String[] args) {
-		ArrayList<String> alphabet = new ArrayList<String>();
 		ArrayList<Result> resultList = new ArrayList<Result>();
-		ArrayList<Result> containsList = new ArrayList<Result>();
+		ArrayList<String> alphabet = new ArrayList<String>();
+		ArrayList<String> patternList = new ArrayList<String>();
+
 		String[] params = new String[2];
-
-		String pattern = args[0];
-		String text = args[1];
 		boolean ordered = true;
+		int index = 1;
+		String text = args[0];
+		String letter = args[index];
 
-		params[0] = pattern;
-		params[1] = text;
+		while (!(letter == "true" || letter == "false")) {
+			alphabet.add(letter);
+			index++;
+			letter = args[index];
+		}
 
-		if (args[2].equals("false")) {
+		if (letter.equals("false")) {
 			ordered = false;
 		}
 
-		for (int i = 3; i < args.length; i++) {
-			alphabet.add(args[i]);
+		index++;
+
+		for (int i = index; i < args.length; i++) {
+			patternList.add(args[i]);
 		}
 
-		String textCopy = text;
-		String deletedText = "";
-		ArrayList<Result> resultCopy;
-		while (textCopy.length() > 0) {
-			if (ordered) {
-				resultCopy = new OrderedPatternRequestHandler().handle(params);
-			} else {
-				assert !ordered;
-				resultCopy = new UnorderedPatternRequestHandler()
-						.handle(params);
-			}
+		// ArrayList<Result> containsList = new ArrayList<Result>();
 
-			for (Result r : resultCopy) {
-				if (r.getPrefix().equals("")) {
-					r.addPrefix(deletedText);
-				}
-				r.addPrefix("word already contains pattern: " + r.getPrefix());
-				// containsList.add(r);
-				resultList.add(r);
-				return resultList;
-
-			}
-
-			deletedText = deletedText + textCopy.substring(0, 1);
-			textCopy = textCopy.substring(1);
-			params[1] = textCopy;
-		}
-
-		// for (Result r : containsList) {
-		// resultList.add(r);
+		// String pattern = args[0];
+		// String text = args[1];
+		// boolean ordered = true;
+		//
+		// params[0] = pattern;
+		// params[1] = text;
+		//
+		// if (args[2].equals("false")) {
+		// ordered = false;
 		// }
 		//
-		// if (!resultList.isEmpty()) {
-		// return resultList;
+		// for (int i = 3; i < args.length; i++) {
+		// alphabet.add(args[i]);
 		// }
+
+		params[1] = text;
+
+		for (String pattern : patternList) {
+			params[0] = pattern;
+			String textCopy = text;
+			String deletedText = "";
+			ArrayList<Result> resultCopy;
+			while (textCopy.length() > 0) {
+				if (ordered) {
+					resultCopy = new OrderedPatternRequestHandler()
+							.handle(params);
+				} else {
+					assert !ordered;
+					resultCopy = new UnorderedPatternRequestHandler()
+							.handle(params);
+				}
+
+				for (Result r : resultCopy) {
+					if (r.getPrefix().equals("")) {
+						r.addPrefix(deletedText);
+					}
+					r.addPrefix("word already contains pattern " + pattern
+							+ " : " + r.getPrefix());
+					// containsList.add(r);
+					resultList.add(r);
+				}
+
+				deletedText = deletedText + textCopy.substring(0, 1);
+				textCopy = textCopy.substring(1);
+				params[1] = textCopy;
+			}
+			params[1] = text;
+		}
+
+		if (!resultList.isEmpty()) {
+			return resultList;
+		}
+
+		String cruciality = cruciality(text, alphabet, patternList, ordered);
+
+		if (!cruciality.equals("not crucial")) {
+			Result r = new Result(text, "");
+			r.addPrefix("crucial word: ");
+			String bicruciality = bicruciality(text, alphabet, patternList,
+					ordered);
+			if (bicruciality.equals("bi-crucial")) {
+				r.addPrefix("bi-crucial word: ");
+			}
+			resultList.add(r);
+		}
 
 		// System.out.println("word contains: ");
 		// for (int i = 0; i < containsList.size(); i++) {
@@ -72,26 +110,145 @@ public class CrucialityRequestHandler implements RequestHandler {
 		// + containsList.get(i).getString() + "]"
 		// + containsList.get(i).getRemainingString());
 		// }
-		boolean rightExtension = false;
-		boolean leftExtension = false;
-		for (String letter : alphabet) {
-			params[1] = text + letter;
-			for (Result r : cruciality(params, containsList, ordered, "suffix")) {
-				rightExtension = true;
-				resultList.add(r);
-			}
-			params[1] = letter + text;
-			for (Result r : (cruciality(params, containsList, ordered, "prefix"))) {
-				leftExtension = true;
-				resultList.add(r);
-			}
-		}
-		if (rightExtension && leftExtension) {
-			resultList.add(new Result(text + " is bi-crucial", ""));
-		} else if (rightExtension || leftExtension) {
-			resultList.add(new Result(text + " is crucial", ""));
-		}
+		// boolean rightExtension = false;
+		// boolean leftExtension = false;
+		// for (String letter : alphabet) {
+		// params[1] = text + letter;
+		// for (Result r : cruciality(params, containsList, ordered, "suffix"))
+		// {
+		// rightExtension = true;
+		// resultList.add(r);
+		// }
+		// params[1] = letter + text;
+		// for (Result r : (cruciality(params, containsList, ordered,
+		// "prefix"))) {
+		// leftExtension = true;
+		// resultList.add(r);
+		// }
+		// }
+		// if (rightExtension && leftExtension) {
+		// resultList.add(new Result(text + " is bi-crucial", ""));
+		// } else if (rightExtension || leftExtension) {
+		// resultList.add(new Result(text + " is crucial", ""));
+		// }
 		return resultList;
+	}
+
+	private String cruciality(String text, ArrayList<String> alphabet,
+			ArrayList<String> patternList, boolean ordered) {
+		// ArrayList<Result> resultList = new ArrayList<Result>();
+		ArrayList<String> rExtendList = new ArrayList<String>();
+		// String[] params = new String[2];
+		// String word;
+
+		for (String letter : alphabet) {
+			rExtendList.add(text + letter);
+		}
+
+		if (isCrucial(rExtendList, patternList, ordered)) {
+			return "crucial";
+		}
+
+		return "not crucial";
+
+		// for (String extendedWord : rExtendList) {
+		// System.out.println(extendedWord);
+		// params[1] = extendedWord;
+		// for (String pattern : patternList) {
+		// params[0] = pattern;
+		// word = extendedWord;
+		// while (word.length() > 1) {
+		// if (ordered) {
+		// resultList.addAll(new OrderedPatternRequestHandler()
+		// .handle(params));
+		// } else {
+		// assert !ordered;
+		// resultList.addAll(new UnorderedPatternRequestHandler()
+		// .handle(params));
+		// }
+		// word = word.substring(1);
+		// }
+		// }
+		// if (resultList.isEmpty()) {
+		// return "not crucial";
+		// }
+		// }
+		// return "crucial";
+	}
+
+	private String bicruciality(String text, ArrayList<String> alphabet,
+			ArrayList<String> patternList, boolean ordered) {
+		// ArrayList<Result> resultList = new ArrayList<Result>();
+		ArrayList<String> lExtendList = new ArrayList<String>();
+		// String[] params = new String[2];
+		// String word;
+
+		for (String letter : alphabet) {
+			lExtendList.add(letter + text);
+		}
+
+		if (isCrucial(lExtendList, patternList, ordered)) {
+			return "bi-crucial";
+		}
+
+		return "not bi-crucial";
+
+		// ArrayList<Result> resultList = new ArrayList<Result>();
+		// ArrayList<String> lExtendList = new ArrayList<String>();
+		// String[] params = new String[2];
+		//
+		// for (String letter : alphabet) {
+		// lExtendList.add(letter + text);
+		// }
+		// for (String extendedWord : lExtendList) {
+		// params[1] = extendedWord;
+		// for (String pattern : patternList) {
+		// params[0] = pattern;
+		// if (ordered) {
+		// resultList.addAll(new OrderedPatternRequestHandler()
+		// .handle(params));
+		// } else {
+		// assert !ordered;
+		// resultList.addAll(new UnorderedPatternRequestHandler()
+		// .handle(params));
+		// }
+		// }
+		// if (resultList.isEmpty()) {
+		// return "not bi-crucial";
+		// }
+		// }
+		// return "bi-crucial";
+	}
+
+	private boolean isCrucial(ArrayList<String> extendList,
+			ArrayList<String> patternList, boolean ordered) {
+		ArrayList<Result> resultList = new ArrayList<Result>();
+		String[] params = new String[2];
+		String word;
+
+		for (String extendedWord : extendList) {
+			for (String pattern : patternList) {
+				params[0] = pattern;
+				word = extendedWord;
+				while (word.length() > 0) {
+					params[1] = word;
+					if (ordered) {
+						resultList.addAll(new OrderedPatternRequestHandler()
+								.handle(params));
+					} else {
+						assert !ordered;
+						resultList.addAll(new UnorderedPatternRequestHandler()
+								.handle(params));
+					}
+					word = word.substring(1);
+				}
+			}
+			if (resultList.isEmpty()) {
+				return false;
+			}
+			resultList.clear();
+		}
+		return true;
 	}
 
 	private ArrayList<Result> cruciality(String[] params,

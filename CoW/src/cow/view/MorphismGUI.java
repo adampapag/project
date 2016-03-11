@@ -13,8 +13,10 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
 
 import cow.controller.MorphismListener;
+import cow.view.IGUI;
 
 public class MorphismGUI implements IGUI {
 
@@ -62,6 +64,10 @@ public class MorphismGUI implements IGUI {
 		addMorphismListener();
 
 		addResultsPane();
+
+		JSeparator verticalSeparator = new JSeparator(SwingConstants.VERTICAL);
+		verticalSeparator.setBounds(339, 0, 16, 184);
+		frame.getContentPane().add(verticalSeparator);
 
 		// separator
 		JSeparator separator = new JSeparator();
@@ -151,37 +157,37 @@ public class MorphismGUI implements IGUI {
 		frame.getContentPane().add(lblAlphabet);
 
 		JLabel lblNumberOfLetters = new JLabel("Number of letters in alphabet");
-		lblNumberOfLetters.setBounds(45, 49, 199, 16);
+		lblNumberOfLetters.setBounds(35, 89, 199, 16);
 		frame.getContentPane().add(lblNumberOfLetters);
 
 		JLabel lblMorphism = new JLabel("Morphism");
-		lblMorphism.setBounds(359, 21, 88, 16);
+		lblMorphism.setBounds(369, 21, 88, 16);
 		frame.getContentPane().add(lblMorphism);
 
 		JLabel lblFromIteration = new JLabel("from iteration");
-		lblFromIteration.setBounds(60, 201, 96, 16);
+		lblFromIteration.setBounds(236, 201, 96, 16);
 		frame.getContentPane().add(lblFromIteration);
 
 		JLabel lblTo = new JLabel("to");
-		lblTo.setBounds(220, 201, 24, 16);
+		lblTo.setBounds(396, 201, 24, 16);
 		frame.getContentPane().add(lblTo);
 	}
 
 	private void addFields() {
 		alphabetField = new JTextField();
 		alphabetField.setColumns(3);
-		alphabetField.setBounds(240, 43, 41, 28);
+		alphabetField.setBounds(240, 83, 41, 28);
 		alphabetField.getDocument().addDocumentListener(morphismListener);
 		frame.getContentPane().add(alphabetField);
 
 		fromField = new JTextField();
-		fromField.setBounds(168, 195, 41, 28);
+		fromField.setBounds(344, 195, 41, 28);
 		frame.getContentPane().add(fromField);
 		fromField.setColumns(3);
 
 		toField = new JTextField();
 		toField.setColumns(3);
-		toField.setBounds(240, 195, 41, 28);
+		toField.setBounds(416, 195, 41, 28);
 		frame.getContentPane().add(toField);
 	}
 

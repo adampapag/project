@@ -9,14 +9,12 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 public class FactorComplexityGUI implements IGUI {
 
 	private JFrame frame;
 	private ActionListener buttonListener;
-	private JTextField textField;
+	private JTextArea textArea;
 	private JTextArea resultsArea;
 	private ArrayList<JButton> buttonList;
 
@@ -38,7 +36,7 @@ public class FactorComplexityGUI implements IGUI {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 
-		addMenu();
+//		addMenu();
 
 		addButtons();
 
@@ -52,19 +50,15 @@ public class FactorComplexityGUI implements IGUI {
 		separator.setBounds(6, 239, 688, 16);
 		frame.getContentPane().add(separator);
 
-		JSeparator verticalSeparator = new JSeparator(SwingConstants.VERTICAL);
-		verticalSeparator.setBounds(339, 126, 16, 120);
-		frame.getContentPane().add(verticalSeparator);
-
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(6, 122, 688, 12);
+		separator_1.setBounds(6, 189, 688, 12);
 		frame.getContentPane().add(separator_1);
 
 		frame.setVisible(true);
 	}
 
 	public String getText() {
-		return textField.getText();
+		return textArea.getText();
 	}
 
 	@Override
@@ -99,7 +93,7 @@ public class FactorComplexityGUI implements IGUI {
 
 	private void addLabels() {
 		JLabel lblText = new JLabel("Text");
-		lblText.setBounds(21, 141, 88, 16);
+		lblText.setBounds(21, 17, 88, 16);
 		frame.getContentPane().add(lblText);
 
 		JLabel lblFromFile = new JLabel("From file: ");
@@ -113,10 +107,12 @@ public class FactorComplexityGUI implements IGUI {
 
 	private void addFields() {
 
-		textField = new JTextField();
-		textField.setBounds(21, 169, 278, 28);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(false);
+		JScrollPane textPane = new JScrollPane(textArea);
+		textPane.setBounds(60, 45, 586, 119);
+		frame.getContentPane().add(textPane);
 
 	}
 
