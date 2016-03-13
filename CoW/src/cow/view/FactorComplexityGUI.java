@@ -36,7 +36,7 @@ public class FactorComplexityGUI implements IGUI {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 
-//		addMenu();
+		// addMenu();
 
 		addButtons();
 
@@ -81,9 +81,14 @@ public class FactorComplexityGUI implements IGUI {
 		frame.getContentPane().add(btnChooseFile);
 
 		JButton btnPrint = new JButton("Show2");
-		btnPrint.setBounds(284, 250, 117, 29);
+		btnPrint.setBounds(219, 250, 117, 29);
 		buttonList.add(btnPrint);
 		frame.getContentPane().add(btnPrint);
+
+		JButton btnStop = new JButton("Stop");
+		btnStop.setBounds(357, 250, 117, 29);
+		buttonList.add(btnStop);
+		frame.getContentPane().add(btnStop);
 
 		JButton btnSave = new JButton("Save");
 		btnSave.setBounds(284, 477, 117, 29);

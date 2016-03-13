@@ -16,7 +16,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import cow.controller.MorphismListener;
-import cow.view.IGUI;
 
 public class MorphismGUI implements IGUI {
 
@@ -136,9 +135,14 @@ public class MorphismGUI implements IGUI {
 
 	private void addButtons() {
 		JButton btnPrint = new JButton("Show3");
-		btnPrint.setBounds(284, 250, 117, 29);
+		btnPrint.setBounds(219, 250, 117, 29);
 		buttonList.add(btnPrint);
 		frame.getContentPane().add(btnPrint);
+
+		JButton btnStop = new JButton("Stop");
+		btnStop.setBounds(357, 250, 117, 29);
+		buttonList.add(btnStop);
+		frame.getContentPane().add(btnStop);
 
 		JButton btnSave = new JButton("Save");
 		btnSave.setBounds(284, 477, 117, 29);

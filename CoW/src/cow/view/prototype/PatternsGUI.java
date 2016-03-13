@@ -1,53 +1,56 @@
 package cow.view.prototype;
 
+import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
-import cow.controller.prototype.MenuBar;
+import cow.controller.MorphismListener;
 import cow.view.IGUI;
+import cow.view.MenuBar;
 
 public class PatternsGUI implements IGUI {
 
 	private JFrame frame;
-	private JRadioButton rdbtnOrdered;
-	private JRadioButton rdbtnUnordered;
-	private JTextField patternField;
-	private JTextField textField;
 	private JTextField alphabetField;
 	private JTextField fromField;
 	private JTextField toField;
 	private JTextArea resultsArea;
-	private ActionListener radioListener;
-	private ArrayList<JButton> buttonList;
-	private boolean ordered;
+	private JTable morphismTable;
+	private JScrollPane morphismPane;
+	private MorphismListener morphismListener;
+	private ArrayList<JButton> buttonList = new ArrayList<JButton>();
+	String columnNames[] = { "letter", "word" };
+	Object[][] data = {};
 
 	/**
 	 * Create the application.
 	 */
 	public PatternsGUI() {
-		// radioListener = new RadioListener(this);
-		buttonList = new ArrayList<JButton>();
+		morphismListener = new MorphismListener();
 		initializeGUI();
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	@Override
 	public void initializeGUI() {
-		frame = new JFrame("CoW\t-\tIdentifying Patterns");
+		frame = new JFrame("CoW\t-\tWorking with Morphisms");
 		frame.setBounds(100, 100, 700, 550);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		frame.setResizable(false);
 
 		addMenu();
 
@@ -57,56 +60,68 @@ public class PatternsGUI implements IGUI {
 
 		addFields();
 
+		addMorphismTable();
+
+		addMorphismListener();
+
 		addResultsPane();
 
-		JSeparator separator = new JSeparator();
-		separator.setBounds(6, 239, 688, 16);
-		frame.getContentPane().add(separator);
-
 		JSeparator verticalSeparator = new JSeparator(SwingConstants.VERTICAL);
-		verticalSeparator.setBounds(339, 126, 16, 120);
+		verticalSeparator.setBounds(339, 0, 16, 184);
 		frame.getContentPane().add(verticalSeparator);
 
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(6, 122, 688, 12);
-		frame.getContentPane().add(separator_1);
+		// separator
+		JSeparator separator = new JSeparator();
+		separator.setBounds(6, 177, 688, 16);
+		frame.getContentPane().add(separator);
 
 		frame.setVisible(true);
 	}
 
-	public String getPattern() {
-		return patternField.getText();
+	private void addMorphismTable() {
+		morphismTable = new JTable(data, columnNames);
+		morphismTable.setGridColor(Color.BLACK);
+		morphismTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		morphismTable.setCellSelectionEnabled(true);
+		morphismTable.setFillsViewportHeight(true);
+		morphismPane = new JScrollPane(morphismTable);
+		morphismPane.setBounds(369, 49, 306, 116);
+		frame.getContentPane().add(morphismPane);
 	}
 
-	public String getText() {
-		return textField.getText();
+	private void addMorphismListener() {
+		// morphismListener.setGUI(this);
+		morphismListener.setTextField(alphabetField);
+		// alphabetField.getDocument().addDocumentListener(morphismListener);
 	}
 
-	public int getAlphabetSize() {
-		return Integer.parseInt(alphabetField.getText());
-	}
-
-	public int getWordLength() {
-		return Integer.parseInt(fromField.getText());
-	}
-
-	public void setOrdered(boolean selected) {
-
-		if (selected == true) {
-			rdbtnOrdered.setSelected(true);
-			rdbtnUnordered.setSelected(false);
-			ordered = true;
-		} else {
-			assert selected == false : "selected = " + selected
-					+ " ; should be false ";
-			rdbtnOrdered.setSelected(false);
-			rdbtnUnordered.setSelected(true);
-			ordered = false;
+	public void setTable(String size) {
+		try {
+			int alphabetSize = Integer.parseInt(size);
+			data = new Object[alphabetSize][columnNames.length];
+			for (int row = 0; row < data.length; row++) {
+				for (int column = 0; column < columnNames.length; column++) {
+					data[row][column] = "";
+				}
+			}
+			frame.getContentPane().remove(morphismPane);
+			addMorphismTable();
+		} catch (NumberFormatException nfe) {
+			// TODO
+			System.out.println("number format exception; morphismGUI");
 		}
 	}
 
-	public boolean isOrdered() {
-		return ordered;
+	public JTable getMorphismTable() {
+		return morphismTable;
+	}
+
+	public JTextField getFromIterationField() {
+		return fromField;
+	}
+
+	public JTextField getToIterationField() {
+		return toField;
 	}
 
 	@Override
@@ -121,132 +136,71 @@ public class PatternsGUI implements IGUI {
 	}
 
 	private void addButtons() {
-		rdbtnOrdered = new JRadioButton("Ordered");
-		rdbtnOrdered.setBounds(293, 44, 85, 23);
-		rdbtnOrdered.setActionCommand("ordered");
-		rdbtnOrdered.addActionListener(radioListener);
-		frame.getContentPane().add(rdbtnOrdered);
-
-		rdbtnUnordered = new JRadioButton("Unordered");
-		rdbtnUnordered.setBounds(293, 9, 98, 23);
-		rdbtnUnordered.setSelected(true);
-		rdbtnUnordered.setActionCommand("unordered");
-		rdbtnUnordered.addActionListener(radioListener);
-		frame.getContentPane().add(rdbtnUnordered);
-
-		JRadioButton rdbtnAvoidance = new JRadioButton("Avoidance");
-		rdbtnAvoidance.setBounds(137, 9, 98, 23);
-		rdbtnAvoidance.setActionCommand("avoidance");
-		rdbtnAvoidance.setSelected(true);
-		// rdbtnAvoidance.addActionListener("////");
-		frame.getContentPane().add(rdbtnAvoidance);
-
-		JRadioButton rdbtnDistribution = new JRadioButton("Distribution");
-		rdbtnDistribution.setBounds(137, 44, 110, 23);
-		rdbtnDistribution.setActionCommand("distribution");
-		// rdbtnDistribution.addActionListener(////);
-		frame.getContentPane().add(rdbtnDistribution);
-
-		JRadioButton rdbtnOnWords = new JRadioButton("On Words");
-		rdbtnOnWords.setBounds(446, 9, 94, 23);
-		rdbtnOnWords.setActionCommand("on words");
-		rdbtnOnWords.setSelected(true);
-		// rdbtnOnWords.addActionListener(////);
-		frame.getContentPane().add(rdbtnOnWords);
-
-		JRadioButton rdbtnText = new JRadioButton("Text");
-		rdbtnText.setBounds(446, 44, 94, 23);
-		rdbtnText.setActionCommand("text");
-		// rdbtnOnWords.addActionListener(////);
-		frame.getContentPane().add(rdbtnText);
-
-		JButton btnChooseFile = new JButton("Choose File");
-		btnChooseFile.setBounds(577, 213, 117, 29);
-		buttonList.add(btnChooseFile);
-		frame.getContentPane().add(btnChooseFile);
-
-		JButton btnPrint = new JButton("Show");
-		btnPrint.setBounds(203, 254, 117, 29);
+		JButton btnPrint = new JButton("Show3");
+		btnPrint.setBounds(284, 250, 117, 29);
 		buttonList.add(btnPrint);
 		frame.getContentPane().add(btnPrint);
 
-		JButton btnExport = new JButton("Export");
-		btnExport.setBounds(368, 254, 117, 29);
-		buttonList.add(btnExport);
-		frame.getContentPane().add(btnExport);
+		JButton btnStop = new JButton("Stop");
+		btnStop.setBounds(350, 250, 117, 29);
+		buttonList.add(btnStop);
+		frame.getContentPane().add(btnStop);
+
+		JButton btnSave = new JButton("Save");
+		btnSave.setBounds(284, 477, 117, 29);
+		buttonList.add(btnSave);
+		frame.getContentPane().add(btnSave);
+
+		// JButton btnExport = new JButton("Export");
+		// btnExport.setBounds(504, 196, 117, 29);
+		// frame.getContentPane().add(btnExport);
+		// buttonList.add(btnExport);
 	}
 
 	private void addLabels() {
-		JLabel lblPattern = new JLabel("Pattern: ");
-		lblPattern.setBounds(162, 88, 96, 16);
-		frame.getContentPane().add(lblPattern);
+		JLabel lblAlphabet = new JLabel("Alphabet");
+		lblAlphabet.setBounds(35, 21, 61, 16);
+		frame.getContentPane().add(lblAlphabet);
 
-		JLabel lblWords = new JLabel("Words");
-		lblWords.setBounds(46, 141, 61, 16);
-		frame.getContentPane().add(lblWords);
+		JLabel lblNumberOfLetters = new JLabel("Number of letters in alphabet");
+		lblNumberOfLetters.setBounds(35, 89, 199, 16);
+		frame.getContentPane().add(lblNumberOfLetters);
 
-		JLabel lblAlphabetSize = new JLabel("Size of alphabet:");
-		lblAlphabetSize.setBounds(46, 162, 122, 16);
-		frame.getContentPane().add(lblAlphabetSize);
+		JLabel lblMorphism = new JLabel("Morphism");
+		lblMorphism.setBounds(369, 21, 88, 16);
+		frame.getContentPane().add(lblMorphism);
 
-		JLabel lblLengthOfWords = new JLabel("Length of words:");
-		lblLengthOfWords.setBounds(46, 205, 117, 16);
-		frame.getContentPane().add(lblLengthOfWords);
-
-		JLabel lblFrom = new JLabel("from");
-		lblFrom.setBounds(162, 205, 30, 16);
-		frame.getContentPane().add(lblFrom);
+		JLabel lblFromIteration = new JLabel("from iteration");
+		lblFromIteration.setBounds(236, 201, 96, 16);
+		frame.getContentPane().add(lblFromIteration);
 
 		JLabel lblTo = new JLabel("to");
-		lblTo.setBounds(247, 205, 16, 16);
+		lblTo.setBounds(396, 201, 24, 16);
 		frame.getContentPane().add(lblTo);
-
-		JLabel lblText = new JLabel("Text");
-		lblText.setBounds(388, 141, 88, 16);
-		frame.getContentPane().add(lblText);
-
-		JLabel lblFromFile = new JLabel("From file: ");
-		lblFromFile.setBounds(388, 218, 88, 16);
-		frame.getContentPane().add(lblFromFile);
-
-		JLabel lblFilepath = new JLabel("/filepath");
-		lblFilepath.setBounds(488, 218, 70, 16);
-		frame.getContentPane().add(lblFilepath);
 	}
 
 	private void addFields() {
-
-		patternField = new JTextField();
-		patternField.setBounds(229, 79, 252, 35);
-		frame.getContentPane().add(patternField);
-		patternField.setColumns(3);
-
 		alphabetField = new JTextField();
 		alphabetField.setColumns(3);
-		alphabetField.setBounds(169, 156, 41, 28);
+		alphabetField.setBounds(240, 83, 41, 28);
+		alphabetField.getDocument().addDocumentListener(morphismListener);
 		frame.getContentPane().add(alphabetField);
 
 		fromField = new JTextField();
-		fromField.setColumns(3);
-		fromField.setBounds(203, 199, 41, 28);
+		fromField.setBounds(344, 195, 41, 28);
 		frame.getContentPane().add(fromField);
+		fromField.setColumns(3);
 
 		toField = new JTextField();
 		toField.setColumns(3);
-		toField.setBounds(267, 199, 41, 28);
+		toField.setBounds(416, 195, 41, 28);
 		frame.getContentPane().add(toField);
-
-		textField = new JTextField();
-		textField.setBounds(388, 169, 278, 28);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
-
 	}
 
 	private void addResultsPane() {
 		resultsArea = new JTextArea();
 		JScrollPane resultsPane = new JScrollPane(resultsArea);
-		resultsPane.setBounds(6, 289, 688, 212);
+		resultsPane.setBounds(6, 280, 688, 195);
 		frame.getContentPane().add(resultsPane);
 	}
 
