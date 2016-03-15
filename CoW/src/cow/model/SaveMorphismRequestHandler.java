@@ -7,12 +7,16 @@ import cow.model.RequestHandler;
 import cow.model.Result;
 import cow.view.dialog.OverwriteFileDialog;
 
-public class ExportRequestHandler implements RequestHandler {
+public class SaveMorphismRequestHandler implements RequestHandler {
 
 	@Override
 	public ArrayList<Result> handle(String[] args) {
-		String filepath = args[0];
-		String text = args[1];
+		String filepath = args[0] + ".txt";
+		String text = "";
+
+		for (int i = 1; i < args.length; i++) {
+			text = text + args[i] + "\n";
+		}
 		ArrayList<Result> resultList = new ArrayList<Result>();
 
 		File file = new File(filepath);
@@ -22,7 +26,7 @@ public class ExportRequestHandler implements RequestHandler {
 			OverwriteFileDialog o = new OverwriteFileDialog();
 			int response = o.getInput();
 			if (response == 1) {
-				resultList.add(new Result("Export aborted.", ""));
+				resultList.add(new Result("Save aborted.", ""));
 				return resultList;
 			}
 		}
@@ -31,9 +35,9 @@ public class ExportRequestHandler implements RequestHandler {
 		int writeStatus = w.write();
 
 		if (writeStatus == 1) {
-			resultList.add(new Result("Export successful.", ""));
+			resultList.add(new Result("Morphism saved.", ""));
 		} else if (writeStatus == 0) {
-			resultList.add(new Result("Export unsuccessful.", ""));
+			resultList.add(new Result("Save failed.", ""));
 		}
 
 		return resultList;

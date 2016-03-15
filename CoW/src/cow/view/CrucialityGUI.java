@@ -33,6 +33,7 @@ public class CrucialityGUI implements IGUI {
 	private JTextField alphabetField;
 	private JTextField fromField;
 	private JTextField toField;
+	private JLabel lblFilepath;
 	private JTextArea resultsArea;
 	private JTable patternTable;
 	private JScrollPane patternPane;
@@ -95,6 +96,14 @@ public class CrucialityGUI implements IGUI {
 		frame.getContentPane().add(separator_1);
 
 		frame.setVisible(true);
+	}
+
+	public void setFile(String filepath) {
+		lblFilepath.setText(filepath);
+	}
+
+	public void setText(String text) {
+		textField.setText(text);
 	}
 
 	public String getText() {
@@ -266,7 +275,8 @@ public class CrucialityGUI implements IGUI {
 		buttonList.add(btnChooseFile);
 		frame.getContentPane().add(btnChooseFile);
 
-		JButton btnPrint = new JButton("Show4");
+		JButton btnPrint = new JButton("Show");
+		btnPrint.setActionCommand("Show4");
 		btnPrint.setBounds(219, 250, 117, 29);
 		buttonList.add(btnPrint);
 		frame.getContentPane().add(btnPrint);
@@ -277,7 +287,7 @@ public class CrucialityGUI implements IGUI {
 		frame.getContentPane().add(btnStop);
 
 		JButton btnSave = new JButton("Save");
-		btnSave.setBounds(284, 477, 117, 29);
+		btnSave.setBounds(284, 493, 117, 29);
 		buttonList.add(btnSave);
 		frame.getContentPane().add(btnSave);
 	}
@@ -315,8 +325,8 @@ public class CrucialityGUI implements IGUI {
 		lblFromFile.setBounds(388, 218, 88, 16);
 		frame.getContentPane().add(lblFromFile);
 
-		JLabel lblFilepath = new JLabel("/filepath");
-		lblFilepath.setBounds(488, 218, 70, 16);
+		lblFilepath = new JLabel("");
+		lblFilepath.setBounds(455, 218, 120, 16);
 		frame.getContentPane().add(lblFilepath);
 	}
 
@@ -351,7 +361,7 @@ public class CrucialityGUI implements IGUI {
 	private void addResultsPane() {
 		resultsArea = new JTextArea();
 		JScrollPane resultsPane = new JScrollPane(resultsArea);
-		resultsPane.setBounds(6, 280, 688, 195);
+		resultsPane.setBounds(6, 280, 688, 210);
 		frame.getContentPane().add(resultsPane);
 	}
 

@@ -69,4 +69,14 @@ public class CoWGUI implements IGUI {
 		return null;
 	}
 
+	public void setText(String text) {
+		// TODO
+	}
+
+	@Override
+	public void setFile(String path) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

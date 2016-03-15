@@ -9,5 +9,9 @@ public interface IGUI {
 
 	void addActionListener(ActionListener l);
 
+	void setText(String text);
+
 	public JTextArea getResultsArea();
+
+	void setFile(String path);
 }

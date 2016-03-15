@@ -17,6 +17,14 @@ public interface IModel {
 	void crucialityRequest(ArrayList<String> patternList, String text,
 			boolean ordered, ArrayList<String> alphabet);
 
+	void saveRequest(String filepath);
+
+	void saveMorphismRequest(String morphismPath, String[] morphismData);
+
+	void loadMorphismRequest(String morphismPath);
+
+	void openFileRequest(String filepath);
+
 	void exportRequest(String filepath);
 
 	ArrayList<Result> getResultsList();
@@ -35,6 +43,8 @@ public interface IModel {
 
 	ArrayList<String> deduceAlphabet(String text);
 
-	void saveRequest(String filepath);
+	boolean libraryExists();
+
+	void createLibrary();
 
 }

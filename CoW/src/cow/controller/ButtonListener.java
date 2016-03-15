@@ -2,6 +2,7 @@ package cow.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,7 +19,10 @@ import cow.view.IGUI;
 import cow.view.IView;
 import cow.view.MorphismGUI;
 import cow.view.PatternGUI;
+import cow.view.dialog.LoadDialog;
+import cow.view.dialog.LoadMorphismDialog;
 import cow.view.dialog.SaveDialog;
+import cow.view.dialog.SaveMorphismDialog;
 
 public class ButtonListener implements ActionListener {
 
@@ -87,7 +91,7 @@ public class ButtonListener implements ActionListener {
 										frequencyList = new ArrayList<Integer>();
 										frequencyMap = new HashMap<Integer, Integer>();
 										resultLine = "Length " + currentLength
-												+ ": \n";
+												+ ": ";
 										m.appendResultLine(resultLine);
 										pGui.getResultsArea()
 												.append(resultLine);
@@ -171,6 +175,10 @@ public class ButtonListener implements ActionListener {
 														.get(key);
 												index++;
 											}
+											resultLine = "\n";
+											m.appendResultLine(resultLine);
+											pGui.getResultsArea().append(
+													resultLine);
 											for (int row = 0; row < 2; row++) {
 												for (int col = 0; col < index; col++) {
 													resultLine = String
@@ -191,6 +199,10 @@ public class ButtonListener implements ActionListener {
 											assert pGui
 													.avoidanceOrDistributionOrPrintWords()
 													.equals("print words");
+											resultLine = "\n";
+											m.appendResultLine(resultLine);
+											pGui.getResultsArea().append(
+													resultLine);
 											for (Result r : result) {
 												resultLine = r.getPrefix()
 														+ r.getString()
@@ -482,23 +494,28 @@ public class ButtonListener implements ActionListener {
 						ArrayList<String> seenList = new ArrayList<String>();
 						ArrayList<Result> resultsList = new ArrayList<Result>();
 						while (text.length() > 0) {
-							m.factorComplexityRequest(text);
-							ArrayList<Result> results = m.getResultsList();
-							for (Result r : results) {
-								String result = r.getString();
-								if (!(seenList.contains(result))) {
-									seenList.add(result);
-									resultsList.add(r);
+							if (m.isValidText(text)) {
+								m.factorComplexityRequest(text);
+								ArrayList<Result> results = m.getResultsList();
+								for (Result r : results) {
+									String result = r.getString();
+									if (!(seenList.contains(result))) {
+										seenList.add(result);
+										resultsList.add(r);
+									}
+									// for (Result seen : resultsList) {
+									// System.out.println("seen: " +
+									// seen.getString());
+									// if (!(result.equals(seen.getString()))) {
+									// resultsList.add(r);
+									// }
+									// }
 								}
-								// for (Result seen : resultsList) {
-								// System.out.println("seen: " +
-								// seen.getString());
-								// if (!(result.equals(seen.getString()))) {
-								// resultsList.add(r);
-								// }
-								// }
+								text = text.substring(1);
+							} else {
+								fGui.getResultsArea().append("Text empty.");
+								return 0;
 							}
-							text = text.substring(1);
 						}
 						for (int i = 0; i < textCopy.length(); i++) {
 							if (isCancelled()) {
@@ -625,7 +642,6 @@ public class ButtonListener implements ActionListener {
 					w = new SwingWorker() {
 						@Override
 						protected Integer doInBackground() {
-							System.out.println("hi");
 							// swing worker
 							int alphaSize = cGui.getAlphabetSize();
 							int lengthFrom = cGui.getFromLength();
@@ -633,6 +649,7 @@ public class ButtonListener implements ActionListener {
 							int currentLength = 1;
 							int avoidances = 0;
 							int numberCrucialWords = 0;
+							int numberBiCrucialWords = 0;
 							String resultLine = "";
 							for (String p : patternList) {
 								if (!(m.isValidPattern(p))) {
@@ -686,7 +703,17 @@ public class ButtonListener implements ActionListener {
 													// }
 													if (!(r.getPrefix()
 															.startsWith("word already contains pattern"))) {
-														numberCrucialWords++;
+														if (r.getPrefix()
+																.startsWith(
+																		"crucial")) {
+															numberCrucialWords++;
+														} else if (r
+																.getPrefix()
+																.startsWith(
+																		"bi-crucial")) {
+															numberBiCrucialWords++;
+														}
+
 														if (cGui.printWordsOrNumberWords()
 																.equals("print words")) {
 															resultLine = r
@@ -738,7 +765,9 @@ public class ButtonListener implements ActionListener {
 									if (cGui.printWordsOrNumberWords().equals(
 											"number words")) {
 										resultLine = numberCrucialWords
-												+ " (bi-)crucial words" + "\n";
+												+ " crucial words" + "\n"
+												+ numberBiCrucialWords
+												+ " bi-crucial words" + "\n";
 										m.appendResultLine(resultLine);
 										cGui.getResultsArea()
 												.append(resultLine);
@@ -991,9 +1020,37 @@ public class ButtonListener implements ActionListener {
 			w.cancel(true);
 			v.getGUI().getResultsArea().append("Stopped");
 			break;
+		case "Choose File":
+			System.out.println("Choose file pressed");
+
+			// w = new SwingWorker() {
+			// @Override
+			// protected Integer doInBackground() {
+			LoadDialog lo = new LoadDialog();
+			String path = lo.display();
+
+			if (path == null) {
+				return;
+			}
+
+			m.openFileRequest(path);
+
+			File f = new File(path);
+
+			v.getGUI().setFile(f.getName());
+			v.getGUI().setText(m.getResultsList().get(0).getString());
+			// return;
+			// }
+			// };
+			// w.execute();
+
+			break;
 		case "Save":
 			System.out.println("Save pressed");
 
+			// w = new SwingWorker() {
+			// @Override
+			// protected Integer doInBackground() {
 			SaveDialog so = new SaveDialog();
 			String filePath = so.display();
 
@@ -1005,6 +1062,66 @@ public class ButtonListener implements ActionListener {
 				final IGUI gui = v.getGUI();
 				gui.getResultsArea().append(statusLine + "\n");
 			}
+			// return;
+			// }
+			// };
+			// w.execute();
+
+			break;
+		case "Save Morphism":
+			System.out.println("Save Morphism Pressed");
+
+			SaveMorphismDialog smo = new SaveMorphismDialog();
+			String newPath = smo.display();
+
+			if (newPath == null) {
+				return;
+			}
+
+			assert v.getGUI() instanceof MorphismGUI : "GUI should be of type MorphismGUI; is of type "
+					+ v.getGUI().getClass().getName();
+			MorphismGUI saveGUI = (MorphismGUI) v.getGUI();
+
+			JTable morphismTable = saveGUI.getMorphismTable();
+			String[] morphismData = new String[morphismTable.getRowCount()
+					* morphismTable.getColumnCount()];
+			int index = 0;
+			for (int row = 0; row < morphismTable.getRowCount(); row++) {
+				for (int column = 0; column < morphismTable.getColumnCount(); column++) {
+					morphismData[index] = (String) morphismTable.getValueAt(
+							row, column);
+					index++;
+				}
+			}
+
+			m.saveMorphismRequest(newPath, morphismData);
+
+			break;
+		case "Load Morphism":
+			System.out.println("Load Morphism Pressed");
+
+			LoadMorphismDialog lmo = new LoadMorphismDialog();
+			String morphismPath = lmo.display();
+
+			if (morphismPath == null) {
+				return;
+			}
+
+			assert v.getGUI() instanceof MorphismGUI : "GUI should be of type MorphismGUI; is of type "
+					+ v.getGUI().getClass().getName();
+			MorphismGUI loadGUI = (MorphismGUI) v.getGUI();
+
+			m.loadMorphismRequest(morphismPath);
+
+			ArrayList<Result> resultList = m.getResultsList();
+			String[] data = new String[resultList.size()];
+
+			for (int i = 0; i < resultList.size(); i++) {
+				data[i] = resultList.get(i).getString();
+			}
+
+			loadGUI.setTable(data);
+
 			break;
 		}
 	}

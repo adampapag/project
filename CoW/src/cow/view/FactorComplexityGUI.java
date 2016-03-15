@@ -16,6 +16,7 @@ public class FactorComplexityGUI implements IGUI {
 	private ActionListener buttonListener;
 	private JTextArea textArea;
 	private JTextArea resultsArea;
+	private JLabel lblFilepath;
 	private ArrayList<JButton> buttonList;
 
 	/**
@@ -57,6 +58,14 @@ public class FactorComplexityGUI implements IGUI {
 		frame.setVisible(true);
 	}
 
+	public void setFile(String filepath) {
+		lblFilepath.setText(filepath);
+	}
+
+	public void setText(String text) {
+		textArea.setText(text);
+	}
+
 	public String getText() {
 		return textArea.getText();
 	}
@@ -80,7 +89,8 @@ public class FactorComplexityGUI implements IGUI {
 		buttonList.add(btnChooseFile);
 		frame.getContentPane().add(btnChooseFile);
 
-		JButton btnPrint = new JButton("Show2");
+		JButton btnPrint = new JButton("Show");
+		btnPrint.setActionCommand("Show2");
 		btnPrint.setBounds(219, 250, 117, 29);
 		buttonList.add(btnPrint);
 		frame.getContentPane().add(btnPrint);
@@ -91,7 +101,7 @@ public class FactorComplexityGUI implements IGUI {
 		frame.getContentPane().add(btnStop);
 
 		JButton btnSave = new JButton("Save");
-		btnSave.setBounds(284, 477, 117, 29);
+		btnSave.setBounds(284, 493, 117, 29);
 		buttonList.add(btnSave);
 		frame.getContentPane().add(btnSave);
 	}
@@ -105,8 +115,8 @@ public class FactorComplexityGUI implements IGUI {
 		lblFromFile.setBounds(21, 218, 88, 16);
 		frame.getContentPane().add(lblFromFile);
 
-		JLabel lblFilepath = new JLabel("/filepath");
-		lblFilepath.setBounds(121, 218, 70, 16);
+		lblFilepath = new JLabel("");
+		lblFilepath.setBounds(88, 218, 120, 16);
 		frame.getContentPane().add(lblFilepath);
 	}
 
@@ -124,11 +134,12 @@ public class FactorComplexityGUI implements IGUI {
 	private void addResultsPane() {
 		resultsArea = new JTextArea();
 		JScrollPane resultsPane = new JScrollPane(resultsArea);
-		resultsPane.setBounds(6, 280, 688, 195);
+		resultsPane.setBounds(6, 280, 688, 210);
 		frame.getContentPane().add(resultsPane);
 	}
 
 	public JTextArea getResultsArea() {
 		return resultsArea;
 	}
+
 }

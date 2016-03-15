@@ -1,13 +1,21 @@
 package cow.model;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class Model implements IModel {
 
 	private RequestHandler handler;
-	String[] args;
+	private String[] args;
 	private ArrayList<Result> resultsList = new ArrayList<Result>();
 	private String result;
+	private String[] library = { "square_free_leech", "square_free_thue1",
+			"square_free", "thue_morse" };
 
 	public void orderedPatternRequest(String pattern, String text) {
 		resultsList.clear();
@@ -104,7 +112,34 @@ public class Model implements IModel {
 		args = new String[2];
 		args[0] = filepath;
 		args[1] = result;
-		handler = new ExportRequestHandler();
+		handler = new SaveRequestHandler();
+		resultsList = handler.handle(args);
+	}
+
+	public void saveMorphismRequest(String filepath, String[] morphismData) {
+		resultsList.clear();
+		args = new String[morphismData.length + 1];
+		args[0] = filepath;
+		for (int i = 1; i < args.length; i++) {
+			args[i] = morphismData[i - 1];
+		}
+		handler = new SaveMorphismRequestHandler();
+		resultsList = handler.handle(args);
+	}
+
+	public void loadMorphismRequest(String filepath) {
+		resultsList.clear();
+		args = new String[1];
+		args[0] = filepath;
+		handler = new LoadMorphismRequestHandler();
+		resultsList = handler.handle(args);
+	}
+
+	public void openFileRequest(String filepath) {
+		resultsList.clear();
+		args = new String[1];
+		args[0] = filepath;
+		handler = new OpenFileRequestHandler();
 		resultsList = handler.handle(args);
 	}
 
@@ -203,4 +238,61 @@ public class Model implements IModel {
 		return alphabet;
 	}
 
+	public boolean libraryExists() {
+		File file = new File(System.getProperty("user.home")
+				+ System.getProperty("file.separator") + "Cow"
+				+ System.getProperty("file.separator") + "Morphisms");
+		if (!file.isDirectory()) {
+			return false;
+		}
+		return true;
+	}
+
+	public void createLibrary() {
+		String directory = System.getProperty("user.home")
+				+ System.getProperty("file.separator") + "Cow"
+				+ System.getProperty("file.separator") + "Morphisms";
+		boolean okay = (new File(directory)).mkdirs();
+		boolean okayOut = (new File(System.getProperty("user.home")
+				+ System.getProperty("file.separator") + "Cow"
+				+ System.getProperty("file.separator") + "Results")).mkdirs();
+		if (!(okay || okayOut)) {
+			System.out.println("Failed to create directory: " + directory);
+		} else {
+			assert okay;
+			String file = null;
+			try {
+				InputStream in = null;
+				OutputStream out = null;
+				for (String f : library) {
+					file = f;
+					in = Model.class.getResourceAsStream(System
+							.getProperty("file.separator") + f + ".txt");
+					out = new FileOutputStream(new File(
+							System.getProperty("user.home")
+									+ System.getProperty("file.separator")
+									+ "Cow"
+									+ System.getProperty("file.separator")
+									+ "Morphisms"
+									+ System.getProperty("file.separator") + f
+									+ ".txt"));
+					int readBytes;
+					byte[] buffer = new byte[4096];
+					while ((readBytes = in.read(buffer)) > 0) {
+						out.write(buffer, 0, readBytes);
+					}
+				}
+				in.close();
+				out.close();
+			} catch (FileNotFoundException e) {
+				System.out.println("File not found: " + file);
+			} catch (IOException e) {
+				System.out.println("Error reading file: " + file);
+			} catch (NullPointerException npe) {
+				System.out.println("Nothing to read from: " + file);
+				npe.printStackTrace();
+			}
+		}
+
+	}
 }

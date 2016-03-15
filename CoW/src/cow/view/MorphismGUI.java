@@ -16,6 +16,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
 import cow.controller.MorphismListener;
+import cow.view.IGUI;
 
 public class MorphismGUI implements IGUI {
 
@@ -50,7 +51,7 @@ public class MorphismGUI implements IGUI {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 
-		addMenu();
+		// addMenu();
 
 		addButtons();
 
@@ -65,12 +66,12 @@ public class MorphismGUI implements IGUI {
 		addResultsPane();
 
 		JSeparator verticalSeparator = new JSeparator(SwingConstants.VERTICAL);
-		verticalSeparator.setBounds(339, 0, 16, 184);
+		verticalSeparator.setBounds(339, 0, 16, 245);
 		frame.getContentPane().add(verticalSeparator);
 
 		// separator
 		JSeparator separator = new JSeparator();
-		separator.setBounds(6, 177, 688, 16);
+		separator.setBounds(6, 239, 688, 16);
 		frame.getContentPane().add(separator);
 
 		frame.setVisible(true);
@@ -110,6 +111,19 @@ public class MorphismGUI implements IGUI {
 		}
 	}
 
+	public void setTable(String[] morphismData) {
+		data = new Object[morphismData.length / 2][columnNames.length];
+		int index = 0;
+		for (int row = 0; row < data.length; row++) {
+			for (int column = 0; column < columnNames.length; column++) {
+				data[row][column] = morphismData[index];
+				index++;
+			}
+		}
+		frame.getContentPane().remove(morphismPane);
+		addMorphismTable();
+	}
+
 	public JTable getMorphismTable() {
 		return morphismTable;
 	}
@@ -134,7 +148,8 @@ public class MorphismGUI implements IGUI {
 	}
 
 	private void addButtons() {
-		JButton btnPrint = new JButton("Show3");
+		JButton btnPrint = new JButton("Show");
+		btnPrint.setActionCommand("Show3");
 		btnPrint.setBounds(219, 250, 117, 29);
 		buttonList.add(btnPrint);
 		frame.getContentPane().add(btnPrint);
@@ -145,9 +160,19 @@ public class MorphismGUI implements IGUI {
 		frame.getContentPane().add(btnStop);
 
 		JButton btnSave = new JButton("Save");
-		btnSave.setBounds(284, 477, 117, 29);
+		btnSave.setBounds(284, 493, 117, 29);
 		buttonList.add(btnSave);
 		frame.getContentPane().add(btnSave);
+
+		JButton btnLoadMorphism = new JButton("Load Morphism");
+		btnLoadMorphism.setBounds(521, 193, 135, 29);
+		buttonList.add(btnLoadMorphism);
+		frame.getContentPane().add(btnLoadMorphism);
+
+		JButton btnSaveMorphism = new JButton("Save Morphism");
+		btnSaveMorphism.setBounds(381, 193, 135, 29);
+		buttonList.add(btnSaveMorphism);
+		frame.getContentPane().add(btnSaveMorphism);
 
 		// JButton btnExport = new JButton("Export");
 		// btnExport.setBounds(504, 196, 117, 29);
@@ -161,7 +186,7 @@ public class MorphismGUI implements IGUI {
 		frame.getContentPane().add(lblAlphabet);
 
 		JLabel lblNumberOfLetters = new JLabel("Number of letters in alphabet");
-		lblNumberOfLetters.setBounds(35, 89, 199, 16);
+		lblNumberOfLetters.setBounds(35, 93, 199, 16);
 		frame.getContentPane().add(lblNumberOfLetters);
 
 		JLabel lblMorphism = new JLabel("Morphism");
@@ -169,40 +194,50 @@ public class MorphismGUI implements IGUI {
 		frame.getContentPane().add(lblMorphism);
 
 		JLabel lblFromIteration = new JLabel("from iteration");
-		lblFromIteration.setBounds(236, 201, 96, 16);
+		lblFromIteration.setBounds(60, 143, 96, 16);
 		frame.getContentPane().add(lblFromIteration);
 
 		JLabel lblTo = new JLabel("to");
-		lblTo.setBounds(396, 201, 24, 16);
+		lblTo.setBounds(220, 143, 24, 16);
 		frame.getContentPane().add(lblTo);
 	}
 
 	private void addFields() {
 		alphabetField = new JTextField();
 		alphabetField.setColumns(3);
-		alphabetField.setBounds(240, 83, 41, 28);
+		alphabetField.setBounds(240, 87, 41, 28);
 		alphabetField.getDocument().addDocumentListener(morphismListener);
 		frame.getContentPane().add(alphabetField);
 
 		fromField = new JTextField();
-		fromField.setBounds(344, 195, 41, 28);
+		fromField.setBounds(168, 137, 41, 28);
 		frame.getContentPane().add(fromField);
 		fromField.setColumns(3);
 
 		toField = new JTextField();
 		toField.setColumns(3);
-		toField.setBounds(416, 195, 41, 28);
+		toField.setBounds(240, 137, 41, 28);
 		frame.getContentPane().add(toField);
 	}
 
 	private void addResultsPane() {
 		resultsArea = new JTextArea();
 		JScrollPane resultsPane = new JScrollPane(resultsArea);
-		resultsPane.setBounds(6, 280, 688, 195);
+		resultsPane.setBounds(6, 280, 688, 210);
 		frame.getContentPane().add(resultsPane);
 	}
 
 	public JTextArea getResultsArea() {
 		return resultsArea;
+	}
+
+	public void setText(String text) {
+		// TODO
+	}
+
+	@Override
+	public void setFile(String path) {
+		// TODO Auto-generated method stub
+		
 	}
 }

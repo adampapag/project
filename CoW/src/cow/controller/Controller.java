@@ -14,6 +14,9 @@ public class Controller implements IController {
 
 	public Controller() {
 		createModel();
+		if (!m.libraryExists()) {
+			m.createLibrary();
+		}
 		createView();
 		addActionListener();
 	}
@@ -28,13 +31,11 @@ public class Controller implements IController {
 	@Override
 	public void createModel() {
 		m = new Model();
-
 	}
 
 	@Override
 	public void createView() {
 		v = new View();
-
 	}
 
 }

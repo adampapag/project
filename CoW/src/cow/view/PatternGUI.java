@@ -31,6 +31,7 @@ public class PatternGUI implements IGUI {
 	private JTextField fromField;
 	private JTextField toField;
 	private JTextArea resultsArea;
+	private JLabel lblFilepath;
 	private ActionListener radioListener;
 	private ArrayList<JButton> buttonList;
 	private boolean ordered;
@@ -87,8 +88,16 @@ public class PatternGUI implements IGUI {
 		return patternField.getText();
 	}
 
+	public void setText(String text) {
+		textField.setText(text);
+	}
+
 	public String getText() {
 		return textField.getText();
+	}
+
+	public void setFile(String filepath) {
+		lblFilepath.setText(filepath);
 	}
 
 	public int getAlphabetSize() {
@@ -268,7 +277,7 @@ public class PatternGUI implements IGUI {
 		frame.getContentPane().add(btnStop);
 
 		JButton btnSave = new JButton("Save");
-		btnSave.setBounds(284, 477, 117, 29);
+		btnSave.setBounds(284, 493, 117, 29);
 		buttonList.add(btnSave);
 		frame.getContentPane().add(btnSave);
 	}
@@ -306,9 +315,10 @@ public class PatternGUI implements IGUI {
 		lblFromFile.setBounds(388, 218, 88, 16);
 		frame.getContentPane().add(lblFromFile);
 
-		JLabel lblFilepath = new JLabel("/filepath");
-		lblFilepath.setBounds(488, 218, 70, 16);
+		lblFilepath = new JLabel("");
+		lblFilepath.setBounds(455, 218, 120, 16);
 		frame.getContentPane().add(lblFilepath);
+
 	}
 
 	private void addFields() {
@@ -343,11 +353,12 @@ public class PatternGUI implements IGUI {
 	private void addResultsPane() {
 		resultsArea = new JTextArea();
 		JScrollPane resultsPane = new JScrollPane(resultsArea);
-		resultsPane.setBounds(6, 280, 688, 195);
+		resultsPane.setBounds(6, 280, 688, 210);
 		frame.getContentPane().add(resultsPane);
 	}
 
 	public JTextArea getResultsArea() {
 		return resultsArea;
 	}
+
 }
