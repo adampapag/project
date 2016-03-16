@@ -14,6 +14,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import cow.controller.PatternRadioListener;
+import cow.view.IGUI;
 
 public class PatternGUI implements IGUI {
 
@@ -22,6 +23,7 @@ public class PatternGUI implements IGUI {
 	private JRadioButton rdbtnUnordered;
 	private JRadioButton rdbtnAvoidance;
 	private JRadioButton rdbtnDistribution;
+	private JRadioButton rdbtnNumberWords;
 	private JRadioButton rdbtnPrintWords;
 	private JRadioButton rdbtnOnWords;
 	private JRadioButton rdbtnText;
@@ -39,6 +41,7 @@ public class PatternGUI implements IGUI {
 	private boolean text;
 	private boolean avoidance = true;
 	private boolean distribution;
+	private boolean numberWords = true;
 	private boolean printWords;
 
 	/**
@@ -141,28 +144,29 @@ public class PatternGUI implements IGUI {
 
 	public void setAvoidance() {
 		rdbtnDistribution.setSelected(false);
-		rdbtnPrintWords.setSelected(false);
 		rdbtnAvoidance.setSelected(true);
 		distribution = false;
-		printWords = false;
 		avoidance = true;
 	}
 
 	public void setDistribution() {
 		rdbtnAvoidance.setSelected(false);
-		rdbtnPrintWords.setSelected(false);
 		rdbtnDistribution.setSelected(true);
 		avoidance = false;
-		printWords = false;
 		distribution = true;
 	}
 
+	public void setNumberWords() {
+		rdbtnPrintWords.setSelected(false);
+		rdbtnNumberWords.setSelected(true);
+		printWords = false;
+		numberWords = true;
+	}
+
 	public void setPrintWords() {
-		rdbtnAvoidance.setSelected(false);
-		rdbtnDistribution.setSelected(false);
+		rdbtnNumberWords.setSelected(false);
 		rdbtnPrintWords.setSelected(true);
-		avoidance = false;
-		distribution = false;
+		numberWords = false;
 		printWords = true;
 	}
 
@@ -193,13 +197,20 @@ public class PatternGUI implements IGUI {
 		}
 	}
 
-	public String avoidanceOrDistributionOrPrintWords() {
-		if (avoidance && (!(distribution || printWords))) {
+	public String avoidanceOrDistribution() {
+		if (avoidance && (!distribution)) {
 			return "avoidance";
-		} else if (distribution && (!(avoidance || printWords))) {
-			return "distribution";
 		} else {
-			assert printWords && (!(avoidance || distribution));
+			assert (distribution && (!avoidance));
+			return "distribution";
+		}
+	}
+
+	public String numberWordsOrPrintWords() {
+		if (numberWords && (!printWords)) {
+			return "number words";
+		} else {
+			assert printWords && (!numberWords);
 			return "print words";
 		}
 	}
@@ -230,21 +241,28 @@ public class PatternGUI implements IGUI {
 		frame.getContentPane().add(rdbtnUnordered);
 
 		rdbtnAvoidance = new JRadioButton("Avoidance");
-		rdbtnAvoidance.setBounds(19, 214, 98, 23);
+		rdbtnAvoidance.setBounds(56, 128, 98, 23);
 		rdbtnAvoidance.setActionCommand("avoidance");
 		rdbtnAvoidance.setSelected(true);
 		rdbtnAvoidance.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnAvoidance);
 
 		rdbtnDistribution = new JRadioButton("Distribution");
-		rdbtnDistribution.setBounds(119, 214, 110, 23);
+		rdbtnDistribution.setBounds(178, 128, 110, 23);
 		rdbtnDistribution.setActionCommand("distribution");
 		rdbtnDistribution.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnDistribution);
 
+		rdbtnNumberWords = new JRadioButton("Find Number Words");
+		rdbtnNumberWords.setActionCommand("number words");
+		rdbtnNumberWords.setBounds(30, 214, 156, 23);
+		rdbtnNumberWords.setSelected(true);
+		rdbtnNumberWords.addActionListener(radioListener);
+		frame.getContentPane().add(rdbtnNumberWords);
+
 		rdbtnPrintWords = new JRadioButton("Print Words");
 		rdbtnPrintWords.setActionCommand("print words");
-		rdbtnPrintWords.setBounds(229, 214, 110, 23);
+		rdbtnPrintWords.setBounds(198, 214, 110, 23);
 		rdbtnPrintWords.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnPrintWords);
 
@@ -292,19 +310,19 @@ public class PatternGUI implements IGUI {
 		frame.getContentPane().add(lblWords);
 
 		JLabel lblAlphabetSize = new JLabel("k = ");
-		lblAlphabetSize.setBounds(46, 146, 41, 16);
+		lblAlphabetSize.setBounds(124, 160, 41, 16);
 		frame.getContentPane().add(lblAlphabetSize);
 
 		JLabel lblLengthOfWords = new JLabel("Length of words:");
-		lblLengthOfWords.setBounds(46, 180, 117, 16);
+		lblLengthOfWords.setBounds(46, 190, 117, 16);
 		frame.getContentPane().add(lblLengthOfWords);
 
 		JLabel lblFrom = new JLabel("from");
-		lblFrom.setBounds(162, 180, 30, 16);
+		lblFrom.setBounds(162, 190, 30, 16);
 		frame.getContentPane().add(lblFrom);
 
 		JLabel lblTo = new JLabel("to");
-		lblTo.setBounds(247, 180, 16, 16);
+		lblTo.setBounds(247, 190, 16, 16);
 		frame.getContentPane().add(lblTo);
 
 		JLabel lblText = new JLabel("Text/Word");
@@ -330,17 +348,17 @@ public class PatternGUI implements IGUI {
 
 		alphabetField = new JTextField();
 		alphabetField.setColumns(3);
-		alphabetField.setBounds(82, 140, 41, 28);
+		alphabetField.setBounds(160, 154, 41, 28);
 		frame.getContentPane().add(alphabetField);
 
 		fromField = new JTextField();
 		fromField.setColumns(3);
-		fromField.setBounds(203, 174, 41, 28);
+		fromField.setBounds(203, 184, 41, 28);
 		frame.getContentPane().add(fromField);
 
 		toField = new JTextField();
 		toField.setColumns(3);
-		toField.setBounds(267, 174, 41, 28);
+		toField.setBounds(267, 184, 41, 28);
 		frame.getContentPane().add(toField);
 
 		textField = new JTextField();
@@ -360,5 +378,4 @@ public class PatternGUI implements IGUI {
 	public JTextArea getResultsArea() {
 		return resultsArea;
 	}
-
 }

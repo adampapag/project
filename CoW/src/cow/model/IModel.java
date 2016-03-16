@@ -35,7 +35,7 @@ public interface IModel {
 
 	boolean isValidText(String text);
 
-	boolean isValid(String[] morphismData);
+	ArrayList<String> validate(String[] morphismData);
 
 	void appendResultLine(String text);
 

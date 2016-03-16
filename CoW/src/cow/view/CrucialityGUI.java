@@ -258,15 +258,15 @@ public class CrucialityGUI implements IGUI {
 		frame.getContentPane().add(rdbtnText);
 
 		rdbtnPrintWords = new JRadioButton("Print Words");
-		rdbtnPrintWords.setBounds(34, 214, 105, 23);
+		rdbtnPrintWords.setBounds(190, 214, 105, 23);
 		rdbtnPrintWords.setActionCommand("print words");
-		rdbtnPrintWords.setSelected(true);
 		rdbtnPrintWords.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnPrintWords);
 
 		rdbtnNumberWords = new JRadioButton("Find Number Words");
-		rdbtnNumberWords.setBounds(151, 214, 160, 23);
+		rdbtnNumberWords.setBounds(31, 214, 160, 23);
 		rdbtnNumberWords.setActionCommand("number words");
+		rdbtnNumberWords.setSelected(true);
 		rdbtnNumberWords.addActionListener(radioListener);
 		frame.getContentPane().add(rdbtnNumberWords);
 

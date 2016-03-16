@@ -13,10 +13,12 @@ public class SaveDialog {
 
 		String path = null;
 
-		JFileChooser chooser = new JFileChooser();
+		JFileChooser chooser = new JFileChooser(System.getProperty("user.home")
+				+ System.getProperty("file.separator") + "Cow"
+				+ System.getProperty("file.separator") + "Results");
 		FileNameExtensionFilter filter = new FileNameExtensionFilter(
 				"Text Files", "txt", "text");
-//		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		// chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		chooser.setFileFilter(filter);
 		int returnVal = chooser.showSaveDialog(chooser);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {

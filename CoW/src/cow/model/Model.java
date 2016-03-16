@@ -178,9 +178,10 @@ public class Model implements IModel {
 		return true;
 	}
 
-	public boolean isValid(String[] morphismData) {
+	public ArrayList<String> validate(String[] morphismData) {
 		ArrayList<String> letters = new ArrayList<String>();
 		ArrayList<String> morphisms = new ArrayList<String>();
+		ArrayList<String> results = new ArrayList<String>();
 
 		for (int i = 0; i < morphismData.length; i++) {
 			if ((i % 2) == 0) {
@@ -194,10 +195,10 @@ public class Model implements IModel {
 		for (String l : letters) {
 			if (l.equals("")) {
 				System.out.println("Letter cannot be space.");
-				return false;
+				results.add("Letter cannot be space." + "\n");
 			} else if (l.length() > 1) {
 				System.out.println("Letter must be one character.");
-				return false;
+				results.add("Letter must be one character." + "\n");
 			}
 			occurrences = 0;
 			for (String l2 : letters) {
@@ -205,8 +206,14 @@ public class Model implements IModel {
 					occurrences++;
 				}
 				if (occurrences > 1) {
-					System.out.println("Letter appears more than once.");
-					return false;
+					System.out
+							.println("Letter "
+									+ l
+									+ "appears more than once; letters should be unique.");
+					results.add("Letter "
+							+ l
+							+ "appears more than once; letters should be unique."
+							+ "\n");
 				}
 			}
 		}
@@ -216,13 +223,14 @@ public class Model implements IModel {
 			for (char c : m.toCharArray()) {
 				symbol = String.valueOf(c);
 				if (!(letters.contains(symbol))) {
-					System.out.println("Symbol '" + c + "' in morphism '" + m
+					System.out.println("Symbol '" + c
 							+ "' has no corresponding morphism.");
-					return false;
+					results.add("Symbol '" + c
+							+ "' has no corresponding morphism." + "\n");
 				}
 			}
 		}
-		return true;
+		return results;
 	}
 
 	@Override
