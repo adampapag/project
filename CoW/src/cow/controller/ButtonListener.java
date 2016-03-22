@@ -69,12 +69,14 @@ public class ButtonListener implements ActionListener {
 								ArrayList<Result> resultList;
 								ArrayList<Integer> frequencyList;
 								HashMap<Integer, Integer> frequencyMap;
-								ArrayList<String> avoids = new ArrayList<String>();
-								ArrayList<Result> result = new ArrayList<Result>();
+								ArrayList<String> avoids;
+								ArrayList<Result> result;
 								for (int i = 0; i <= alphaSize; i++) {
 									words.add(String.valueOf(i));
 								}
 								while (currentLength < lengthTo) {
+									result = new ArrayList<Result>();
+									avoids = new ArrayList<String>();
 									String current = "";
 									String word = "";
 									for (int alphaIndex = 0; alphaIndex < Math
@@ -114,8 +116,6 @@ public class ButtonListener implements ActionListener {
 															// result.add(resultList
 															// .get(j));
 														}
-													} else {
-														avoids.add(words.get(i));
 													}
 													word = word.substring(1);
 												}
@@ -134,8 +134,6 @@ public class ButtonListener implements ActionListener {
 															// result.add(resultList
 															// .get(j));
 														}
-													} else {
-														avoids.add(words.get(i));
 													}
 													word = word.substring(1);
 												}
@@ -145,6 +143,8 @@ public class ButtonListener implements ActionListener {
 												result.add(new Result(words
 														.get(i), String
 														.valueOf(occurrences)));
+											} else {
+												avoids.add(words.get(i));
 											}
 											frequencyList.add(occurrences);
 										}
@@ -232,21 +232,29 @@ public class ButtonListener implements ActionListener {
 												pGui.getResultsArea().append(
 														resultLine);
 												for (Result r : result) {
-													resultLine = r.getString();
-													if (resultLine.length() == currentLength) {
-														resultLine = resultLine
-																+ ",  "
-																+ r.getRemainingString()
-																+ " occurrence(s)"
-																+ "\n";
-														m.appendResultLine(resultLine);
-														pGui.getResultsArea()
-																.append(resultLine);
-														// resultLine = "\n";
-														// m.appendResultLine(resultLine);
-														// pGui.getResultsArea()
-														// .append(resultLine);
-													}
+													resultLine = r.getString()+ ",  "
+															+ r.getRemainingString()
+															+ " occurrence(s)"
+															+ "\n";
+													m.appendResultLine(resultLine);
+													pGui.getResultsArea()
+															.append(resultLine);
+													// if (resultLine.length()
+													// == currentLength) {
+													// resultLine = resultLine
+													// + ",  "
+													// + r.getRemainingString()
+													// + " occurrence(s)"
+													// + "\n";
+													// m.appendResultLine(resultLine);
+													// pGui.getResultsArea()
+													// .append(resultLine);
+													// // resultLine = "\n";
+													// //
+													// m.appendResultLine(resultLine);
+													// // pGui.getResultsArea()
+													// // .append(resultLine);
+													// }
 												}
 											}
 										}

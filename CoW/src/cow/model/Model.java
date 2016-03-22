@@ -248,7 +248,7 @@ public class Model implements IModel {
 
 	public boolean libraryExists() {
 		File file = new File(System.getProperty("user.home")
-				+ System.getProperty("file.separator") + "Cow"
+				+ System.getProperty("file.separator") + "CoW"
 				+ System.getProperty("file.separator") + "Morphisms");
 		if (!file.isDirectory()) {
 			return false;
@@ -258,11 +258,11 @@ public class Model implements IModel {
 
 	public void createLibrary() {
 		String directory = System.getProperty("user.home")
-				+ System.getProperty("file.separator") + "Cow"
+				+ System.getProperty("file.separator") + "CoW"
 				+ System.getProperty("file.separator") + "Morphisms";
 		boolean okay = (new File(directory)).mkdirs();
 		boolean okayOut = (new File(System.getProperty("user.home")
-				+ System.getProperty("file.separator") + "Cow"
+				+ System.getProperty("file.separator") + "CoW"
 				+ System.getProperty("file.separator") + "Results")).mkdirs();
 		if (!(okay || okayOut)) {
 			System.out.println("Failed to create directory: " + directory);
@@ -279,7 +279,7 @@ public class Model implements IModel {
 					out = new FileOutputStream(new File(
 							System.getProperty("user.home")
 									+ System.getProperty("file.separator")
-									+ "Cow"
+									+ "CoW"
 									+ System.getProperty("file.separator")
 									+ "Morphisms"
 									+ System.getProperty("file.separator") + f
