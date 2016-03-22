@@ -1,32 +1,10 @@
 package cow.view;
 
-public class View implements IView {
-	IGUI gui;
+import java.awt.event.ActionListener;
 
-	public View() {
-		createGUI();
-	}
+public interface View {
 
-	@Override
-	public void createGUI() {
-		gui = new CoWGUI();
-	}
+	void initializeGUI();
 
-	@Override
-	public IGUI getGUI() {
-		return gui;
-	}
-
-	@Override
-	public void setGUI(String guiType) {
-		if (guiType.equals("Morphisms")) {
-			gui = new MorphismGUI();
-		} else if (guiType.equals("Patterns")) {
-			gui = new PatternGUI();
-		} else if (guiType.equals("Factor Complexity")) {
-			gui = new FactorComplexityGUI();
-		} else if (guiType.equals("Cruciality")) {
-			gui = new CrucialityGUI();
-		}
-	}
+	void addActionListener(ActionListener l);
 }
