@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
-import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -15,7 +14,7 @@ import javax.swing.SwingConstants;
 
 import cow.controller.listener.radio.PatternRadioListener;
 
-public class PatternView implements View {
+public class PatternView extends AbstractCoWViewWithImport {
 
 	private JFrame frame;
 	private JRadioButton rdbtnOrdered;
@@ -61,7 +60,7 @@ public class PatternView implements View {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 
-		// addMenu();
+		super.addFrame(frame);
 
 		addButtons();
 
@@ -95,10 +94,6 @@ public class PatternView implements View {
 
 	public String getText() {
 		return textField.getText();
-	}
-
-	public void setFile(String filepath) {
-		lblFilepath.setText(filepath);
 	}
 
 	public int getAlphabetSize() {
@@ -198,14 +193,7 @@ public class PatternView implements View {
 		}
 	}
 
-	@Override
-	public void addActionListener(ActionListener l) {
-		for (JButton b : buttonList) {
-			b.addActionListener(l);
-		}
-	}
-
-	private void addButtons() {
+	protected void addButtons() {
 		rdbtnOrdered = new JRadioButton("Ordered");
 		rdbtnOrdered.setBounds(393, 9, 85, 23);
 		rdbtnOrdered.setActionCommand("ordered");
@@ -277,9 +265,11 @@ public class PatternView implements View {
 		btnSave.setBounds(284, 493, 117, 29);
 		buttonList.add(btnSave);
 		frame.getContentPane().add(btnSave);
+		
+		super.addButtonList(buttonList);
 	}
 
-	private void addLabels() {
+	protected void addLabels() {
 		JLabel lblPattern = new JLabel("Pattern: ");
 		lblPattern.setBounds(162, 47, 96, 16);
 		frame.getContentPane().add(lblPattern);
@@ -316,9 +306,11 @@ public class PatternView implements View {
 		lblFilepath.setBounds(455, 218, 120, 16);
 		frame.getContentPane().add(lblFilepath);
 
+		super.addLabel(lblFilepath);
+
 	}
 
-	private void addFields() {
+	protected void addFields() {
 
 		patternField = new JTextField();
 		patternField.setBounds(229, 38, 252, 35);
@@ -347,15 +339,9 @@ public class PatternView implements View {
 
 	}
 
-	private void addResultsPane() {
-		resultsArea = new JTextArea();
-		JScrollPane resultsPane = new JScrollPane(resultsArea);
-		resultsPane.setBounds(6, 280, 688, 210);
-		frame.getContentPane().add(resultsPane);
-	}
-
-	public JTextArea getResultsArea() {
-		return resultsArea;
+	protected void addResultsPane() {
+		super.addResultsArea(resultsArea);
+		super.addResultsPane();
 	}
 
 }

@@ -7,14 +7,12 @@ import cow.data.requesthandler.LoadMorphismRequestHandler;
 import cow.data.requesthandler.MorphismRequestHandler;
 import cow.data.requesthandler.RequestHandler;
 import cow.data.requesthandler.SaveMorphismRequestHandler;
-import cow.data.requesthandler.SaveRequestHandler;
 
-public class MorphismModel implements Model {
+public class MorphismModel extends AbstractCoWModel {
 
 	private RequestHandler handler;
 	private String[] args;
 	private ArrayList<Result> resultsList = new ArrayList<Result>();
-	private String result = "";
 
 	public void morphismRequest(String text, String[] morphismData,
 			int iteration) {
@@ -27,6 +25,7 @@ public class MorphismModel implements Model {
 		args[args.length - 1] = String.valueOf(iteration);
 		handler = new MorphismRequestHandler();
 		resultsList = handler.handle(args);
+		super.updateResults(resultsList);
 	}
 
 	public void saveMorphismRequest(String filepath, String[] morphismData) {
@@ -38,6 +37,7 @@ public class MorphismModel implements Model {
 		}
 		handler = new SaveMorphismRequestHandler();
 		resultsList = handler.handle(args);
+		super.updateResults(resultsList);
 	}
 
 	public void loadMorphismRequest(String filepath) {
@@ -46,15 +46,7 @@ public class MorphismModel implements Model {
 		args[0] = filepath;
 		handler = new LoadMorphismRequestHandler();
 		resultsList = handler.handle(args);
-	}
-
-	public void saveRequest(String filepath) {
-		resultsList.clear();
-		args = new String[2];
-		args[0] = filepath;
-		args[1] = result;
-		handler = new SaveRequestHandler();
-		resultsList = handler.handle(args);
+		super.updateResults(resultsList);
 	}
 
 	public ArrayList<String> validate(String[] morphismData) {
@@ -73,10 +65,8 @@ public class MorphismModel implements Model {
 		int occurrences = 0;
 		for (String l : letters) {
 			if (l.equals("")) {
-				System.out.println("Letter cannot be space.");
 				results.add("Letter cannot be space." + "\n");
 			} else if (l.length() > 1) {
-				System.out.println("Letter must be one character.");
 				results.add("Letter must be one character." + "\n");
 			}
 			occurrences = 0;
@@ -85,10 +75,6 @@ public class MorphismModel implements Model {
 					occurrences++;
 				}
 				if (occurrences > 1) {
-					System.out
-							.println("Letter "
-									+ l
-									+ "appears more than once; letters should be unique.");
 					results.add("Letter "
 							+ l
 							+ "appears more than once; letters should be unique."
@@ -102,26 +88,12 @@ public class MorphismModel implements Model {
 			for (char c : m.toCharArray()) {
 				symbol = String.valueOf(c);
 				if (!(letters.contains(symbol))) {
-					System.out.println("Symbol '" + c
-							+ "' has no corresponding morphism.");
 					results.add("Symbol '" + c
 							+ "' has no corresponding morphism." + "\n");
 				}
 			}
 		}
 		return results;
-	}
-
-	public ArrayList<Result> getResultsList() {
-		return resultsList;
-	}
-
-	public void appendResultLine(String text) {
-		result = result + text;
-	}
-
-	public void clearResult() {
-		result = "";
 	}
 
 }

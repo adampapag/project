@@ -1,16 +1,16 @@
 package cow.controller.listener;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import cow.controller.CoWLabController;
 import cow.controller.Controller;
 
-public class CoWLabListener implements ActionListener {
+public class CoWLabListener extends AbstractListener {
 
 	private CoWLabController c;
 
 	public CoWLabListener(Controller c) {
+		super(c);
 		this.c = (CoWLabController) c;
 	}
 

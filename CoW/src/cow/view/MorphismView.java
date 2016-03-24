@@ -1,7 +1,6 @@
 package cow.view;
 
 import java.awt.Color;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -15,9 +14,9 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 
-import cow.controller.listener.table.MorphismTableListener;
+import cow.controller.listener.table.TableListener;
 
-public class MorphismView implements View {
+public class MorphismView extends AbstractCoWViewWithImportAndTable {
 
 	private JFrame frame;
 	private JTextField alphabetField;
@@ -26,7 +25,7 @@ public class MorphismView implements View {
 	private JTextArea resultsArea;
 	private JTable morphismTable;
 	private JScrollPane morphismPane;
-	private MorphismTableListener tableListener;
+	private TableListener tableListener;
 	private ArrayList<JButton> buttonList = new ArrayList<JButton>();
 	String columnNames[] = { "letter", "word" };
 	Object[][] data = {};
@@ -35,7 +34,7 @@ public class MorphismView implements View {
 	 * Create the application.
 	 */
 	public MorphismView() {
-		tableListener = new MorphismTableListener();
+		tableListener = new TableListener();
 	}
 
 	/**
@@ -48,6 +47,8 @@ public class MorphismView implements View {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
+
+		super.addFrame(frame);
 
 		addButtons();
 
@@ -102,7 +103,7 @@ public class MorphismView implements View {
 			addMorphismTable();
 		} catch (NumberFormatException nfe) {
 			// TODO
-			System.out.println("number format exception; morphismGUI");
+			System.out.println("number format exception; morphism view");
 		}
 	}
 
@@ -131,14 +132,7 @@ public class MorphismView implements View {
 		return toField;
 	}
 
-	@Override
-	public void addActionListener(ActionListener l) {
-		for (JButton b : buttonList) {
-			b.addActionListener(l);
-		}
-	}
-
-	private void addButtons() {
+	protected void addButtons() {
 		JButton btnPrint = new JButton("Show");
 		btnPrint.setActionCommand("Show");
 		btnPrint.setBounds(219, 250, 117, 29);
@@ -165,9 +159,11 @@ public class MorphismView implements View {
 		buttonList.add(btnSaveMorphism);
 		frame.getContentPane().add(btnSaveMorphism);
 
+		super.addButtonList(buttonList);
+
 	}
 
-	private void addLabels() {
+	protected void addLabels() {
 		JLabel lblAlphabet = new JLabel("Alphabet");
 		lblAlphabet.setBounds(35, 21, 61, 16);
 		frame.getContentPane().add(lblAlphabet);
@@ -189,7 +185,7 @@ public class MorphismView implements View {
 		frame.getContentPane().add(lblTo);
 	}
 
-	private void addFields() {
+	protected void addFields() {
 		alphabetField = new JTextField();
 		alphabetField.setColumns(3);
 		alphabetField.setBounds(240, 87, 41, 28);
@@ -207,15 +203,14 @@ public class MorphismView implements View {
 		frame.getContentPane().add(toField);
 	}
 
-	private void addResultsPane() {
-		resultsArea = new JTextArea();
-		JScrollPane resultsPane = new JScrollPane(resultsArea);
-		resultsPane.setBounds(6, 280, 688, 210);
-		frame.getContentPane().add(resultsPane);
+	protected void addResultsPane() {
+		super.addResultsArea(resultsArea);
+		super.addResultsPane();
 	}
 
-	public JTextArea getResultsArea() {
-		return resultsArea;
+	@Override
+	public void setText(String text) {
+		// no implementation
 	}
 
 }

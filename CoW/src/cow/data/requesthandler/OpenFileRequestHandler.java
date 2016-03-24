@@ -29,9 +29,9 @@ public class OpenFileRequestHandler implements RequestHandler {
 			}
 			resultList.add(new Result(text, ""));
 		} catch (FileNotFoundException fnfe) {
-			System.err.println("FileNotFoundException load");
+			System.err.println("FileNotFoundException on file load");
 		} catch (IOException ioe) {
-			System.err.println("IOException load error");
+			System.err.println("IOException file load error");
 		}
 
 		return resultList;

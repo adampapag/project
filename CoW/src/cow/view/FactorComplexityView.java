@@ -1,6 +1,5 @@
 package cow.view;
 
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -10,10 +9,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 
-public class FactorComplexityView implements View {
+public class FactorComplexityView extends AbstractCoWViewWithImport {
 
 	private JFrame frame;
-	private ActionListener buttonListener;
 	private JTextArea textArea;
 	private JTextArea resultsArea;
 	private JLabel lblFilepath;
@@ -36,6 +34,8 @@ public class FactorComplexityView implements View {
 		frame.getContentPane().setLayout(null);
 		frame.setResizable(false);
 
+		super.addFrame(frame);
+
 		addButtons();
 
 		addLabels();
@@ -55,10 +55,6 @@ public class FactorComplexityView implements View {
 		frame.setVisible(true);
 	}
 
-	public void setFile(String filepath) {
-		lblFilepath.setText(filepath);
-	}
-
 	public void setText(String text) {
 		textArea.setText(text);
 	}
@@ -67,15 +63,7 @@ public class FactorComplexityView implements View {
 		return textArea.getText();
 	}
 
-	@Override
-	public void addActionListener(ActionListener l) {
-		buttonListener = l;
-		for (JButton b : buttonList) {
-			b.addActionListener(buttonListener);
-		}
-	}
-
-	private void addButtons() {
+	protected void addButtons() {
 
 		JButton btnChooseFile = new JButton("Choose File");
 		btnChooseFile.setBounds(210, 213, 117, 29);
@@ -97,9 +85,11 @@ public class FactorComplexityView implements View {
 		btnSave.setBounds(284, 493, 117, 29);
 		buttonList.add(btnSave);
 		frame.getContentPane().add(btnSave);
+
+		super.addButtonList(buttonList);
 	}
 
-	private void addLabels() {
+	protected void addLabels() {
 		JLabel lblText = new JLabel("Text");
 		lblText.setBounds(21, 17, 88, 16);
 		frame.getContentPane().add(lblText);
@@ -111,9 +101,11 @@ public class FactorComplexityView implements View {
 		lblFilepath = new JLabel("");
 		lblFilepath.setBounds(88, 218, 120, 16);
 		frame.getContentPane().add(lblFilepath);
+
+		super.addLabel(lblFilepath);
 	}
 
-	private void addFields() {
+	protected void addFields() {
 
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);
@@ -124,15 +116,9 @@ public class FactorComplexityView implements View {
 
 	}
 
-	private void addResultsPane() {
-		resultsArea = new JTextArea();
-		JScrollPane resultsPane = new JScrollPane(resultsArea);
-		resultsPane.setBounds(6, 280, 688, 210);
-		frame.getContentPane().add(resultsPane);
-	}
-
-	public JTextArea getResultsArea() {
-		return resultsArea;
+	protected void addResultsPane() {
+		super.addResultsArea(resultsArea);
+		super.addResultsPane();
 	}
 
 }

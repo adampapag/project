@@ -1,17 +1,15 @@
 package cow.view;
 
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class CoWLabView implements View {
+public class CoWLabView extends AbstractView {
 	private JFrame frame;
 	private ArrayList<JButton> buttonList = new ArrayList<JButton>();
 
-	@Override
 	public void initializeGUI() {
 		frame = new JFrame("CoW");
 		frame.setBounds(100, 100, 450, 330);
@@ -28,14 +26,7 @@ public class CoWLabView implements View {
 		frame.setVisible(true);
 	}
 
-	@Override
-	public void addActionListener(ActionListener l) {
-		for (JButton b : buttonList) {
-			b.addActionListener(l);
-		}
-	}
-
-	private void addButtons() {
+	protected void addButtons() {
 
 		JButton morphismsButton = new JButton("Morphisms");
 		morphismsButton.setBounds(165, 69, 117, 29);
@@ -56,6 +47,8 @@ public class CoWLabView implements View {
 		crucialityButton.setBounds(165, 252, 117, 29);
 		frame.getContentPane().add(crucialityButton);
 		buttonList.add(crucialityButton);
+
+		super.addButtonList(buttonList);
 	}
 
 }

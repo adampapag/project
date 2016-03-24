@@ -27,9 +27,9 @@ public class LoadMorphismRequestHandler implements RequestHandler {
 				resultList.add(new Result(line, ""));
 			}
 		} catch (FileNotFoundException fnfe) {
-			System.err.println("FileNotFoundException load");
+			System.err.println("FileNotFoundException on morphism load");
 		} catch (IOException ioe) {
-			System.err.println("IOException load error");
+			System.err.println("IOException on morphism load");
 		}
 
 		return resultList;

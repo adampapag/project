@@ -4,28 +4,29 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import cow.view.CrucialityView;
+import cow.view.AbstractCoWViewWithImportAndTable;
+import cow.view.View;
 
-public class CrucialityTableListener implements DocumentListener {
+public class TableListener implements DocumentListener {
 
+	private AbstractCoWViewWithImportAndTable v;
 	private JTextField textField;
-	private CrucialityView gui;
 
 	@Override
 	public void insertUpdate(DocumentEvent e) {
-		updateMorphismTable();
+		updateTable();
 
 	}
 
 	@Override
 	public void removeUpdate(DocumentEvent e) {
-		updateMorphismTable();
+		updateTable();
 
 	}
 
 	@Override
 	public void changedUpdate(DocumentEvent e) {
-		updateMorphismTable();
+		updateTable();
 
 	}
 
@@ -33,11 +34,12 @@ public class CrucialityTableListener implements DocumentListener {
 		this.textField = textField;
 	}
 
-	public void setGUI(CrucialityView gui) {
-		this.gui = gui;
+	public void setGUI(View v) {
+		this.v = (AbstractCoWViewWithImportAndTable) v;
 	}
 
-	private void updateMorphismTable() {
-		gui.setTable(textField.getText());
+	private void updateTable() {
+		v.setTable(textField.getText());
 	}
+
 }

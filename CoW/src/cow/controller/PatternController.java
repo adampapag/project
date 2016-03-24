@@ -1,7 +1,6 @@
 package cow.controller;
 
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,34 +10,27 @@ import javax.swing.SwingWorker;
 import cow.controller.listener.PatternListener;
 import cow.data.Result;
 import cow.data.SymbolMapping;
-import cow.io.LoadDialog;
-import cow.io.SaveDialog;
-import cow.model.Model;
+import cow.model.AbstractModel;
 import cow.model.PatternModel;
 import cow.view.PatternView;
 import cow.view.View;
 
-public class PatternController implements Controller {
+public class PatternController extends AbstractCoWControllerWithImport {
 
 	private PatternModel m;
 	private PatternView v;
 	private ActionListener listener;
 	private SwingWorker w;
 
-	public PatternController(Model m, View v) {
+	public PatternController(AbstractModel m, View v) {
+		super(m, v);
 		this.m = (PatternModel) m;
 		this.v = (PatternView) v;
-		showView();
-		addListener();
 	}
 
-	private void showView() {
-		v.initializeGUI();
-	}
-
-	private void addListener() {
+	protected void createViewListener() {
 		listener = new PatternListener(this);
-		v.addActionListener(listener);
+		super.attachListener(listener);
 	}
 
 	public void showResults() {
@@ -77,8 +69,6 @@ public class PatternController implements Controller {
 									words.add(current + suffix);
 								}
 							}
-							System.out
-									.println(Arrays.toString(words.toArray()));
 							currentLength++;
 							if (currentLength >= lengthFrom) {
 								avoidances = words.size();
@@ -205,13 +195,11 @@ public class PatternController implements Controller {
 					} else {
 						assert v.onWordsOrText().equals("text");
 						// check if ordered//unordered
-						System.out.println("ordered");
 						String text = v.getText();
 						String deletedText = "";
 						String resultLine = "";
 						if (m.isValidText(text)) {
 							ArrayList<Result> resultsList;
-							System.out.println("text: " + text);
 							try {
 								while (text.length() > 1) {
 									m.patternRequest(pattern, text,
@@ -264,8 +252,8 @@ public class PatternController implements Controller {
 								v.getResultsArea().append(resultLine);
 
 							} catch (Exception ex) {
-								System.out.println("button listener exception");
-								ex.printStackTrace();
+								System.out
+										.println("pattern controller exception");
 							}
 						} else {
 							resultLine = "Invalid text" + "\n";
@@ -281,43 +269,9 @@ public class PatternController implements Controller {
 		w.execute();
 	}
 
-	public void chooseFile() {
-		LoadDialog lo = new LoadDialog();
-		String path = lo.display();
-
-		if (path == null) {
-			return;
-		}
-
-		m.openFileRequest(path);
-
-		File f = new File(path);
-
-		v.setFile(f.getName());
-		v.setText(m.getResultsList().get(0).getString());
-	}
-
-	public void saveResults() {
-		SaveDialog so = new SaveDialog();
-		String filePath = so.display();
-
-		if (filePath == null) {
-			return;
-		} else {
-			m.saveRequest(filePath);
-			String statusLine = m.getResultsList().get(0).getString();
-			v.getResultsArea().append(statusLine + "\n");
-		}
-	}
-
 	public void stop() {
 		w.cancel(true);
-		v.getResultsArea().append("Stopped.");
-	}
-
-	private void clearResults() {
-		v.getResultsArea().setText("");
-		m.clearResult();
+		super.stop();
 	}
 
 }

@@ -1,16 +1,17 @@
 package cow.controller.listener.radio;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import cow.view.CrucialityView;
+import cow.view.View;
 
-public class CrucialityRadioListener implements ActionListener {
+public class CrucialityRadioListener extends AbstractRadioListener {
 
-	private CrucialityView gui;
+	private CrucialityView v;
 
-	public CrucialityRadioListener(CrucialityView gui) {
-		this.gui = gui;
+	public CrucialityRadioListener(View v) {
+		super(v);
+		this.v = (CrucialityView) v;
 	}
 
 	@Override
@@ -18,22 +19,22 @@ public class CrucialityRadioListener implements ActionListener {
 		String button = e.getActionCommand();
 		switch (button) {
 		case "ordered":
-			gui.setOrdered();
+			v.setOrdered();
 			break;
 		case "unordered":
-			gui.setUnordered();
+			v.setUnordered();
 			break;
 		case "on words":
-			gui.setOnWords();
+			v.setOnWords();
 			break;
 		case "text":
-			gui.setText();
+			v.setText();
 			break;
 		case "print words":
-			gui.setPrintWords();
+			v.setPrintWords();
 			break;
 		case "number words":
-			gui.setNumberWords();
+			v.setNumberWords();
 			break;
 		}
 

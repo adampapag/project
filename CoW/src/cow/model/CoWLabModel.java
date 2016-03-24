@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class CoWLabModel implements Model {
+public class CoWLabModel extends AbstractModel {
 
 	private String[] library = { "square_free_leech", "square_free_thue1",
 			"square_free", "thue_morse" };

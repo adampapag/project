@@ -1,16 +1,17 @@
 package cow.controller.listener.radio;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import cow.view.PatternView;
+import cow.view.View;
 
-public class PatternRadioListener implements ActionListener {
+public class PatternRadioListener extends AbstractRadioListener {
 
-	private PatternView gui;
+	private PatternView v;
 
-	public PatternRadioListener(PatternView gui) {
-		this.gui = gui;
+	public PatternRadioListener(View v) {
+		super(v);
+		this.v = (PatternView) v;
 	}
 
 	@Override
@@ -18,27 +19,27 @@ public class PatternRadioListener implements ActionListener {
 		String button = e.getActionCommand();
 		switch (button) {
 		case "ordered":
-			gui.setOrdered();
+			v.setOrdered();
 			break;
 		case "unordered":
-			gui.setUnordered();
+			v.setUnordered();
 			break;
 		case "avoidance":
-			gui.setAvoidance();
+			v.setAvoidance();
 			break;
 		case "distribution":
-			gui.setDistribution();
+			v.setDistribution();
 			break;
 		case "number words":
-			gui.setNumberWords();
+			v.setNumberWords();
 			break;
 		case "print words":
-			gui.setPrintWords();
+			v.setPrintWords();
 		case "on words":
-			gui.setOnWords();
+			v.setOnWords();
 			break;
 		case "text":
-			gui.setText();
+			v.setText();
 			break;
 		}
 	}

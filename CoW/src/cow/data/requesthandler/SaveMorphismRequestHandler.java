@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import cow.data.Result;
+import cow.io.Dialog;
 import cow.io.OverwriteFileDialog;
 import cow.io.TextWriter;
 
@@ -22,10 +23,9 @@ public class SaveMorphismRequestHandler implements RequestHandler {
 		File file = new File(filepath);
 
 		if (file.exists()) {
-			System.out.println("already exists");
-			OverwriteFileDialog o = new OverwriteFileDialog();
-			int response = o.getInput();
-			if (response == 1) {
+			Dialog o = new OverwriteFileDialog();
+			String response = o.display();
+			if (response.equals("1")) {
 				resultList.add(new Result("Save aborted.", ""));
 				return resultList;
 			}

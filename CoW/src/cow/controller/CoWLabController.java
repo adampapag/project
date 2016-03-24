@@ -3,6 +3,7 @@ package cow.controller;
 import java.awt.event.ActionListener;
 
 import cow.controller.listener.CoWLabListener;
+import cow.model.AbstractModel;
 import cow.model.CoWLabModel;
 import cow.model.CrucialityModel;
 import cow.model.FactorComplexityModel;
@@ -16,18 +17,17 @@ import cow.view.MorphismView;
 import cow.view.PatternView;
 import cow.view.View;
 
-public class CoWLabController implements Controller {
+public class CoWLabController extends AbstractController {
 
 	private CoWLabModel m;
 	private CoWLabView v;
 	private ActionListener listener;
 
 	public CoWLabController(Model m, View v) {
+		super(m, v);
 		this.m = (CoWLabModel) m;
 		this.v = (CoWLabView) v;
 		checkLibrary();
-		showView();
-		addListener();
 	}
 
 	private void checkLibrary() {
@@ -36,37 +36,37 @@ public class CoWLabController implements Controller {
 		}
 	}
 
-	private void showView() {
-		v.initializeGUI();
-	}
-
-	private void addListener() {
+	protected void createViewListener() {
 		listener = new CoWLabListener(this);
-		v.addActionListener(listener);
+		super.attachListener(listener);
 	}
 
 	public void createMorphismWindow() {
-		Model model = new MorphismModel();
+		AbstractModel model = new MorphismModel();
 		View view = new MorphismView();
-		new MorphismController(model, view);
+		Controller c = new MorphismController(model, view);
+		c.show();
 	}
 
 	public void createPatternWindow() {
-		Model model = new PatternModel();
+		AbstractModel model = new PatternModel();
 		View view = new PatternView();
-		new PatternController(model, view);
+		Controller c = new PatternController(model, view);
+		c.show();
 	}
 
 	public void createFactorComplexityWindow() {
-		Model model = new FactorComplexityModel();
+		AbstractModel model = new FactorComplexityModel();
 		View view = new FactorComplexityView();
-		new FactorComplexityController(model, view);
+		Controller c = new FactorComplexityController(model, view);
+		c.show();
 	}
 
 	public void createCrucialityWindow() {
-		Model model = new CrucialityModel();
+		AbstractModel model = new CrucialityModel();
 		View view = new CrucialityView();
-		new CrucialityController(model, view);
+		Controller c = new CrucialityController(model, view);
+		c.show();
 	}
 
 }

@@ -9,34 +9,28 @@ import javax.swing.SwingWorker;
 import cow.controller.listener.MorphismListener;
 import cow.data.Result;
 import cow.io.LoadMorphismDialog;
-import cow.io.SaveDialog;
 import cow.io.SaveMorphismDialog;
-import cow.model.Model;
+import cow.model.AbstractModel;
 import cow.model.MorphismModel;
 import cow.view.MorphismView;
 import cow.view.View;
 
-public class MorphismController implements Controller {
+public class MorphismController extends AbstractCoWController {
 
 	private MorphismModel m;
 	private MorphismView v;
 	private ActionListener listener;
 	private SwingWorker w;
 
-	public MorphismController(Model m, View v) {
+	public MorphismController(AbstractModel m, View v) {
+		super(m, v);
 		this.m = (MorphismModel) m;
 		this.v = (MorphismView) v;
-		showView();
-		addListener();
 	}
 
-	private void showView() {
-		v.initializeGUI();
-	}
-
-	private void addListener() {
+	protected void createViewListener() {
 		listener = new MorphismListener(this);
-		v.addActionListener(listener);
+		super.attachListener(listener);
 	}
 
 	public void showResults() {
@@ -139,27 +133,8 @@ public class MorphismController implements Controller {
 		m.saveMorphismRequest(newPath, morphismData);
 	}
 
-	public void saveResults() {
-		SaveDialog so = new SaveDialog();
-		String filePath = so.display();
-
-		if (filePath == null) {
-			return;
-		} else {
-			m.saveRequest(filePath);
-			String statusLine = m.getResultsList().get(0).getString();
-			v.getResultsArea().append(statusLine + "\n");
-		}
-	}
-
 	public void stop() {
 		w.cancel(true);
-		v.getResultsArea().append("Stopped.");
+		super.stop();
 	}
-
-	private void clearResults() {
-		v.getResultsArea().setText("");
-		m.clearResult();
-	}
-
 }

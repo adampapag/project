@@ -5,7 +5,7 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class LoadMorphismDialog {
+public class LoadMorphismDialog implements Dialog {
 
 	public String display() {
 
