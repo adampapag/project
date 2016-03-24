@@ -1,16 +1,11 @@
 package cow.data.requesthandler;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import cow.data.Result;
 import cow.data.SymbolMapping;
 
-public class OrderedPatternRequestHandler implements RequestHandler {
-
-	public OrderedPatternRequestHandler() {
-
-	}
+public class OrderedPatternRequestHandler extends PatternRequestHandler {
 
 	public ArrayList<Result> handle(String[] args) {
 		String pattern = args[0];
@@ -75,8 +70,6 @@ public class OrderedPatternRequestHandler implements RequestHandler {
 
 				pattern = pattern.substring(1);
 
-				// System.out.println("result = " + result);
-
 			}
 			symbolMap.add(new SymbolMapping(
 					pattern.substring(pattern.length() - 1), nextChar));
@@ -115,51 +108,4 @@ public class OrderedPatternRequestHandler implements RequestHandler {
 		return patternList;
 	}
 
-	private ArrayList<Result> removeSymbolicContradictions(
-			ArrayList<Result> agenda) {
-		Iterator<Result> iterator = agenda.iterator();
-		Result r = null;
-		while (iterator.hasNext()) {
-			r = iterator.next();
-			// System.out.println(r.getString());
-			ArrayList<SymbolMapping> symbolMap = r.getSymbolMap();
-			boolean contradiction = false;
-			for (int i = 0; i < symbolMap.size(); i++) {
-				if (!contradiction) {
-					SymbolMapping currentSymbol = symbolMap.get(i);
-					String symbol = currentSymbol.getSymbol();
-					String symbolValue = currentSymbol.getSymbolValue();
-					// System.out.println(symbol + ": " + symbolValue);
-					for (int j = 0; j < symbolMap.size(); j++) {
-						// System.out.println("->" +
-						// symbolMap.get(j).getSymbol()
-						// + ": " + symbolMap.get(j).getSymbolValue());
-						String candidateSymbol = symbolMap.get(j).getSymbol();
-						String candidateSymbolValue = symbolMap.get(j)
-								.getSymbolValue();
-						if (candidateSymbol.equals(symbol)
-								&& (!candidateSymbolValue.equals(symbolValue))) {
-							System.out
-									.println("contradiction found! same symbol different value.");
-							iterator.remove();
-							contradiction = true;
-							break;
-						}
-						if (candidateSymbolValue.equals(symbolValue)
-								&& (!candidateSymbol.equals(symbol))) {
-							System.out
-									.println("contradiction found! same value different symbol.");
-							iterator.remove();
-							contradiction = true;
-							break;
-						}
-					}
-				} else {
-					contradiction = false;
-					break;
-				}
-			}
-		}
-		return agenda;
-	}
 }
