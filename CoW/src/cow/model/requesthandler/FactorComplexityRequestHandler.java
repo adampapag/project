@@ -1,4 +1,4 @@
-package cow.data.requesthandler;
+package cow.model.requesthandler;
 
 import java.util.ArrayList;
 
@@ -20,14 +20,11 @@ public class FactorComplexityRequestHandler implements RequestHandler {
 					if (!(resultsList.contains(candidate))) {
 						resultsList.add(new Result(candidate, text
 								.substring(candidate.length())));
-					} else {
-						// System.out.println("not added; already contains: "
-						// + candidate);
 					}
+					// else not added as substring accounted for
 				} catch (StringIndexOutOfBoundsException oobe) {
-					// System.out.println("not enough characters in string: "
-					// + "text = " + text + " , symbol length = "
-					// + symbolLength);
+					// not enough characters in string to create a substring of
+					// length symbolLength
 					break;
 				}
 			}

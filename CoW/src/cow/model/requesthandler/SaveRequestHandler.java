@@ -1,4 +1,4 @@
-package cow.data.requesthandler;
+package cow.model.requesthandler;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -12,7 +12,12 @@ public class SaveRequestHandler implements RequestHandler {
 
 	@Override
 	public ArrayList<Result> handle(String[] args) {
-		String filepath = args[0] + ".txt";
+		String filepath = args[0];
+
+		if (!filepath.endsWith(".txt.")) {
+			filepath = filepath + ".txt";
+		}
+		
 		String text = args[1];
 		ArrayList<Result> resultList = new ArrayList<Result>();
 

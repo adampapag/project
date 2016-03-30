@@ -3,8 +3,8 @@ package cow.model;
 import java.util.ArrayList;
 
 import cow.data.Result;
-import cow.data.requesthandler.CrucialityRequestHandler;
-import cow.data.requesthandler.RequestHandler;
+import cow.model.requesthandler.CrucialityRequestHandler;
+import cow.model.requesthandler.RequestHandler;
 
 public class CrucialityModel extends
 		AbstractCoWModelWithImportAndTextAndPatternValidation {

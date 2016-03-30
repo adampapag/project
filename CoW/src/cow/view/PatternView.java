@@ -81,7 +81,29 @@ public class PatternView extends AbstractCoWViewWithImport {
 		separator2.setBounds(6, 239, 688, 16);
 		frame.getContentPane().add(separator2);
 
+		super.setFrame(frame);
+
 		frame.setVisible(true);
+	}
+
+	public JTextField getPatternField() {
+		return patternField;
+	}
+
+	public JTextField getTextField() {
+		return textField;
+	}
+
+	public JTextField getAlphabetField() {
+		return alphabetField;
+	}
+
+	public JTextField getFromLengthField() {
+		return fromField;
+	}
+
+	public JTextField getToLengthField() {
+		return toField;
 	}
 
 	public String getPattern() {
@@ -265,7 +287,7 @@ public class PatternView extends AbstractCoWViewWithImport {
 		btnSave.setBounds(284, 493, 117, 29);
 		buttonList.add(btnSave);
 		frame.getContentPane().add(btnSave);
-		
+
 		super.addButtonList(buttonList);
 	}
 

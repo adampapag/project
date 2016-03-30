@@ -1,4 +1,4 @@
-package cow.data.requesthandler;
+package cow.model.requesthandler;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,7 @@ public class MorphismRequestHandler implements RequestHandler {
 				for (int symbolLength = 1; symbolLength < text.length() + 1; symbolLength++) {
 					String candidate = text.substring(0, symbolLength);
 					if (candidate.equals(l.getLetter())) {
-						newText = newText + l.getMorphism();
+						newText = newText + l.getWord();
 						length = symbolLength;
 						break;
 					}

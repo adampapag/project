@@ -1,4 +1,4 @@
-package cow.data.requesthandler;
+package cow.model.requesthandler;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class CrucialityRequestHandler implements RequestHandler {
 		ArrayList<String> alphabet = parseAlphabet(args);
 		boolean ordered = parseOrdered(args);
 		ArrayList<String> patternList = parsePatterns(args);
-
+		
 		String[] params = new String[2];
 
 		params[1] = text;
@@ -165,7 +165,7 @@ public class CrucialityRequestHandler implements RequestHandler {
 			index++;
 			letter = args[index];
 		}
-		for (int i = index; i < args.length; i++) {
+		for (int i = index + 1; i < args.length; i++) {
 			patternList.add(args[i]);
 		}
 		return patternList;

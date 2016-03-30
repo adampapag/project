@@ -22,7 +22,7 @@ public class CoWLabModel extends AbstractModel {
 		return true;
 	}
 
-	public void createLibrary() {
+	public boolean createLibrary() {
 		String directory = System.getProperty("user.home")
 				+ System.getProperty("file.separator") + "CoW"
 				+ System.getProperty("file.separator") + "Morphisms";
@@ -32,6 +32,7 @@ public class CoWLabModel extends AbstractModel {
 				+ System.getProperty("file.separator") + "Results")).mkdirs();
 		if (!(okay || okayOut)) {
 			System.out.println("Failed to create directory: " + directory);
+			return false;
 		} else {
 			assert okay;
 			String file = null;
@@ -60,13 +61,15 @@ public class CoWLabModel extends AbstractModel {
 				out.close();
 			} catch (FileNotFoundException e) {
 				System.out.println("File not found: " + file);
+				return false;
 			} catch (IOException e) {
 				System.out.println("Error reading file: " + file);
+				return false;
 			} catch (NullPointerException npe) {
 				System.out.println("Nothing to read from: " + file);
-				npe.printStackTrace();
+				return false;
 			}
 		}
-
+		return true;
 	}
 }

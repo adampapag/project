@@ -71,6 +71,8 @@ public class MorphismView extends AbstractCoWViewWithImportAndTable {
 		separator.setBounds(6, 239, 688, 16);
 		frame.getContentPane().add(separator);
 
+		super.setFrame(frame);
+		
 		frame.setVisible(true);
 	}
 
@@ -102,8 +104,7 @@ public class MorphismView extends AbstractCoWViewWithImportAndTable {
 			frame.getContentPane().remove(morphismPane);
 			addMorphismTable();
 		} catch (NumberFormatException nfe) {
-			// TODO
-			System.out.println("number format exception; morphism view");
+			// do nothing.
 		}
 	}
 

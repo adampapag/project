@@ -2,6 +2,13 @@ package cow.data;
 
 import java.util.ArrayList;
 
+/**
+ * CoW Result type. Has various faculties for storing information regarding
+ * execution results. Needs further abstraction.
+ * 
+ * @author Adam Papageorgiou
+ *
+ */
 public class Result {
 
 	private String string;

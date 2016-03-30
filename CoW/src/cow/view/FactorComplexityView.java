@@ -52,7 +52,13 @@ public class FactorComplexityView extends AbstractCoWViewWithImport {
 		separator_1.setBounds(6, 189, 688, 12);
 		frame.getContentPane().add(separator_1);
 
+		super.setFrame(frame);
+		
 		frame.setVisible(true);
+	}
+
+	public JTextArea getTextField() {
+		return textArea;
 	}
 
 	public void setText(String text) {

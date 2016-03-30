@@ -23,6 +23,8 @@ public class CoWLabView extends AbstractView {
 		lblCowLab.setBounds(193, 29, 61, 16);
 		frame.getContentPane().add(lblCowLab);
 
+		super.setFrame(frame);
+		
 		frame.setVisible(true);
 	}
 

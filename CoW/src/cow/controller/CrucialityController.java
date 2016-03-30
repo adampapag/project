@@ -7,14 +7,28 @@ import java.util.Arrays;
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
 
+import cow.controller.listener.CoWLabListener;
 import cow.controller.listener.CrucialityListener;
 import cow.data.Result;
 import cow.data.SymbolMapping;
 import cow.model.AbstractModel;
 import cow.model.CrucialityModel;
+import cow.model.Model;
 import cow.view.CrucialityView;
 import cow.view.View;
 
+/**
+ * Concrete implementation of the AbstractControllerWithImport. Controller for
+ * the Cruciality window.
+ * 
+ * @author Adam Papageorgiou
+ * 
+ * @see AbstractCoWControllerWithImport
+ * @see AbstractCoWController
+ * @see AbstractController
+ * @see Controller
+ *
+ */
 public class CrucialityController extends AbstractCoWControllerWithImport {
 
 	private CrucialityModel m;
@@ -22,17 +36,43 @@ public class CrucialityController extends AbstractCoWControllerWithImport {
 	private ActionListener listener;
 	private SwingWorker w;
 
+	/**
+	 * Constructor initiates local references to the Model and View. Model and
+	 * View are cast to their respective Cruciality types.
+	 * 
+	 * @param m
+	 *            reference to the relevant Model
+	 * @param v
+	 *            reference to the relevant View
+	 * 
+	 * @see AbstractModel
+	 * @see View
+	 */
 	public CrucialityController(AbstractModel m, View v) {
 		super(m, v);
 		this.m = (CrucialityModel) m;
 		this.v = (CrucialityView) v;
 	}
 
+	/**
+	 * Creates the CoWLabListener and passes is to the View using the super type
+	 * method attachListener(listener).
+	 * 
+	 * @see CrucialityListener
+	 */
 	protected void createViewListener() {
 		listener = new CrucialityListener(this);
 		super.attachListener(listener);
 	}
 
+	/**
+	 * Implementation for calculating and displaying results for Cruciality
+	 * execution.
+	 * 
+	 * @see SwingWorker
+	 * @see CrucialityView
+	 * @see CrucialityModel
+	 */
 	public void showResults() {
 		clearResults();
 		w = new SwingWorker() {
@@ -48,6 +88,12 @@ public class CrucialityController extends AbstractCoWControllerWithImport {
 								column));
 					}
 				}
+				for (String p : patternList) {
+					if (!(m.isValidPattern(p))) {
+						v.getResultsArea().append(
+								"pattern '" + p + "' is too short.");
+					}
+				}
 				if (v.OnWordsOrText().equals("on words")) {
 					int alphaSize = v.getAlphabetSize();
 					int lengthFrom = v.getFromLength();
@@ -56,12 +102,6 @@ public class CrucialityController extends AbstractCoWControllerWithImport {
 					int numberCrucialWords = 0;
 					int numberBiCrucialWords = 0;
 					String resultLine = "";
-					for (String p : patternList) {
-						if (!(m.isValidPattern(p))) {
-							v.getResultsArea().append(
-									"pattern '" + p + "' is too short.");
-						}
-					}
 					ArrayList<String> words = new ArrayList<String>();
 					ArrayList<String> alphabet = new ArrayList<String>();
 					// initiate array {0, ..., k}
@@ -172,12 +212,6 @@ public class CrucialityController extends AbstractCoWControllerWithImport {
 					String text = v.getText();
 					String resultLine = "";
 					if (m.isValidText(text)) {
-						for (String p : patternList) {
-							if (!(m.isValidPattern(p))) {
-								v.getResultsArea().append(
-										"pattern '" + p + "' is too short.");
-							}
-						}
 						ArrayList<Result> resultsList;
 						try {
 							ArrayList<String> alphabet = m.deduceAlphabet(text);
@@ -227,8 +261,7 @@ public class CrucialityController extends AbstractCoWControllerWithImport {
 								v.getResultsArea().append(resultLine);
 							}
 						} catch (Exception ex) {
-							System.out.println("cruciality controller exception");
-							ex.printStackTrace();
+							// format
 						}
 					} else {
 						v.getResultsArea().append("text field is empty\n");
@@ -243,6 +276,9 @@ public class CrucialityController extends AbstractCoWControllerWithImport {
 		w.execute();
 	}
 
+	/**
+	 * Stops the Worker thread execution, and calls up the hierarchy.
+	 */
 	public void stop() {
 		w.cancel(true);
 		super.stop();

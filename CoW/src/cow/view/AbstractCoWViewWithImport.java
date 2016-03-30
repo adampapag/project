@@ -15,4 +15,9 @@ public abstract class AbstractCoWViewWithImport extends AbstractCoWView {
 	}
 
 	public abstract void setText(String text);
+
+	public JLabel getFilepathLabel() {
+		return lblFilepath;
+	}
+
 }

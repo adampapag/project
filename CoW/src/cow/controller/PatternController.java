@@ -7,14 +7,29 @@ import java.util.HashMap;
 
 import javax.swing.SwingWorker;
 
+import cow.controller.listener.FactorComplexityListener;
 import cow.controller.listener.PatternListener;
 import cow.data.Result;
 import cow.data.SymbolMapping;
 import cow.model.AbstractModel;
+import cow.model.FactorComplexityModel;
 import cow.model.PatternModel;
+import cow.view.FactorComplexityView;
 import cow.view.PatternView;
 import cow.view.View;
 
+/**
+ * Concrete implementation of the AbstractControllerWithImport. Controller for
+ * the Pattern window.
+ * 
+ * @author Adam Papageorgiou
+ * 
+ * @see AbstractCoWControllerWithImport
+ * @see AbstractCoWController
+ * @see AbstractController
+ * @see Controller
+ *
+ */
 public class PatternController extends AbstractCoWControllerWithImport {
 
 	private PatternModel m;
@@ -22,23 +37,50 @@ public class PatternController extends AbstractCoWControllerWithImport {
 	private ActionListener listener;
 	private SwingWorker w;
 
+	/**
+	 * Constructor initiates local references to the Model and View. Model and
+	 * View are cast to their respective Pattern types.
+	 * 
+	 * @param m
+	 *            reference to the relevant Model
+	 * @param v
+	 *            reference to the relevant View
+	 * 
+	 * @see AbstractModel
+	 * @see View
+	 */
 	public PatternController(AbstractModel m, View v) {
 		super(m, v);
 		this.m = (PatternModel) m;
 		this.v = (PatternView) v;
 	}
 
+	/**
+	 * Creates the PatternListener and passes is to the View using the super
+	 * type method attachListener(listener).
+	 * 
+	 * @see PatternListener
+	 */
 	protected void createViewListener() {
 		listener = new PatternListener(this);
 		super.attachListener(listener);
 	}
 
+	/**
+	 * Implementation for calculating and displaying results for Pattern
+	 * execution.
+	 * 
+	 * @see SwingWorker
+	 * @see PatternView
+	 * @see PatternModel
+	 */
 	public void showResults() {
 		clearResults();
 		w = new SwingWorker() {
 			@Override
 			protected Integer doInBackground() {
 				final String pattern = v.getPattern();
+				String resultLine = "";
 				if (m.isValidPattern(pattern)) {
 					if (v.onWordsOrText().equals("on words")) {
 						int alphaSize = v.getAlphabetSize();
@@ -47,7 +89,6 @@ public class PatternController extends AbstractCoWControllerWithImport {
 						int currentLength = 1;
 						int avoidances = 0;
 						boolean present = false;
-						String resultLine = "";
 						ArrayList<String> words = new ArrayList<String>();
 						ArrayList<Result> resultList;
 						ArrayList<Integer> frequencyList;
@@ -90,8 +131,6 @@ public class PatternController extends AbstractCoWControllerWithImport {
 											for (int j = 0; j < resultList
 													.size(); j++) {
 												occurrences++;
-												// result.add(resultList
-												// .get(j));
 											}
 										}
 										word = word.substring(1);
@@ -197,7 +236,6 @@ public class PatternController extends AbstractCoWControllerWithImport {
 						// check if ordered//unordered
 						String text = v.getText();
 						String deletedText = "";
-						String resultLine = "";
 						if (m.isValidText(text)) {
 							ArrayList<Result> resultsList;
 							try {
@@ -252,8 +290,7 @@ public class PatternController extends AbstractCoWControllerWithImport {
 								v.getResultsArea().append(resultLine);
 
 							} catch (Exception ex) {
-								System.out
-										.println("pattern controller exception");
+								// format
 							}
 						} else {
 							resultLine = "Invalid text" + "\n";
@@ -262,6 +299,10 @@ public class PatternController extends AbstractCoWControllerWithImport {
 						}
 
 					}
+				} else {
+					resultLine = "Invalid pattern" + "\n";
+					v.getResultsArea().append(resultLine);
+					return 0;
 				}
 				return 1;
 			}
@@ -269,6 +310,9 @@ public class PatternController extends AbstractCoWControllerWithImport {
 		w.execute();
 	}
 
+	/**
+	 * Stops the Worker thread execution, and calls up the hierarchy.
+	 */
 	public void stop() {
 		w.cancel(true);
 		super.stop();

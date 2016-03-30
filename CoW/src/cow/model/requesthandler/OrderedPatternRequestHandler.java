@@ -1,4 +1,4 @@
-package cow.data.requesthandler;
+package cow.model.requesthandler;
 
 import java.util.ArrayList;
 
@@ -55,7 +55,7 @@ public class OrderedPatternRequestHandler extends PatternRequestHandler {
 				}
 
 				if (!okay) {
-					// System.out.println("pattern broken");
+					// pattern broken
 					return resultsList;
 				}
 

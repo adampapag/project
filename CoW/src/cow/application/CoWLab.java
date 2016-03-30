@@ -9,8 +9,23 @@ import cow.model.Model;
 import cow.view.CoWLabView;
 import cow.view.View;
 
+/**
+ * Concrete implementation of the Application interface. The CoWLab creates an
+ * M-V-C structure.
+ * 
+ * @author Adam Papageorgiou
+ * 
+ * @version 1.0
+ *
+ * @see Application
+ */
 public class CoWLab implements Application {
 
+	/**
+	 * Main method that instantiates the CoWLab Application.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 
 		SwingUtilities.invokeLater(new Runnable() {

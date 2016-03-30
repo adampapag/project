@@ -1,10 +1,21 @@
 package cow.controller.listener.radio;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import cow.view.PatternView;
 import cow.view.View;
 
+/**
+ * Concrete implementation of the AbstractRadioListener. Provides responses for
+ * radio button clicks in the View.
+ * 
+ * @author Adam Papageorgiou
+ *
+ * @see AbstractRadioListener
+ * @see ActionListener
+ * @see PatternView
+ */
 public class PatternRadioListener extends AbstractRadioListener {
 
 	private PatternView v;

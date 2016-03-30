@@ -3,9 +3,17 @@ package cow.model;
 import java.util.ArrayList;
 
 import cow.data.Result;
-import cow.data.requesthandler.RequestHandler;
-import cow.data.requesthandler.SaveRequestHandler;
+import cow.model.requesthandler.RequestHandler;
+import cow.model.requesthandler.SaveRequestHandler;
 
+/**
+ * Abstract base class through which all CoW-related methods are inherited.
+ * 
+ * @author Adam Papageorgiou
+ *
+ * @see AbstractModel
+ * @see Model
+ */
 public abstract class AbstractCoWModel extends AbstractModel {
 
 	private RequestHandler handler;
@@ -17,6 +25,15 @@ public abstract class AbstractCoWModel extends AbstractModel {
 		this.resultsList = resultsList;
 	}
 
+	/**
+	 * Called from Controller, creates appropriate RequestHandler for save
+	 * handling.
+	 * 
+	 * @param filepath
+	 *            String reference to path the file should be saved at
+	 *            
+	 * @see RequestHandler
+	 */
 	public void saveRequest(String filepath) {
 		resultsList.clear();
 		args = new String[2];

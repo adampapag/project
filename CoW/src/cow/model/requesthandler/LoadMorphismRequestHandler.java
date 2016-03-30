@@ -1,4 +1,4 @@
-package cow.data.requesthandler;
+package cow.model.requesthandler;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -11,12 +11,11 @@ import java.util.ArrayList;
 
 import cow.data.Result;
 
-public class OpenFileRequestHandler implements RequestHandler {
+public class LoadMorphismRequestHandler implements RequestHandler {
 
 	@Override
 	public ArrayList<Result> handle(String[] args) {
 		String filepath = args[0];
-		String text = "";
 		ArrayList<Result> resultList = new ArrayList<Result>();
 
 		String line = "";
@@ -25,13 +24,12 @@ public class OpenFileRequestHandler implements RequestHandler {
 						Charset.forName("UTF-8"));
 				BufferedReader br = new BufferedReader(isr);) {
 			while ((line = br.readLine()) != null) {
-				text = text + line;
+				resultList.add(new Result(line, ""));
 			}
-			resultList.add(new Result(text, ""));
 		} catch (FileNotFoundException fnfe) {
-			System.err.println("FileNotFoundException on file load");
+			resultList.add(new Result("morphism file not found", ""));
 		} catch (IOException ioe) {
-			System.err.println("IOException file load error");
+			resultList.add(new Result("error reading morphism", ""));
 		}
 
 		return resultList;

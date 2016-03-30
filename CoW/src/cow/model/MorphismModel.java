@@ -3,10 +3,10 @@ package cow.model;
 import java.util.ArrayList;
 
 import cow.data.Result;
-import cow.data.requesthandler.LoadMorphismRequestHandler;
-import cow.data.requesthandler.MorphismRequestHandler;
-import cow.data.requesthandler.RequestHandler;
-import cow.data.requesthandler.SaveMorphismRequestHandler;
+import cow.model.requesthandler.LoadMorphismRequestHandler;
+import cow.model.requesthandler.MorphismRequestHandler;
+import cow.model.requesthandler.RequestHandler;
+import cow.model.requesthandler.SaveMorphismRequestHandler;
 
 public class MorphismModel extends AbstractCoWModel {
 
@@ -64,7 +64,7 @@ public class MorphismModel extends AbstractCoWModel {
 
 		int occurrences = 0;
 		for (String l : letters) {
-			if (l.equals("")) {
+			if (l.equals("") || l.equals(" ")) {
 				results.add("Letter cannot be space." + "\n");
 			} else if (l.length() > 1) {
 				results.add("Letter must be one character." + "\n");

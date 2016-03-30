@@ -1,4 +1,4 @@
-package cow.data.requesthandler;
+package cow.model.requesthandler;
 
 import java.util.ArrayList;
 
@@ -32,9 +32,6 @@ public class UnorderedPatternRequestHandler extends PatternRequestHandler {
 		for (int patternIndex = 1; patternIndex < patternList.size(); patternIndex++) {
 			while (!agenda.isEmpty()) {
 				Result candidate = agenda.remove(0);
-				ArrayList<SymbolMapping> symbolMap = candidate.getSymbolMap();
-				for (int i = 0; i < symbolMap.size(); i++) {
-				}
 				candidatePattern = patternList.get(patternIndex);
 				for (Result r : unaryPatternMatch(candidatePattern,
 						candidate.getRemainingString(),
@@ -102,8 +99,8 @@ public class UnorderedPatternRequestHandler extends PatternRequestHandler {
 					resultsList.add(y);
 				}
 			} else {
-				// System.out.println("not enough characters in text");
-				// break
+				// not enough characters in text.;
+				// break;
 			}
 		}
 		return resultsList;

@@ -8,6 +8,7 @@ import javax.swing.SwingWorker;
 
 import cow.controller.listener.MorphismListener;
 import cow.data.Result;
+import cow.io.Dialog;
 import cow.io.LoadMorphismDialog;
 import cow.io.SaveMorphismDialog;
 import cow.model.AbstractModel;
@@ -15,6 +16,17 @@ import cow.model.MorphismModel;
 import cow.view.MorphismView;
 import cow.view.View;
 
+/**
+ * Concrete implementation of the AbstractController. Controller for the
+ * Morphism window.
+ * 
+ * @author Adam Papageorgiou
+ * 
+ * @see AbstractCoWController
+ * @see AbstractController
+ * @see Controller
+ *
+ */
 public class MorphismController extends AbstractCoWController {
 
 	private MorphismModel m;
@@ -22,17 +34,43 @@ public class MorphismController extends AbstractCoWController {
 	private ActionListener listener;
 	private SwingWorker w;
 
+	/**
+	 * Constructor initiates local references to the Model and View. Model and
+	 * View are cast to their respective Morphism types.
+	 * 
+	 * @param m
+	 *            reference to the relevant Model
+	 * @param v
+	 *            reference to the relevant View
+	 * 
+	 * @see AbstractModel
+	 * @see View
+	 */
 	public MorphismController(AbstractModel m, View v) {
 		super(m, v);
 		this.m = (MorphismModel) m;
 		this.v = (MorphismView) v;
 	}
 
+	/**
+	 * Creates the MorphismListener and passes is to the View using the super
+	 * type method attachListener(listener).
+	 * 
+	 * @see MorphismListener
+	 */
 	protected void createViewListener() {
 		listener = new MorphismListener(this);
 		super.attachListener(listener);
 	}
 
+	/**
+	 * Implementation for calculating and displaying results for Morphism
+	 * execution.
+	 * 
+	 * @see SwingWorker
+	 * @see MorphismView
+	 * @see MorphismModel
+	 */
 	public void showResults() {
 		clearResults();
 		w = new SwingWorker() {
@@ -90,6 +128,15 @@ public class MorphismController extends AbstractCoWController {
 		w.execute();
 	}
 
+	/**
+	 * Method for loading a pre-saved morphism into the grid. Model returns list
+	 * of Results, the information of which is parsed into an array of String
+	 * for passing to the View.
+	 * 
+	 * @see LoadMorphismDialog
+	 * @see MorphismModel
+	 * @see MorphismView
+	 */
 	public void loadMorphism() {
 		LoadMorphismDialog lmo = new LoadMorphismDialog();
 		String morphismPath = lmo.display();
@@ -110,12 +157,23 @@ public class MorphismController extends AbstractCoWController {
 		v.setTable(data);
 	}
 
-	public void saveMorphism() {
-		SaveMorphismDialog smo = new SaveMorphismDialog();
+	/**
+	 * Method for saving morphism grid data to file. Prompts user to select
+	 * filepath via Dialog box. Parses grid data into array for passing to
+	 * Model.
+	 * 
+	 * @return selected filepath
+	 * 
+	 * @see SaveMorphismDialog
+	 * @see MorphismView
+	 * @see MorphismModel
+	 */
+	public String saveMorphism() {
+		Dialog smo = new SaveMorphismDialog();
 		String newPath = smo.display();
 
 		if (newPath == null) {
-			return;
+			return null;
 		}
 
 		JTable morphismTable = v.getMorphismTable();
@@ -131,8 +189,12 @@ public class MorphismController extends AbstractCoWController {
 		}
 
 		m.saveMorphismRequest(newPath, morphismData);
+		return newPath;
 	}
 
+	/**
+	 * Stops the Worker thread execution, and calls up the hierarchy.
+	 */
 	public void stop() {
 		w.cancel(true);
 		super.stop();

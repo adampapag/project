@@ -93,7 +93,25 @@ public class CrucialityView extends AbstractCoWViewWithImportAndTable {
 		separator_1.setBounds(6, 122, 688, 12);
 		frame.getContentPane().add(separator_1);
 
+		super.setFrame(frame);
+
 		frame.setVisible(true);
+	}
+
+	public JTextField getTextField() {
+		return textField;
+	}
+
+	public JTextField getAlphabetField() {
+		return alphabetField;
+	}
+
+	public JTextField getFromField() {
+		return fromField;
+	}
+
+	public JTextField getToField() {
+		return toField;
 	}
 
 	public void setText(String text) {
@@ -130,8 +148,24 @@ public class CrucialityView extends AbstractCoWViewWithImportAndTable {
 			frame.getContentPane().remove(patternPane);
 			addPatternTable();
 		} catch (NumberFormatException nfe) {
-			// TODO
-			System.out.println("number format exception; cruciality view");
+			// do nothing.
+		}
+	}
+
+	public void setTable(String[] patternData) {
+		try {
+			data = new Object[patternData.length][columnNames.length];
+			int index = 0;
+			for (int row = 0; row < data.length; row++) {
+				for (int column = 0; column < columnNames.length; column++) {
+					data[row][column] = patternData[index];
+					index++;
+				}
+			}
+			frame.getContentPane().remove(patternPane);
+			addPatternTable();
+		} catch (NumberFormatException nfe) {
+			// do nothing.
 		}
 	}
 

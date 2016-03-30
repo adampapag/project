@@ -3,9 +3,9 @@ package cow.model;
 import java.util.ArrayList;
 
 import cow.data.Result;
-import cow.data.requesthandler.OrderedPatternRequestHandler;
-import cow.data.requesthandler.RequestHandler;
-import cow.data.requesthandler.UnorderedPatternRequestHandler;
+import cow.model.requesthandler.OrderedPatternRequestHandler;
+import cow.model.requesthandler.RequestHandler;
+import cow.model.requesthandler.UnorderedPatternRequestHandler;
 
 public class PatternModel extends AbstractCoWModelWithImportAndTextAndPatternValidation {
 

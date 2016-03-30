@@ -1,5 +1,13 @@
 package cow.data;
 
+/**
+ * Class that models the relation between a pattern symbol and a subword of the
+ * input string. SymbolMappings are usually held in a list for inconsistency
+ * checking.
+ * 
+ * @author Adam Papageorgiou
+ *
+ */
 public class SymbolMapping {
 
 	private String symbol;

@@ -1,4 +1,4 @@
-package cow.data.requesthandler;
+package cow.model.requesthandler;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,16 +27,14 @@ public abstract class PatternRequestHandler implements RequestHandler {
 								.getSymbolValue();
 						if (candidateSymbol.equals(symbol)
 								&& (!candidateSymbolValue.equals(symbolValue))) {
-							// System.out
-							// .println("contradiction found! same symbol different value.");
+							// contradiction found! same symbol different value.
 							iterator.remove();
 							contradiction = true;
 							break;
 						}
 						if (candidateSymbolValue.equals(symbolValue)
 								&& (!candidateSymbol.equals(symbol))) {
-							// System.out
-							// .println("contradiction found! same value different symbol.");
+							// contradiction found! same value different symbol;
 							iterator.remove();
 							contradiction = true;
 							break;
